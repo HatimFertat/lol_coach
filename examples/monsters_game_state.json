@@ -1,0 +1,472 @@
+{
+	"activePlayer": {
+		"abilities": {
+			"E": {
+				"abilityLevel": 5,
+				"displayName": "Bladework",
+				"id": "FioraE",
+				"rawDescription": "GeneratedTip_Spell_FioraE_Description",
+				"rawDisplayName": "GeneratedTip_Spell_FioraE_DisplayName"
+			},
+			"Passive": {
+				"displayName": "Duelist's Dance",
+				"id": "FioraPassive",
+				"rawDescription": "GeneratedTip_Passive_FioraPassive_Description",
+				"rawDisplayName": "GeneratedTip_Passive_FioraPassive_DisplayName"
+			},
+			"Q": {
+				"abilityLevel": 5,
+				"displayName": "Lunge",
+				"id": "FioraQ",
+				"rawDescription": "GeneratedTip_Spell_FioraQ_Description",
+				"rawDisplayName": "GeneratedTip_Spell_FioraQ_DisplayName"
+			},
+			"R": {
+				"abilityLevel": 3,
+				"displayName": "Grand Challenge",
+				"id": "FioraR",
+				"rawDescription": "GeneratedTip_Spell_FioraR_Description",
+				"rawDisplayName": "GeneratedTip_Spell_FioraR_DisplayName"
+			},
+			"W": {
+				"abilityLevel": 5,
+				"displayName": "Riposte",
+				"id": "FioraW",
+				"rawDescription": "GeneratedTip_Spell_FioraW_Description",
+				"rawDisplayName": "GeneratedTip_Spell_FioraW_DisplayName"
+			}
+		},
+		"championStats": {
+			"abilityHaste": 30.0,
+			"abilityPower": 0.0,
+			"armor": 112.90000915527344,
+			"armorPenetrationFlat": 0.0,
+			"armorPenetrationPercent": 1.0,
+			"attackDamage": 491.65924072265627,
+			"attackRange": 150.0,
+			"attackSpeed": 1.465559959411621,
+			"bonusArmorPenetrationPercent": 1.0,
+			"bonusMagicPenetrationPercent": 1.0,
+			"critChance": 0.0,
+			"critDamage": 175.0,
+			"currentHealth": 4316.0,
+			"healShieldPower": 0.11999999731779099,
+			"healthRegenRate": 3.570000171661377,
+			"lifeSteal": 0.27000001072883608,
+			"magicLethality": 0.0,
+			"magicPenetrationFlat": 0.0,
+			"magicPenetrationPercent": 1.0,
+			"magicResist": 66.85000610351563,
+			"maxHealth": 4316.0,
+			"moveSpeed": 376.0500183105469,
+			"omnivamp": 0.0,
+			"physicalLethality": 0.0,
+			"physicalVamp": 0.0,
+			"resourceMax": 1320.0001220703126,
+			"resourceRegenRate": 3.9800004959106447,
+			"resourceType": "MANA",
+			"resourceValue": 1320.0001220703126,
+			"spellVamp": 0.0,
+			"tenacity": 5.0
+		},
+		"currentGold": 17863.98828125,
+		"fullRunes": {
+			"generalRunes": [
+				{
+					"displayName": "Conqueror",
+					"id": 8010,
+					"rawDescription": "perk_tooltip_Conqueror",
+					"rawDisplayName": "perk_displayname_Conqueror"
+				},
+				{
+					"displayName": "Triumph",
+					"id": 9111,
+					"rawDescription": "perk_tooltip_9111",
+					"rawDisplayName": "perk_displayname_9111"
+				},
+				{
+					"displayName": "Legend: Alacrity",
+					"id": 9104,
+					"rawDescription": "perk_tooltip_9104",
+					"rawDisplayName": "perk_displayname_9104"
+				},
+				{
+					"displayName": "Last Stand",
+					"id": 8299,
+					"rawDescription": "perk_tooltip_8234",
+					"rawDisplayName": "perk_displayname_8234"
+				},
+				{
+					"displayName": "Bone Plating",
+					"id": 8473,
+					"rawDescription": "perk_tooltip_BonePlatingTooltip",
+					"rawDisplayName": "perk_displayname_BonePlating"
+				},
+				{
+					"displayName": "Unflinching",
+					"id": 8242,
+					"rawDescription": "perk_tooltip_Unflinching",
+					"rawDisplayName": "perk_displayname_Unflinching"
+				}
+			],
+			"keystone": {
+				"displayName": "Conqueror",
+				"id": 8010,
+				"rawDescription": "perk_tooltip_Conqueror",
+				"rawDisplayName": "perk_displayname_Conqueror"
+			},
+			"primaryRuneTree": {
+				"displayName": "Precision",
+				"id": 8000,
+				"rawDescription": "perkstyle_tooltip_7201",
+				"rawDisplayName": "perkstyle_displayname_7201"
+			},
+			"secondaryRuneTree": {
+				"displayName": "Resolve",
+				"id": 8400,
+				"rawDescription": "perkstyle_tooltip_7204",
+				"rawDisplayName": "perkstyle_displayname_7204"
+			},
+			"statRunes": [
+				{
+					"id": 5005,
+					"rawDescription": "perk_tooltip_StatModAttackSpeed"
+				},
+				{
+					"id": 5008,
+					"rawDescription": "perk_tooltip_StatModAdaptive"
+				},
+				{
+					"id": 5001,
+					"rawDescription": "perk_tooltip_StatModHealthScaling"
+				}
+			]
+		},
+		"level": 18,
+		"riotId": "hisawt#SQUU3",
+		"riotIdGameName": "hisawt",
+		"riotIdTagLine": "SQUU3",
+		"summonerName": "hisawt#SQUU3",
+		"teamRelativeColors": true
+	},
+	"allPlayers": [
+		{
+			"championName": "Fiora",
+			"isBot": false,
+			"isDead": false,
+			"items": [
+				{
+					"canUse": false,
+					"consumable": false,
+					"count": 1,
+					"displayName": "Trinity Force",
+					"itemID": 3078,
+					"price": 133,
+					"rawDescription": "GeneratedTip_Item_3078_Description",
+					"rawDisplayName": "Item_3078_Name",
+					"slot": 0
+				},
+				{
+					"canUse": true,
+					"consumable": false,
+					"count": 1,
+					"displayName": "Ravenous Hydra",
+					"itemID": 3074,
+					"price": 150,
+					"rawDescription": "GeneratedTip_Item_3074_Description",
+					"rawDisplayName": "Item_3074_Name",
+					"slot": 1
+				},
+				{
+					"canUse": false,
+					"consumable": false,
+					"count": 1,
+					"displayName": "Hullbreaker",
+					"itemID": 3181,
+					"price": 175,
+					"rawDescription": "GeneratedTip_Item_3181_Description",
+					"rawDisplayName": "Item_3181_Name",
+					"slot": 2
+				},
+				{
+					"canUse": false,
+					"consumable": false,
+					"count": 1,
+					"displayName": "Spear of Shojin",
+					"itemID": 3161,
+					"price": 675,
+					"rawDescription": "GeneratedTip_Item_3161_Description",
+					"rawDisplayName": "Item_3161_Name",
+					"slot": 3
+				},
+				{
+					"canUse": false,
+					"consumable": false,
+					"count": 1,
+					"displayName": "Bloodthirster",
+					"itemID": 3072,
+					"price": 325,
+					"rawDescription": "GeneratedTip_Item_3072_Description",
+					"rawDisplayName": "Item_3072_Name",
+					"slot": 4
+				},
+				{
+					"canUse": false,
+					"consumable": false,
+					"count": 1,
+					"displayName": "Overlord's Bloodmail",
+					"itemID": 2501,
+					"price": 1000,
+					"rawDescription": "GeneratedTip_Item_2501_Description",
+					"rawDisplayName": "Item_2501_Name",
+					"slot": 5
+				},
+				{
+					"canUse": true,
+					"consumable": false,
+					"count": 1,
+					"displayName": "Stealth Ward",
+					"itemID": 3340,
+					"price": 0,
+					"rawDescription": "GeneratedTip_Item_3340_Description",
+					"rawDisplayName": "Item_3340_Name",
+					"slot": 6
+				}
+			],
+			"level": 18,
+			"position": "",
+			"rawChampionName": "game_character_displayname_Fiora",
+			"rawSkinName": "game_character_skin_displayname_Fiora_0",
+			"respawnTimer": 0.0,
+			"riotId": "hisawt#SQUU3",
+			"riotIdGameName": "hisawt",
+			"riotIdTagLine": "SQUU3",
+			"runes": {
+				"keystone": {
+					"displayName": "Conqueror",
+					"id": 8010,
+					"rawDescription": "perk_tooltip_Conqueror",
+					"rawDisplayName": "perk_displayname_Conqueror"
+				},
+				"primaryRuneTree": {
+					"displayName": "Precision",
+					"id": 8000,
+					"rawDescription": "perkstyle_tooltip_7201",
+					"rawDisplayName": "perkstyle_displayname_7201"
+				},
+				"secondaryRuneTree": {
+					"displayName": "Resolve",
+					"id": 8400,
+					"rawDescription": "perkstyle_tooltip_7204",
+					"rawDisplayName": "perkstyle_displayname_7204"
+				}
+			},
+			"scores": {
+				"assists": 0,
+				"creepScore": 50,
+				"deaths": 0,
+				"kills": 0,
+				"wardScore": 2.25
+			},
+			"skinID": 0,
+			"skinName": "",
+			"summonerName": "hisawt#SQUU3",
+			"summonerSpells": {
+				"summonerSpellOne": {
+					"displayName": "Ignite",
+					"rawDescription": "GeneratedTip_SummonerSpell_SummonerDot_Description",
+					"rawDisplayName": "GeneratedTip_SummonerSpell_SummonerDot_DisplayName"
+				},
+				"summonerSpellTwo": {
+					"displayName": "Flash",
+					"rawDescription": "GeneratedTip_SummonerSpell_SummonerFlash_Description",
+					"rawDisplayName": "GeneratedTip_SummonerSpell_SummonerFlash_DisplayName"
+				}
+			},
+			"team": "ORDER"
+		},
+		{
+			"championName": "",
+			"isBot": true,
+			"isDead": false,
+			"items": {
+				"error": "Unable to find player"
+			},
+			"level": 4,
+			"position": "",
+			"rawChampionName": "",
+			"rawSkinName": "game_character_skin_displayname_PracticeTool_TargetDummy_0",
+			"respawnTimer": 0.0,
+			"riotId": "",
+			"riotIdGameName": "",
+			"riotIdTagLine": "",
+			"runes": {
+				"error": "Unable to find player"
+			},
+			"scores": {
+				"error": "Unable to find player"
+			},
+			"skinID": 0,
+			"skinName": "",
+			"summonerName": "Unknown",
+			"summonerSpells": {
+				"error": "Unable to find player"
+			},
+			"team": "ORDER"
+		}
+	],
+	"events": {
+		"Events": [
+			{
+				"EventID": 0,
+				"EventName": "GameStart",
+				"EventTime": 0.02523820847272873
+			},
+			{
+				"EventID": 1,
+				"EventName": "MinionsSpawning",
+				"EventTime": 65.05034637451172
+			},
+			{
+				"Assisters": [],
+				"EventID": 2,
+				"EventName": "TurretKilled",
+				"EventTime": 93.31205749511719,
+				"KillerName": "hisawt",
+				"TurretKilled": "Turret_T200_L1_P3_2254202041"
+			},
+			{
+				"EventID": 3,
+				"EventName": "FirstBrick",
+				"EventTime": 93.31205749511719,
+				"KillerName": "hisawt"
+			},
+			{
+				"Assisters": [],
+				"EventID": 4,
+				"EventName": "TurretKilled",
+				"EventTime": 99.10356903076172,
+				"KillerName": "hisawt",
+				"TurretKilled": "Turret_T200_L1_P2_2237424422"
+			},
+			{
+				"Assisters": [],
+				"EventID": 5,
+				"EventName": "TurretKilled",
+				"EventTime": 110.61663818359375,
+				"KillerName": "hisawt",
+				"TurretKilled": "Turret_T200_L1_P1_2220646803"
+			},
+			{
+				"Assisters": [],
+				"EventID": 6,
+				"EventName": "InhibKilled",
+				"EventTime": 113.7707748413086,
+				"InhibKilled": "Inhib_T200_L1_P1_1931666598",
+				"KillerName": "hisawt"
+			},
+			{
+				"Assisters": [],
+				"DragonType": "Air",
+				"EventID": 7,
+				"EventName": "DragonKill",
+				"EventTime": 315.88970947265627,
+				"KillerName": "hisawt",
+				"Stolen": "False"
+			},
+			{
+				"EventID": 8,
+				"EventName": "InhibRespawned",
+				"EventTime": 413.73541259765627,
+				"InhibRespawned": "Inhib_T200_L1_P1_1931666598"
+			},
+			{
+				"Assisters": [],
+				"DragonType": "Water",
+				"EventID": 9,
+				"EventName": "DragonKill",
+				"EventTime": 1161.43310546875,
+				"KillerName": "hisawt",
+				"Stolen": "False"
+			},
+			{
+				"Assisters": [],
+				"EventID": 10,
+				"EventName": "HeraldKill",
+				"EventTime": 1172.2255859375,
+				"KillerName": "hisawt",
+				"Stolen": "False"
+			},
+			{
+				"Assisters": [],
+				"EventID": 11,
+				"EventName": "AtakhanKill",
+				"EventTime": 1231.2259521484376,
+				"KillerName": "hisawt",
+				"Stolen": "False"
+			},
+			{
+				"Assisters": [],
+				"DragonType": "Chemtech",
+				"EventID": 12,
+				"EventName": "DragonKill",
+				"EventTime": 1497.78125,
+				"KillerName": "hisawt",
+				"Stolen": "False"
+			},
+			{
+				"Assisters": [],
+				"EventID": 13,
+				"EventName": "InhibKilled",
+				"EventTime": 1516.7154541015626,
+				"InhibKilled": "Inhib_T200_L1_P1_1931666598",
+				"KillerName": "hisawt"
+			},
+			{
+				"Assisters": [],
+				"EventID": 14,
+				"EventName": "BaronKill",
+				"EventTime": 1577.711181640625,
+				"KillerName": "hisawt",
+				"Stolen": "False"
+			},
+			{
+				"EventID": 15,
+				"EventName": "InhibRespawningSoon",
+				"EventTime": 1801.7154541015626,
+				"InhibRespawningSoon": "Inhib_T200_L1_P1_1931666598"
+			},
+			{
+				"EventID": 16,
+				"EventName": "InhibRespawned",
+				"EventTime": 1816.681640625,
+				"InhibRespawned": "Inhib_T200_L1_P1_1931666598"
+			},
+			{
+				"Assisters": [],
+				"DragonType": "Chemtech",
+				"EventID": 17,
+				"EventName": "DragonKill",
+				"EventTime": 2152.525146484375,
+				"KillerName": "hisawt",
+				"Stolen": "False"
+			},
+			{
+				"Assisters": [],
+				"DragonType": "Elder",
+				"EventID": 18,
+				"EventName": "DragonKill",
+				"EventTime": 2664.773193359375,
+				"KillerName": "hisawt",
+				"Stolen": "False"
+			}
+		]
+	},
+	"gameData": {
+		"gameMode": "PRACTICETOOL",
+		"gameTime": 2672.400146484375,
+		"mapName": "Map11",
+		"mapNumber": 11,
+		"mapTerrain": "Default"
+	}
+}
