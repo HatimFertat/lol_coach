@@ -56,8 +56,9 @@ class MacroAgent(Agent):
             return f"{label} at {format_time(value)}" if value and value > game_state.timestamp else None
 
         obj = game_state.objectives
+        dragon_type = obj.dragon_type or ""
         timers = filter(None, [
-            format_obj_timer("Dragon", obj.dragon_respawn),
+            format_obj_timer(dragon_type + " " + "Dragon", obj.dragon_respawn),
             format_obj_timer("Herald", obj.herald_respawn),
             format_obj_timer("Baron", obj.baron_respawn)
         ])
@@ -67,8 +68,10 @@ class MacroAgent(Agent):
         def format_buff_timer(label, ours, enemy):
             ours_str = format_time(ours) if ours and ours > game_state.timestamp else "None"
             enemy_str = format_time(enemy) if enemy and enemy > game_state.timestamp else "None"
+            which_team = "Our" if ours_str != "None" else "Enemy"
+            which_str = ours_str if ours_str != "None" else enemy_str
             if (ours and ours > game_state.timestamp) or (enemy and enemy > game_state.timestamp):
-                return f"{label} Buff - Ours: {ours_str} | Enemy: {enemy_str}"
+                return f"{label} Buff expiry - {which_team} team: {which_str}"
             return None
 
         baron_buff_line = format_buff_timer(
@@ -101,12 +104,11 @@ class MacroAgent(Agent):
         # Final summary
         summary_lines = [
             f"Game Time: {time_str}",
-            f"Turrets Fallen - Ours: {enemy_turrets or 'None'}",
-            f"Turrets Fallen - Enemy: {our_turrets or 'None'}",
-            f"Nexus Turrets Taken - Ours: {our_nexus} | Enemy: {enemy_nexus}",
-            f"Inhibitors Taken - Ours: {our_inhibs} | Enemy: {enemy_inhibs}",
-            f"Jungle Control - Ours: {our_jungle or 'None'}",
-            f"Jungle Control - Enemy: {enemy_jungle or 'None'}",
+            f"Our team is {"blue" if game_state.team_side == 'ORDER' else "red"} side",
+            f"Turrets destroyed by our team: {our_turrets or 'None'} | by enemy team: {enemy_turrets or 'None'}",
+            f"Nexus Turrets destroyed by our team: {our_nexus} | by enemy team: {enemy_nexus}",
+            f"Inhibitors destroyed by our team: {our_inhibs} | by enemy team: {enemy_inhibs}",
+            f"Jungle Control by our team: {our_jungle or 'None'} | by enemy team: {enemy_jungle or 'None'}",
         ]
         # Insert buff timers if present
         if baron_buff_line:
@@ -114,10 +116,10 @@ class MacroAgent(Agent):
         if elder_buff_line:
             summary_lines.append(elder_buff_line)
         summary_lines += [
-            f"Next Objectives: {timers_str or 'None'}",
+            f"Next Objectives: {timers_str or 'all spawned already'}",
             "",
-            "Ours:"
-        ] + our_players + ["", "Enemy:"] + enemy_players
+            "Our team:"
+        ] + our_players + ["", "Enemy team:"] + enemy_players
 
         return "\n".join(summary_lines)
 
@@ -152,6 +154,6 @@ if __name__ == "__main__":
     game_state = parse_game_state(game_state_json)
     agent = MacroAgent()
     summary = agent.summarize_game_state(game_state)
-    # print(summary)
-    advice = agent.run(game_state)
-    print(advice)
+    print(summary)
+    # advice = agent.run(game_state)
+    # print(advice)

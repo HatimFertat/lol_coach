@@ -233,14 +233,16 @@ class ObjectiveTimers:
     baron_respawn: Optional[float] = None
     herald_respawn: Optional[float] = None
     dragon_respawn: Optional[float] = None
+    dragon_type: Optional[str] = None
 
     def update_from_events(self, events: List[Event], game_time: float):
         # Method intentionally left blank; use update_from_monsters instead.
         pass
 
-    def update_from_monsters(self, monsters: "Monsters", game_time: float):
+    def update_from_monsters(self, monsters: Monsters, game_time: float):
         # DRAGON
         latest_dragon = monsters.get_latest("Dragon")
+        self.dragon_type = latest_dragon.type if latest_dragon.ordinal > 3 else None
         if latest_dragon is not None and latest_dragon.respawn_timer is not None:
             self.dragon_respawn = latest_dragon.respawn_timer
         else:
@@ -267,6 +269,7 @@ class GameStateContext:
     enemy_team: TeamState
     objectives: ObjectiveTimers
     player_champion: str
+    enemy_laner_champ: str
     role: str
     team_side: str
 
@@ -505,7 +508,8 @@ def parse_team_state(
     # Compute monster_counts: map each unique monster name to its count
     monster_counts: Dict[str, int] = {}
     for m in monsters_taken:
-        monster_counts[m.type + m.name] = monster_counts.get(m.name, 0) + 1
+        m_type = m.type + " " if m.type else ""
+        monster_counts[m_type + m.name] = monster_counts.get(m.name, 0) + 1
     team_state.monster_counts = monster_counts
 
     # Compute baron_buff_expires_at and elder_buff_expires_at
@@ -616,6 +620,7 @@ def parse_game_state(game_state_json: Dict[str, Any]) -> GameStateContext:
     enemy_team = parse_team_state(enemy_team_name, players, events, enemy_structures=player_team_structures, monsters=monsters)
     objectives = parse_objective_timers(game_state_json, events, monsters=monsters)
 
+    enemy_laner_champ = next((p["champion"] for p in players if p["team"] == enemy_team_name and p.get("lane") == active.get("position")), None)
     # Try to match player's lane/role if possible
     active_lane = players[active_player_idx].get("lane") if active_player_idx is not None else None
     if not active_lane: #practice tool
@@ -629,6 +634,7 @@ def parse_game_state(game_state_json: Dict[str, Any]) -> GameStateContext:
         enemy_team=enemy_team,
         objectives=objectives,
         player_champion=players[active_player_idx].get("champion") if active_player_idx is not None else "",
+        enemy_laner_champ=enemy_laner_champ,
         role=active_lane,
         team_side=player_team_name,
         active_player_idx=active_player_idx,

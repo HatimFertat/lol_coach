@@ -1,7 +1,7 @@
 # build_agent.py
 
 from base_agent import Agent
-from game_state import GameStateContext
+from game_context.game_state import GameStateContext
 import openai
 import os
 from dotenv import load_dotenv
@@ -13,10 +13,10 @@ openai.api_key = os.getenv("GEMINI_API_KEY")  # You’re using Gemini key but ca
 class BuildAgent(Agent):
     def run(self, game_state: GameStateContext) -> str:
         champ = game_state.player_champion
-        gold = next((c.current_gold for c in game_state.player_team.champions if c.name == champ), 0)
+        gold = game_state.active_player_gold
         items = next((c.items for c in game_state.player_team.champions if c.name == champ), [])
 
-        build = get_build_for(champ, "bottom")
+        build = get_build_for(champ, game_state.role.lower(), )
         reference_build = build["items"]
         build_url = build["url"]
 
