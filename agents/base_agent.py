@@ -1,7 +1,7 @@
 # base_agent.py
 
 from abc import ABC, abstractmethod
-from game_state import GameStateContext
+from game_context.game_state import GameStateContext
 
 class Agent(ABC):
     @abstractmethod

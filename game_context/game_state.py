@@ -68,6 +68,7 @@ class Monster:
     respawn_timer: Optional[float] = None
     is_respawnable: bool = False
     ordinal: int = 0
+    buff_expires_at: Optional[float] = None
 
 @dataclass
 class Monsters:
@@ -98,6 +99,8 @@ class TeamState:
     num_turrets_taken: int = 0
     num_inhibs_taken: int = 0
 
+    baron_buff_expires_at: Optional[float] = None
+    elder_buff_expires_at: Optional[float] = None
     # New field: counts of each unique monster taken by this team
     monster_counts: Dict[str, int] = field(default_factory=dict)
 
@@ -334,7 +337,7 @@ def parse_monsters(events: List[Event], players_team: Optional[List[Dict[str, An
         # Add Elder, Rift, etc. as needed
     ]
     monsters: List[Monster] = []
-    counters = {mt["name"]: 0 for mt in monster_types}
+    counters = {mt["name"]: 1 for mt in monster_types}
     last_respawn = {mt["name"]: None for mt in monster_types}
     # Track number of dragons taken by each team
     dragons_per_team: Dict[str, int] = {}
@@ -354,6 +357,7 @@ def parse_monsters(events: List[Event], players_team: Optional[List[Dict[str, An
                 death_time = killed_time
                 respawn_timer = None
                 is_respawnable = mt["is_respawnable"]
+                buff_expires_at = None
 
                 if event.name == "DragonKill":
                     # Count dragons per team
@@ -366,15 +370,18 @@ def parse_monsters(events: List[Event], players_team: Optional[List[Dict[str, An
                     # Elder dragon: respawn in 360s, not 300s
                     if monster_type and monster_type.lower() == "elder":
                         respawn_timer = killed_time + 360 if is_respawnable else None
+                        # Elder dragon buff lasts 150s
+                        buff_expires_at = killed_time + 150
                     else:
                         respawn_timer = killed_time + mt["respawn"] if is_respawnable else None
-                    counters[mt["name"]] += 1
-                    last_respawn[mt["name"]] = respawn_timer
                 else:
                     # Non-dragon monsters: original logic
                     respawn_timer = killed_time + mt["respawn"] if mt["is_respawnable"] else None
-                    counters[mt["name"]] += 1
-                    last_respawn[mt["name"]] = respawn_timer
+                    # Baron buff lasts 180s
+                    if mt["name"] == "Baron":
+                        buff_expires_at = killed_time + 180
+                counters[mt["name"]] += 1
+                last_respawn[mt["name"]] = respawn_timer
                 monsters.append(Monster(
                     name=mt["name"],
                     type=monster_type,
@@ -384,7 +391,8 @@ def parse_monsters(events: List[Event], players_team: Optional[List[Dict[str, An
                     death_time=death_time,
                     respawn_timer=respawn_timer,
                     is_respawnable=is_respawnable,
-                    ordinal=ordinal
+                    ordinal=ordinal,
+                    buff_expires_at=buff_expires_at
                 ))
     return Monsters(monsters=monsters)
 
@@ -500,6 +508,15 @@ def parse_team_state(
         monster_counts[m.type + m.name] = monster_counts.get(m.name, 0) + 1
     team_state.monster_counts = monster_counts
 
+    # Compute baron_buff_expires_at and elder_buff_expires_at
+    barons = [m for m in monsters_taken if m.name == "Baron" and m.buff_expires_at is not None]
+    elders = [m for m in monsters_taken if m.name == "Dragon" and m.type and m.type.lower() == "elder" and m.buff_expires_at is not None]
+    baron_buff_expires_at = max((m.buff_expires_at for m in barons), default=None)
+    elder_buff_expires_at = max((m.buff_expires_at for m in elders), default=None)
+    # Attach to team_state if needed as new fields
+    team_state.baron_buff_expires_at = baron_buff_expires_at
+    team_state.elder_buff_expires_at = elder_buff_expires_at
+
     # total_gold = sum(p["scores"].get("creepScore", 0) * 21 + p["scores"].get("kills", 0) * 300 for p in members)
     # team_state.total_gold = total_gold
     return team_state
@@ -606,7 +623,6 @@ def parse_game_state(game_state_json: Dict[str, Any]) -> GameStateContext:
         active_lane = next((p["lane"] for p in players if p["riot_id"] == active_player_riot_id and p["lane"]), "Mid")
     enemy_laner = next((p for p in players if p["team"] == enemy_team_name and p.get("lane") == active_lane), None)
     #print items for all players
-    print([])
     return GameStateContext(
         timestamp=game_state_json.get("gameData", {}).get("gameTime", 0),
         player_team=player_team,

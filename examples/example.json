@@ -1,0 +1,556 @@
+{
+  "activePlayer": {
+    "abilities": {
+      "E": {
+        "abilityLevel": 5,
+        "displayName": "Bladework",
+        "id": "FioraE",
+        "rawDescription": "GeneratedTip_Spell_FioraE_Description",
+        "rawDisplayName": "GeneratedTip_Spell_FioraE_DisplayName"
+      },
+      "Passive": {
+        "displayName": "Duelist's Dance",
+        "id": "FioraPassive",
+        "rawDescription": "GeneratedTip_Passive_FioraPassive_Description",
+        "rawDisplayName": "GeneratedTip_Passive_FioraPassive_DisplayName"
+      },
+      "Q": {
+        "abilityLevel": 5,
+        "displayName": "Lunge",
+        "id": "FioraQ",
+        "rawDescription": "GeneratedTip_Spell_FioraQ_Description",
+        "rawDisplayName": "GeneratedTip_Spell_FioraQ_DisplayName"
+      },
+      "R": {
+        "abilityLevel": 3,
+        "displayName": "Grand Challenge",
+        "id": "FioraR",
+        "rawDescription": "GeneratedTip_Spell_FioraR_Description",
+        "rawDisplayName": "GeneratedTip_Spell_FioraR_DisplayName"
+      },
+      "W": {
+        "abilityLevel": 5,
+        "displayName": "Riposte",
+        "id": "FioraW",
+        "rawDescription": "GeneratedTip_Spell_FioraW_Description",
+        "rawDisplayName": "GeneratedTip_Spell_FioraW_DisplayName"
+      }
+    },
+    "championStats": {
+      "abilityHaste": 50,
+      "abilityPower": 0,
+      "armor": 162.900009155273,
+      "armorPenetrationFlat": 0,
+      "armorPenetrationPercent": 1,
+      "attackDamage": 482.975006103516,
+      "attackRange": 150,
+      "attackSpeed": 1.30685997009277,
+      "bonusArmorPenetrationPercent": 1,
+      "bonusMagicPenetrationPercent": 1,
+      "critChance": 0,
+      "critDamage": 175,
+      "currentHealth": 3866.00024414063,
+      "healShieldPower": 0,
+      "healthRegenRate": 3.57000017166138,
+      "lifeSteal": 0.270000010728836,
+      "magicLethality": 0,
+      "magicPenetrationFlat": 0,
+      "magicPenetrationPercent": 1,
+      "magicResist": 66.8500061035156,
+      "maxHealth": 3866.00024414063,
+      "moveSpeed": 593.492858886719,
+      "omnivamp": 0,
+      "physicalLethality": 0,
+      "physicalVamp": 0,
+      "resourceMax": 1320.00012207031,
+      "resourceRegenRate": 3.98000049591064,
+      "resourceType": "MANA",
+      "resourceValue": 1320.00012207031,
+      "spellVamp": 0,
+      "tenacity": 5
+    },
+    "currentGold": 17212.947265625,
+    "fullRunes": {
+      "generalRunes": [
+        {
+          "displayName": "Dark Harvest",
+          "id": 8128,
+          "rawDescription": "perk_tooltip_DarkHarvest",
+          "rawDisplayName": "perk_displayname_DarkHarvest"
+        },
+        {
+          "displayName": "Sudden Impact",
+          "id": 8143,
+          "rawDescription": "perk_tooltip_SuddenImpact",
+          "rawDisplayName": "perk_displayname_SuddenImpact"
+        },
+        {
+          "displayName": "Grisly Mementos",
+          "id": 8140,
+          "rawDescription": "perk_tooltip_GrislyMementos",
+          "rawDisplayName": "perk_displayname_GrislyMementos"
+        },
+        {
+          "displayName": "Ultimate Hunter",
+          "id": 8106,
+          "rawDescription": "perk_tooltip_UltimateHunter",
+          "rawDisplayName": "perk_displayname_UltimateHunter"
+        },
+        {
+          "displayName": "Presence of Mind",
+          "id": 8009,
+          "rawDescription": "perk_tooltip_PresenceOfMind",
+          "rawDisplayName": "perk_displayname_PresenceOfMind"
+        },
+        {
+          "displayName": "Coup de Grace",
+          "id": 8014,
+          "rawDescription": "perk_tooltip_CoupDeGrace",
+          "rawDisplayName": "perk_displayname_CoupDeGrace"
+        }
+      ],
+      "keystone": {
+        "displayName": "Dark Harvest",
+        "id": 8128,
+        "rawDescription": "perk_tooltip_DarkHarvest",
+        "rawDisplayName": "perk_displayname_DarkHarvest"
+      },
+      "primaryRuneTree": {
+        "displayName": "Domination",
+        "id": 8100,
+        "rawDescription": "perkstyle_tooltip_7200",
+        "rawDisplayName": "perkstyle_displayname_7200"
+      },
+      "secondaryRuneTree": {
+        "displayName": "Precision",
+        "id": 8000,
+        "rawDescription": "perkstyle_tooltip_7201",
+        "rawDisplayName": "perkstyle_displayname_7201"
+      },
+      "statRunes": [
+        {
+          "id": 5008,
+          "rawDescription": "perk_tooltip_StatModAdaptive"
+        },
+        {
+          "id": 5008,
+          "rawDescription": "perk_tooltip_StatModAdaptive"
+        },
+        {
+          "id": 5001,
+          "rawDescription": "perk_tooltip_StatModHealthScaling"
+        }
+      ]
+    },
+    "level": 18,
+    "riotId": "hisawt#SQUU3",
+    "riotIdGameName": "hisawt",
+    "riotIdTagLine": "SQUU3",
+    "summonerName": "hisawt#SQUU3",
+    "teamRelativeColors": true
+  },
+  "allPlayers": [
+    {
+      "championName": "Fiora",
+      "isBot": false,
+      "isDead": false,
+      "items": [
+        {
+          "canUse": false,
+          "consumable": false,
+          "count": 1,
+          "displayName": "Trinity Force",
+          "itemID": 3078,
+          "price": 133,
+          "rawDescription": "GeneratedTip_Item_3078_Description",
+          "rawDisplayName": "Item_3078_Name",
+          "slot": 0
+        },
+        {
+          "canUse": true,
+          "consumable": false,
+          "count": 1,
+          "displayName": "Ravenous Hydra",
+          "itemID": 3074,
+          "price": 150,
+          "rawDescription": "GeneratedTip_Item_3074_Description",
+          "rawDisplayName": "Item_3074_Name",
+          "slot": 1
+        },
+        {
+          "canUse": false,
+          "consumable": false,
+          "count": 1,
+          "displayName": "Hullbreaker",
+          "itemID": 3181,
+          "price": 175,
+          "rawDescription": "GeneratedTip_Item_3181_Description",
+          "rawDisplayName": "Item_3181_Name",
+          "slot": 2
+        },
+        {
+          "canUse": false,
+          "consumable": false,
+          "count": 1,
+          "displayName": "Bloodthirster",
+          "itemID": 3072,
+          "price": 325,
+          "rawDescription": "GeneratedTip_Item_3072_Description",
+          "rawDisplayName": "Item_3072_Name",
+          "slot": 3
+        },
+        {
+          "canUse": false,
+          "consumable": false,
+          "count": 1,
+          "displayName": "Death's Dance",
+          "itemID": 6333,
+          "price": 275,
+          "rawDescription": "GeneratedTip_Item_6333_Description",
+          "rawDisplayName": "Item_6333_Name",
+          "slot": 4
+        },
+        {
+          "canUse": false,
+          "consumable": false,
+          "count": 1,
+          "displayName": "Overlord's Bloodmail",
+          "itemID": 2501,
+          "price": 1000,
+          "rawDescription": "GeneratedTip_Item_2501_Description",
+          "rawDisplayName": "Item_2501_Name",
+          "slot": 5
+        },
+        {
+          "canUse": true,
+          "consumable": false,
+          "count": 1,
+          "displayName": "Stealth Ward",
+          "itemID": 3340,
+          "price": 0,
+          "rawDescription": "GeneratedTip_Item_3340_Description",
+          "rawDisplayName": "Item_3340_Name",
+          "slot": 6
+        }
+      ],
+      "level": 18,
+      "position": "",
+      "rawChampionName": "game_character_displayname_Fiora",
+      "rawSkinName": "game_character_skin_displayname_Fiora_0",
+      "respawnTimer": 0,
+      "riotId": "hisawt#SQUU3",
+      "riotIdGameName": "hisawt",
+      "riotIdTagLine": "SQUU3",
+      "runes": {
+        "keystone": {
+          "displayName": "Dark Harvest",
+          "id": 8128,
+          "rawDescription": "perk_tooltip_DarkHarvest",
+          "rawDisplayName": "perk_displayname_DarkHarvest"
+        },
+        "primaryRuneTree": {
+          "displayName": "Domination",
+          "id": 8100,
+          "rawDescription": "perkstyle_tooltip_7200",
+          "rawDisplayName": "perkstyle_displayname_7200"
+        },
+        "secondaryRuneTree": {
+          "displayName": "Precision",
+          "id": 8000,
+          "rawDescription": "perkstyle_tooltip_7201",
+          "rawDisplayName": "perkstyle_displayname_7201"
+        }
+      },
+      "scores": {
+        "assists": 0,
+        "creepScore": 30,
+        "deaths": 1,
+        "kills": 3,
+        "wardScore": 1.125
+      },
+      "skinID": 0,
+      "skinName": "",
+      "summonerName": "hisawt#SQUU3",
+      "summonerSpells": {
+        "summonerSpellOne": {
+          "displayName": "Ignite",
+          "rawDescription": "GeneratedTip_SummonerSpell_SummonerDot_Description",
+          "rawDisplayName": "GeneratedTip_SummonerSpell_SummonerDot_DisplayName"
+        },
+        "summonerSpellTwo": {
+          "displayName": "Flash",
+          "rawDescription": "GeneratedTip_SummonerSpell_SummonerFlash_Description",
+          "rawDisplayName": "GeneratedTip_SummonerSpell_SummonerFlash_DisplayName"
+        }
+      },
+      "team": "ORDER"
+    },
+    {
+      "championName": "Annie",
+      "isBot": true,
+      "isDead": false,
+      "items": [
+        {
+          "canUse": false,
+          "consumable": false,
+          "count": 1,
+          "displayName": "Doran's Ring",
+          "itemID": 1056,
+          "price": 400,
+          "rawDescription": "GeneratedTip_Item_1056_Description",
+          "rawDisplayName": "Item_1056_Name",
+          "slot": 0
+        },
+        {
+          "canUse": false,
+          "consumable": false,
+          "count": 1,
+          "displayName": "Lost Chapter",
+          "itemID": 3802,
+          "price": 250,
+          "rawDescription": "GeneratedTip_Item_3802_Description",
+          "rawDisplayName": "Item_3802_Name",
+          "slot": 1
+        },
+        {
+          "canUse": false,
+          "consumable": false,
+          "count": 1,
+          "displayName": "Boots",
+          "itemID": 1001,
+          "price": 300,
+          "rawDescription": "GeneratedTip_Item_1001_Description",
+          "rawDisplayName": "Item_1001_Name",
+          "slot": 2
+        },
+        {
+          "canUse": true,
+          "consumable": false,
+          "count": 1,
+          "displayName": "Stealth Ward",
+          "itemID": 3340,
+          "price": 0,
+          "rawDescription": "GeneratedTip_Item_3340_Description",
+          "rawDisplayName": "Item_3340_Name",
+          "slot": 6
+        }
+      ],
+      "level": 9,
+      "position": "MIDDLE",
+      "rawChampionName": "game_character_displayname_Annie",
+      "rawSkinName": "game_character_skin_displayname_Annie_0",
+      "respawnTimer": 0,
+      "riotId": "Annie#BOT",
+      "riotIdGameName": "Annie",
+      "riotIdTagLine": "BOT",
+      "runes": {
+        "keystone": {
+          "displayName": "Arcane Comet",
+          "id": 8229,
+          "rawDescription": "perk_tooltip_ArcaneComet",
+          "rawDisplayName": "perk_displayname_ArcaneComet"
+        },
+        "primaryRuneTree": {
+          "displayName": "Sorcery",
+          "id": 8200,
+          "rawDescription": "perkstyle_tooltip_7202",
+          "rawDisplayName": "perkstyle_displayname_7202"
+        },
+        "secondaryRuneTree": {
+          "displayName": "Domination",
+          "id": 8100,
+          "rawDescription": "perkstyle_tooltip_7200",
+          "rawDisplayName": "perkstyle_displayname_7200"
+        }
+      },
+      "scores": {
+        "assists": 0,
+        "creepScore": 0,
+        "deaths": 3,
+        "kills": 1,
+        "wardScore": 0
+      },
+      "skinID": 0,
+      "skinName": "",
+      "summonerName": "Annie Bot",
+      "summonerSpells": {
+        "summonerSpellOne": {
+          "displayName": "Flash",
+          "rawDescription": "GeneratedTip_SummonerSpell_SummonerFlash_Description",
+          "rawDisplayName": "GeneratedTip_SummonerSpell_SummonerFlash_DisplayName"
+        },
+        "summonerSpellTwo": {
+          "displayName": "Ignite",
+          "rawDescription": "GeneratedTip_SummonerSpell_SummonerDot_Description",
+          "rawDisplayName": "GeneratedTip_SummonerSpell_SummonerDot_DisplayName"
+        }
+      },
+      "team": "CHAOS"
+    }
+  ],
+  "events": {
+    "Events": [
+      {
+        "EventID": 0,
+        "EventName": "GameStart",
+        "EventTime": 0.0507093071937561
+      },
+      {
+        "EventID": 1,
+        "EventName": "MinionsSpawning",
+        "EventTime": 65.0584182739258
+      },
+      {
+        "Assisters": [],
+        "EventID": 2,
+        "EventName": "ChampionKill",
+        "EventTime": 95.9541549682617,
+        "KillerName": "hisawt",
+        "VictimName": "Annie Bot"
+      },
+      {
+        "EventID": 3,
+        "EventName": "FirstBlood",
+        "EventTime": 95.9541549682617,
+        "Recipient": "hisawt"
+      },
+      {
+        "Acer": "hisawt",
+        "AcingTeam": "ORDER",
+        "EventID": 4,
+        "EventName": "Ace",
+        "EventTime": 95.9541549682617
+      },
+      {
+        "Assisters": [],
+        "EventID": 5,
+        "EventName": "TurretKilled",
+        "EventTime": 108.084129333496,
+        "KillerName": "hisawt",
+        "TurretKilled": "Turret_T200_L1_P3_2254202041"
+      },
+      {
+        "EventID": 6,
+        "EventName": "FirstBrick",
+        "EventTime": 108.084129333496,
+        "KillerName": "hisawt"
+      },
+      {
+        "Assisters": [],
+        "EventID": 7,
+        "EventName": "TurretKilled",
+        "EventTime": 118.39427947998,
+        "KillerName": "hisawt",
+        "TurretKilled": "Turret_T200_L1_P2_2237424422"
+      },
+      {
+        "Assisters": [],
+        "EventID": 8,
+        "EventName": "ChampionKill",
+        "EventTime": 126.452072143555,
+        "KillerName": "hisawt",
+        "VictimName": "Annie Bot"
+      },
+      {
+        "Acer": "hisawt",
+        "AcingTeam": "ORDER",
+        "EventID": 9,
+        "EventName": "Ace",
+        "EventTime": 126.452072143555
+      },
+      {
+        "Assisters": [],
+        "EventID": 10,
+        "EventName": "TurretKilled",
+        "EventTime": 130.873687744141,
+        "KillerName": "hisawt",
+        "TurretKilled": "Turret_T200_L1_P1_2220646803"
+      },
+      {
+        "Assisters": [],
+        "EventID": 11,
+        "EventName": "InhibKilled",
+        "EventTime": 136.362503051758,
+        "InhibKilled": "Inhib_T200_L1_P1_1931666598",
+        "KillerName": "hisawt"
+      },
+      {
+        "Assisters": [],
+        "EventID": 12,
+        "EventName": "TurretKilled",
+        "EventTime": 262.703369140625,
+        "KillerName": "Minion_T100L1S04N0024",
+        "TurretKilled": "Turret_T200_L1_P5_342097928"
+      },
+      {
+        "Assisters": [],
+        "DragonType": "Hextech",
+        "EventID": 13,
+        "EventName": "DragonKill",
+        "EventTime": 311.688171386719,
+        "KillerName": "hisawt",
+        "Stolen": "False"
+      },
+      {
+        "EventID": 14,
+        "EventName": "InhibRespawned",
+        "EventTime": 436.346954345703,
+        "InhibRespawned": "Inhib_T200_L1_P1_1931666598"
+      },
+      {
+        "Assisters": [],
+        "DragonType": "Water",
+        "EventID": 15,
+        "EventName": "DragonKill",
+        "EventTime": 914.667907714844,
+        "KillerName": "hisawt",
+        "Stolen": "False"
+      },
+      {
+        "Assisters": [],
+        "EventID": 16,
+        "EventName": "HeraldKill",
+        "EventTime": 929.334228515625,
+        "KillerName": "hisawt",
+        "Stolen": "False"
+      },
+      {
+        "Assisters": [],
+        "EventID": 17,
+        "EventName": "ChampionKill",
+        "EventTime": 940.633422851563,
+        "KillerName": "hisawt",
+        "VictimName": "Annie Bot"
+      },
+      {
+        "Acer": "hisawt",
+        "AcingTeam": "ORDER",
+        "EventID": 18,
+        "EventName": "Ace",
+        "EventTime": 940.633422851563
+      },
+      {
+        "Assisters": [],
+        "EventID": 19,
+        "EventName": "ChampionKill",
+        "EventTime": 943.21923828125,
+        "KillerName": "Annie Bot",
+        "VictimName": "hisawt"
+      },
+      {
+        "Acer": "Annie Bot",
+        "AcingTeam": "CHAOS",
+        "EventID": 20,
+        "EventName": "Ace",
+        "EventTime": 943.21923828125
+      }
+    ]
+  },
+  "gameData": {
+    "gameMode": "PRACTICETOOL",
+    "gameTime": 1606.212890625,
+    "mapName": "Map11",
+    "mapNumber": 11,
+    "mapTerrain": "Default"
+  }
+}
