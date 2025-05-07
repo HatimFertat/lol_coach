@@ -1,0 +1,489 @@
+{
+	"activePlayer": {
+		"abilities": {
+			"E": {
+				"abilityLevel": 1,
+				"displayName": "Abscond / Abduct",
+				"id": "SylasE",
+				"rawDescription": "GeneratedTip_Spell_SylasE_Description",
+				"rawDisplayName": "GeneratedTip_Spell_SylasE_DisplayName"
+			},
+			"Passive": {
+				"displayName": "Petricite Burst",
+				"id": "SylasPassive",
+				"rawDescription": "GeneratedTip_Passive_SylasPassive_Description",
+				"rawDisplayName": "GeneratedTip_Passive_SylasPassive_DisplayName"
+			},
+			"Q": {
+				"abilityLevel": 5,
+				"displayName": "Chain Lash",
+				"id": "SylasQ",
+				"rawDescription": "GeneratedTip_Spell_SylasQ_Description",
+				"rawDisplayName": "GeneratedTip_Spell_SylasQ_DisplayName"
+			},
+			"R": {
+				"abilityLevel": 2,
+				"displayName": "Hijack",
+				"id": "SylasR",
+				"rawDescription": "GeneratedTip_Spell_SylasR_Description",
+				"rawDisplayName": "GeneratedTip_Spell_SylasR_DisplayName"
+			},
+			"W": {
+				"abilityLevel": 4,
+				"displayName": "Kingslayer",
+				"id": "SylasW",
+				"rawDescription": "GeneratedTip_Spell_SylasW_Description",
+				"rawDisplayName": "GeneratedTip_Spell_SylasW_DisplayName"
+			}
+		},
+		"championStats": {
+			"abilityHaste": 0.0,
+			"abilityPower": 152.0,
+			"armor": 80.19400024414063,
+			"armorPenetrationFlat": 0.0,
+			"armorPenetrationPercent": 1.0,
+			"attackDamage": 90.53500366210938,
+			"attackRange": 175.0,
+			"attackSpeed": 0.8672508597373962,
+			"bonusArmorPenetrationPercent": 1.0,
+			"bonusMagicPenetrationPercent": 1.0,
+			"critChance": 0.0,
+			"critDamage": 175.0,
+			"currentHealth": 2381.090087890625,
+			"healShieldPower": 0.0,
+			"healthRegenRate": 3.5721001625061037,
+			"lifeSteal": 0.0,
+			"magicLethality": 0.0,
+			"magicPenetrationFlat": 12.0,
+			"magicPenetrationPercent": 1.0,
+			"magicResist": 57.10475158691406,
+			"maxHealth": 2381.090087890625,
+			"moveSpeed": 547.625,
+			"omnivamp": 0.0,
+			"physicalLethality": 0.0,
+			"physicalVamp": 0.0,
+			"resourceMax": 1529.1500244140626,
+			"resourceRegenRate": 3.1751999855041506,
+			"resourceType": "MANA",
+			"resourceValue": 1529.1500244140626,
+			"spellVamp": 0.0,
+			"tenacity": 5.0
+		},
+		"currentGold": 726.0538330078125,
+		"fullRunes": {
+			"generalRunes": [
+				{
+					"displayName": "Dark Harvest",
+					"id": 8128,
+					"rawDescription": "perk_tooltip_DarkHarvest",
+					"rawDisplayName": "perk_displayname_DarkHarvest"
+				},
+				{
+					"displayName": "Sudden Impact",
+					"id": 8143,
+					"rawDescription": "perk_tooltip_SuddenImpact",
+					"rawDisplayName": "perk_displayname_SuddenImpact"
+				},
+				{
+					"displayName": "Grisly Mementos",
+					"id": 8140,
+					"rawDescription": "perk_tooltip_GrislyMementos",
+					"rawDisplayName": "perk_displayname_GrislyMementos"
+				},
+				{
+					"displayName": "Ultimate Hunter",
+					"id": 8106,
+					"rawDescription": "perk_tooltip_UltimateHunter",
+					"rawDisplayName": "perk_displayname_UltimateHunter"
+				},
+				{
+					"displayName": "Presence of Mind",
+					"id": 8009,
+					"rawDescription": "perk_tooltip_PresenceOfMind",
+					"rawDisplayName": "perk_displayname_PresenceOfMind"
+				},
+				{
+					"displayName": "Coup de Grace",
+					"id": 8014,
+					"rawDescription": "perk_tooltip_CoupDeGrace",
+					"rawDisplayName": "perk_displayname_CoupDeGrace"
+				}
+			],
+			"keystone": {
+				"displayName": "Dark Harvest",
+				"id": 8128,
+				"rawDescription": "perk_tooltip_DarkHarvest",
+				"rawDisplayName": "perk_displayname_DarkHarvest"
+			},
+			"primaryRuneTree": {
+				"displayName": "Domination",
+				"id": 8100,
+				"rawDescription": "perkstyle_tooltip_7200",
+				"rawDisplayName": "perkstyle_displayname_7200"
+			},
+			"secondaryRuneTree": {
+				"displayName": "Precision",
+				"id": 8000,
+				"rawDescription": "perkstyle_tooltip_7201",
+				"rawDisplayName": "perkstyle_displayname_7201"
+			},
+			"statRunes": [
+				{
+					"id": 5008,
+					"rawDescription": "perk_tooltip_StatModAdaptive"
+				},
+				{
+					"id": 5008,
+					"rawDescription": "perk_tooltip_StatModAdaptive"
+				},
+				{
+					"id": 5001,
+					"rawDescription": "perk_tooltip_StatModHealthScaling"
+				}
+			]
+		},
+		"level": 12,
+		"riotId": "hisawt#SQUU3",
+		"riotIdGameName": "hisawt",
+		"riotIdTagLine": "SQUU3",
+		"summonerName": "hisawt#SQUU3",
+		"teamRelativeColors": true
+	},
+	"allPlayers": [
+		{
+			"championName": "Sylas",
+			"isBot": false,
+			"isDead": false,
+			"items": [
+				{
+					"canUse": false,
+					"consumable": false,
+					"count": 1,
+					"displayName": "Doran's Ring",
+					"itemID": 1056,
+					"price": 400,
+					"rawDescription": "GeneratedTip_Item_1056_Description",
+					"rawDisplayName": "Item_1056_Name",
+					"slot": 0
+				},
+				{
+					"canUse": false,
+					"consumable": false,
+					"count": 1,
+					"displayName": "Needlessly Large Rod",
+					"itemID": 1058,
+					"price": 1200,
+					"rawDescription": "GeneratedTip_Item_1058_Description",
+					"rawDisplayName": "Item_1058_Name",
+					"slot": 1
+				},
+				{
+					"canUse": false,
+					"consumable": false,
+					"count": 1,
+					"displayName": "Rod of Ages",
+					"itemID": 6657,
+					"price": 450,
+					"rawDescription": "GeneratedTip_Item_6657_Description",
+					"rawDisplayName": "Item_6657_Name",
+					"slot": 2
+				},
+				{
+					"canUse": false,
+					"consumable": false,
+					"count": 1,
+					"displayName": "Sorcerer's Shoes",
+					"itemID": 3020,
+					"price": 800,
+					"rawDescription": "GeneratedTip_Item_3020_Description",
+					"rawDisplayName": "Item_3020_Name",
+					"slot": 3
+				},
+				{
+					"canUse": true,
+					"consumable": false,
+					"count": 1,
+					"displayName": "Stealth Ward",
+					"itemID": 3340,
+					"price": 0,
+					"rawDescription": "GeneratedTip_Item_3340_Description",
+					"rawDisplayName": "Item_3340_Name",
+					"slot": 6
+				}
+			],
+			"level": 12,
+			"position": "",
+			"rawChampionName": "game_character_displayname_Sylas",
+			"rawSkinName": "game_character_skin_displayname_Sylas_0",
+			"respawnTimer": 0.0,
+			"riotId": "hisawt#SQUU3",
+			"riotIdGameName": "hisawt",
+			"riotIdTagLine": "SQUU3",
+			"runes": {
+				"keystone": {
+					"displayName": "Dark Harvest",
+					"id": 8128,
+					"rawDescription": "perk_tooltip_DarkHarvest",
+					"rawDisplayName": "perk_displayname_DarkHarvest"
+				},
+				"primaryRuneTree": {
+					"displayName": "Domination",
+					"id": 8100,
+					"rawDescription": "perkstyle_tooltip_7200",
+					"rawDisplayName": "perkstyle_displayname_7200"
+				},
+				"secondaryRuneTree": {
+					"displayName": "Precision",
+					"id": 8000,
+					"rawDescription": "perkstyle_tooltip_7201",
+					"rawDisplayName": "perkstyle_displayname_7201"
+				}
+			},
+			"scores": {
+				"assists": 0,
+				"creepScore": 70,
+				"deaths": 0,
+				"kills": 1,
+				"wardScore": 0.0
+			},
+			"skinID": 0,
+			"skinName": "",
+			"summonerName": "hisawt#SQUU3",
+			"summonerSpells": {
+				"summonerSpellOne": {
+					"displayName": "Ignite",
+					"rawDescription": "GeneratedTip_SummonerSpell_SummonerDot_Description",
+					"rawDisplayName": "GeneratedTip_SummonerSpell_SummonerDot_DisplayName"
+				},
+				"summonerSpellTwo": {
+					"displayName": "Flash",
+					"rawDescription": "GeneratedTip_SummonerSpell_SummonerFlash_Description",
+					"rawDisplayName": "GeneratedTip_SummonerSpell_SummonerFlash_DisplayName"
+				}
+			},
+			"team": "ORDER"
+		},
+		{
+			"championName": "Ahri",
+			"isBot": true,
+			"isDead": false,
+			"items": [
+				{
+					"canUse": false,
+					"consumable": false,
+					"count": 1,
+					"displayName": "Doran's Ring",
+					"itemID": 1056,
+					"price": 400,
+					"rawDescription": "GeneratedTip_Item_1056_Description",
+					"rawDisplayName": "Item_1056_Name",
+					"slot": 0
+				},
+				{
+					"canUse": false,
+					"consumable": false,
+					"count": 1,
+					"displayName": "Rod of Ages",
+					"itemID": 6657,
+					"price": 450,
+					"rawDescription": "GeneratedTip_Item_6657_Description",
+					"rawDisplayName": "Item_6657_Name",
+					"slot": 1
+				},
+				{
+					"canUse": false,
+					"consumable": false,
+					"count": 1,
+					"displayName": "Boots",
+					"itemID": 1001,
+					"price": 300,
+					"rawDescription": "GeneratedTip_Item_1001_Description",
+					"rawDisplayName": "Item_1001_Name",
+					"slot": 2
+				},
+				{
+					"canUse": true,
+					"consumable": false,
+					"count": 1,
+					"displayName": "Farsight Alteration",
+					"itemID": 3363,
+					"price": 0,
+					"rawDescription": "GeneratedTip_Item_3363_Description",
+					"rawDisplayName": "Item_3363_Name",
+					"slot": 6
+				}
+			],
+			"level": 9,
+			"position": "MIDDLE",
+			"rawChampionName": "game_character_displayname_Ahri",
+			"rawSkinName": "game_character_skin_displayname_Ahri_0",
+			"respawnTimer": 0.0,
+			"riotId": "Ahri#BOT",
+			"riotIdGameName": "Ahri",
+			"riotIdTagLine": "BOT",
+			"runes": {
+				"keystone": {
+					"displayName": "Arcane Comet",
+					"id": 8229,
+					"rawDescription": "perk_tooltip_ArcaneComet",
+					"rawDisplayName": "perk_displayname_ArcaneComet"
+				},
+				"primaryRuneTree": {
+					"displayName": "Sorcery",
+					"id": 8200,
+					"rawDescription": "perkstyle_tooltip_7202",
+					"rawDisplayName": "perkstyle_displayname_7202"
+				},
+				"secondaryRuneTree": {
+					"displayName": "Domination",
+					"id": 8100,
+					"rawDescription": "perkstyle_tooltip_7200",
+					"rawDisplayName": "perkstyle_displayname_7200"
+				}
+			},
+			"scores": {
+				"assists": 0,
+				"creepScore": 10,
+				"deaths": 1,
+				"kills": 0,
+				"wardScore": 5.921380996704102
+			},
+			"skinID": 0,
+			"skinName": "",
+			"summonerName": "Ahri Bot",
+			"summonerSpells": {
+				"summonerSpellOne": {
+					"displayName": "Flash",
+					"rawDescription": "GeneratedTip_SummonerSpell_SummonerFlash_Description",
+					"rawDisplayName": "GeneratedTip_SummonerSpell_SummonerFlash_DisplayName"
+				},
+				"summonerSpellTwo": {
+					"displayName": "Unleashed Teleport",
+					"rawDescription": "GeneratedTip_SummonerSpell_S12_SummonerTeleportUpgrade_Description",
+					"rawDisplayName": "GeneratedTip_SummonerSpell_S12_SummonerTeleportUpgrade_DisplayName"
+				}
+			},
+			"team": "CHAOS"
+		}
+	],
+	"events": {
+		"Events": [
+			{
+				"EventID": 0,
+				"EventName": "GameStart",
+				"EventTime": 0.03930703550577164
+			},
+			{
+				"EventID": 1,
+				"EventName": "MinionsSpawning",
+				"EventTime": 66.48797607421875
+			},
+			{
+				"Assisters": [],
+				"EventID": 2,
+				"EventName": "TurretKilled",
+				"EventTime": 475.164794921875,
+				"KillerName": "Minion_T200L2S05N0027",
+				"TurretKilled": "Turret_T100_L2_P3_1509986696"
+			},
+			{
+				"EventID": 3,
+				"EventName": "FirstBrick",
+				"EventTime": 475.164794921875,
+				"KillerName": "Minion_T200L2S05N0027"
+			},
+			{
+				"Assisters": [],
+				"EventID": 4,
+				"EventName": "TurretKilled",
+				"EventTime": 520.0723876953125,
+				"KillerName": "Minion_T100L0S05N0029",
+				"TurretKilled": "Turret_T200_L0_P3_511845594"
+			},
+			{
+				"Assisters": [],
+				"EventID": 5,
+				"EventName": "TurretKilled",
+				"EventTime": 577.7567138671875,
+				"KillerName": "Minion_T200L2S08N0044",
+				"TurretKilled": "Turret_T100_L2_P2_1526764315"
+			},
+			{
+				"Assisters": [],
+				"EventID": 6,
+				"EventName": "TurretKilled",
+				"EventTime": 587.4080200195313,
+				"KillerName": "Ahri Bot",
+				"TurretKilled": "Turret_T100_L1_P3_1242677625"
+			},
+			{
+				"Assisters": [],
+				"EventID": 7,
+				"EventName": "TurretKilled",
+				"EventTime": 599.1530151367188,
+				"KillerName": "Minion_T200L0S07N0042",
+				"TurretKilled": "Turret_T100_L0_P3_3795288474"
+			},
+			{
+				"Assisters": [],
+				"EventID": 8,
+				"EventName": "TurretKilled",
+				"EventTime": 643.8496704101563,
+				"KillerName": "Minion_T200L2S16N0097",
+				"TurretKilled": "Turret_T100_L2_P1_1543541934"
+			},
+			{
+				"Assisters": [],
+				"EventID": 9,
+				"EventName": "TurretKilled",
+				"EventTime": 665.1886596679688,
+				"KillerName": "Ahri Bot",
+				"TurretKilled": "Turret_T100_L1_P2_1225900006"
+			},
+			{
+				"Assisters": [],
+				"EventID": 10,
+				"EventName": "InhibKilled",
+				"EventTime": 677.1193237304688,
+				"InhibKilled": "Inhib_T100_L2_P1_2669080337",
+				"KillerName": "Minion_T200L2S18N0110"
+			},
+			{
+				"Assisters": [],
+				"EventID": 11,
+				"EventName": "TurretKilled",
+				"EventTime": 694.1779174804688,
+				"KillerName": "Ahri Bot",
+				"TurretKilled": "Turret_T100_L1_P1_1209122387"
+			},
+			{
+				"Assisters": [],
+				"EventID": 12,
+				"EventName": "ChampionKill",
+				"EventTime": 712.2222290039063,
+				"KillerName": "hisawt",
+				"VictimName": "Ahri Bot"
+			},
+			{
+				"EventID": 13,
+				"EventName": "FirstBlood",
+				"EventTime": 712.2222290039063,
+				"Recipient": "hisawt"
+			},
+			{
+				"Acer": "hisawt",
+				"AcingTeam": "ORDER",
+				"EventID": 14,
+				"EventName": "Ace",
+				"EventTime": 712.2222290039063
+			}
+		]
+	},
+	"gameData": {
+		"gameMode": "PRACTICETOOL",
+		"gameTime": 796.768798828125,
+		"mapName": "Map11",
+		"mapNumber": 11,
+		"mapTerrain": "Default"
+	}
+}

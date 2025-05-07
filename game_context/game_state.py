@@ -242,7 +242,7 @@ class ObjectiveTimers:
     def update_from_monsters(self, monsters: Monsters, game_time: float):
         # DRAGON
         latest_dragon = monsters.get_latest("Dragon")
-        self.dragon_type = latest_dragon.type if latest_dragon.ordinal > 3 else None
+        self.dragon_type = latest_dragon.type if latest_dragon and latest_dragon.ordinal > 3 else None
         if latest_dragon is not None and latest_dragon.respawn_timer is not None:
             self.dragon_respawn = latest_dragon.respawn_timer
         else:
