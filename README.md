@@ -10,21 +10,6 @@ The application features a graphical user interface (GUI) for interacting with t
 
 ---
 
-## Features
-- **MacroAgent**:
-  - Summarizes the game state.
-  - Provides strategic insights, such as turret status, jungle objectives, and team performance.
-
-- **BuildAgent**:
-  - Recommends optimal item builds based on the player's champion, role, and game progress.
-  - Fetches builds from lolalytics for accurate and up-to-date recommendations.
-
-- **GUI**:
-  - User-friendly interface with tabs for interacting with each agent.
-  - Supports mock game states for testing.
-  - Auto-reset option for clearing conversation history after updates.
-
----
 
 ## Installation
 
@@ -67,6 +52,22 @@ The application features a graphical user interface (GUI) for interacting with t
    - **Macro Agent Tab**: Get strategic advice.
    - **Build Agent Tab**: Receive item build recommendations.
 4. (Bonus) Use the "Auto-Reset after Update" option to clear conversation history automatically.
+
+---
+
+## Features
+- **MacroAgent**:
+  - Summarizes the game state.
+  - Provides strategic insights, such as turret status, jungle objectives, and team performance.
+
+- **BuildAgent**:
+  - Recommends optimal item builds based on the player's champion, role, and game progress.
+  - Fetches builds from lolalytics for accurate and up-to-date recommendations.
+
+- **GUI**:
+  - User-friendly interface with tabs for interacting with each agent.
+  - Supports mock game states for testing.
+  - Auto-reset option for clearing conversation history after updates.
 
 ---
 
