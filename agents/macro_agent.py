@@ -1,26 +1,26 @@
 # macro_agent.py
 
 from agents.base_agent import Agent
-from game_context.game_state import GameStateContext
+from game_context.game_state import GameStateContext, format_time, summarize_all_stats, summarize_players
 from openai import OpenAI
 import os
 from dotenv import load_dotenv
 import json
+from agents.get_item_recipes import (get_legendary_items, get_non_consumable_items, download_json_or_load_local,
+                                     get_max_entries, build_section_text, ITEM_URL, cache_path)
 
 load_dotenv()
-
+CURRENT_PATCH = os.getenv("CURRENT_PATCH", "15.7.1")
+non_consumable_item_list = get_non_consumable_items(
+    download_json_or_load_local(ITEM_URL.format(patch=CURRENT_PATCH), cache_path),
+    map_id=11
+)
 class MacroAgent(Agent):
 
     def summarize_game_state(self, game_state: GameStateContext) -> str:
 
-        def format_time(seconds):
-            minutes = int(seconds) // 60
-            sec = int(seconds) % 60
-            return f"{minutes}:{sec:02}"
-
-        # Time
         time_str = format_time(game_state.timestamp)
-
+        active_player_index = game_state.active_player_idx
         # Turrets Taken (per lane if > 0)
         def summarize_lane_turrets(turrets):
             return ", ".join(
@@ -84,31 +84,28 @@ class MacroAgent(Agent):
             getattr(game_state.player_team, "elder_buff_expires_at", None),
             getattr(game_state.enemy_team, "elder_buff_expires_at", None)
         )
+        
+        active_player_summary = summarize_players([game_state.player_team.champions[active_player_index]], non_consumable_item_list)
+        our_players = summarize_players([c for c in game_state.player_team.champions if c.name != game_state.player_champion], non_consumable_item_list)
+        enemy_players = summarize_players(game_state.enemy_team.champions, non_consumable_item_list)
 
-        # Player summaries
-        def summarize_players(champions):
-            lines = []
-            for champ in champions:
-                role = champ.lane or "?"
-                name = champ.name
-                level = champ.level
-                score = champ.score
-                status = f"Respawning in {format_time(champ.respawn_timer)}" if champ.is_dead else "Alive"
-                items = ", ".join(champ.items) if champ.items else "None"
-                lines.append(f"[{role}] {name} (Lv {level}) | {score.kills}/{score.deaths}/{score.assists} | {status} | {items}")
-            return lines
-
-        our_players = summarize_players(game_state.player_team.champions)
-        enemy_players = summarize_players(game_state.enemy_team.champions)
+        role = game_state.role.capitalize()
+        champ = game_state.player_champion
 
         # Final summary
         summary_lines = [
+            f"Here is the current state of my league of legends game:\n",
             f"Game Time: {time_str}",
+
             f"Our team is {"blue" if game_state.team_side == 'ORDER' else "red"} side",
+            f"I am playing {champ} {role} with the following stats:",
+            f"{summarize_all_stats(game_state.active_player_stats)}",
+            f"{active_player_summary[0]}\n",
+
             f"Turrets destroyed by our team: {our_turrets or 'None'} | by enemy team: {enemy_turrets or 'None'}",
             f"Nexus Turrets destroyed by our team: {our_nexus} | by enemy team: {enemy_nexus}",
             f"Inhibitors destroyed by our team: {our_inhibs} | by enemy team: {enemy_inhibs}",
-            f"Jungle Control by our team: {our_jungle or 'None'} | by enemy team: {enemy_jungle or 'None'}",
+            f"Jungle epic monsters taken by our team: {our_jungle or 'None'} | by enemy team: {enemy_jungle or 'None'}",
         ]
         # Insert buff timers if present
         if baron_buff_line:
@@ -116,9 +113,9 @@ class MacroAgent(Agent):
         if elder_buff_line:
             summary_lines.append(elder_buff_line)
         summary_lines += [
-            f"Next Objectives: {timers_str or 'all spawned already'}",
+            f"Next Objectives not spawn yet: {timers_str or 'all spawned already'}",
             "",
-            "Our team:"
+            "My teammates:"
         ] + our_players + ["", "Enemy team:"] + enemy_players
 
         return "\n".join(summary_lines)
@@ -149,11 +146,12 @@ if __name__ == "__main__":
     # get data from the examples folder
     from game_context.game_state import parse_game_state
 
-    with open("examples/items_state.json", "r") as file:
+    with open("examples/example_game_state.json", "r") as file:
         game_state_json = json.load(file)
     game_state = parse_game_state(game_state_json)
+    game_state.role = "BOTTOM"
     agent = MacroAgent()
     summary = agent.summarize_game_state(game_state)
-    print(summary)
-    # advice = agent.run(game_state)
-    # print(advice)
+    # print(summary)
+    advice = agent.run(game_state)
+    print(advice)

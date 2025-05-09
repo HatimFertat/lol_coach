@@ -64,8 +64,10 @@ def classify_section(label: str, mapping: dict) -> str:
 
 def scrape_actual_builds(champion="fiora", role='top', vs="singed", allowed_section_types=allowed_section_types, toggle=None) -> List[Section]:
     logger.debug(f"Starting scrape for champion: {champion}, role: {role}, toggle: {toggle}")
-    base_url = f"https://lolalytics.com/lol/{champion.lower()}/"
+    champion = champion.replace("'", "").lower()
+    base_url = f"https://lolalytics.com/lol/{champion}/"
     if vs:
+        vs = vs.replace("'", "").lower()
         url = f"{base_url}vs/{vs.lower()}/build/?lane={role.lower()}"
         
     else:
@@ -87,6 +89,8 @@ def scrape_actual_builds(champion="fiora", role='top', vs="singed", allowed_sect
                     logger.debug("Clicked Early Items tab to trigger scroll/render")
                 else:
                     logger.warning("Early Items tab not found")
+                    print("URL", url)
+                    raise KeyError("Early Items tab not found")
             except Exception as e:
                 logger.exception("Failed to click Early Items tab")
         else:
@@ -191,7 +195,10 @@ def scrape_actual_builds(champion="fiora", role='top', vs="singed", allowed_sect
 def get_build(champion: str, role: str, vs: str = "", toggle: Optional[str] = None, cache_dir: str = "cache_builds") -> List[Section]:
     os.makedirs(cache_dir, exist_ok=True)
     date_str = datetime.date.today().isoformat()
-    cache_key = f"{champion.lower()}_{role.lower()}_{vs.lower() or 'none'}_{date_str}.pkl"
+    champion = champion.replace("'", "").lower()
+    vs = vs.replace("'", "").lower()
+    role = role.replace("'", "").lower()
+    cache_key = f"{champion}_{role}_{vs or 'none'}_{date_str}.pkl"
     cache_path = os.path.join(cache_dir, cache_key)
 
     if os.path.exists(cache_path):
@@ -200,11 +207,14 @@ def get_build(champion: str, role: str, vs: str = "", toggle: Optional[str] = No
             return pickle.load(f)
 
     logger.debug(f"No cache found for {cache_key}, scraping new build data")
-    builds = scrape_actual_builds(champion=champion, role=role, vs=vs, toggle=toggle)
+    try:
+        builds = scrape_actual_builds(champion=champion, role=role, vs=vs, toggle=toggle)
 
-    with open(cache_path, "wb") as f:
-        pickle.dump(builds, f)
-
+        with open(cache_path, "wb") as f:
+            pickle.dump(builds, f)
+    except Exception as e:
+        logger.error(f"Failed to scrape builds: {e}")
+        return []
     return builds
 
 if __name__ == "__main__":

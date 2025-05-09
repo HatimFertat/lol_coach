@@ -199,13 +199,22 @@ class Structures:
 @dataclass
 class ChampionStats:
     health: float
+    max_health: float
+    resource_type: str
     mana: float
+    max_mana: float
     armor: float
     magic_resist: float
     attack_damage: float
+    ability_power: float
     attack_speed: float
     ability_haste: float
     movement_speed: float
+    crit_chance: float
+    lethality: float
+    armor_pen: float
+    magic_pen: float
+    tenacity: float
 
 @dataclass
 class Item:
@@ -290,14 +299,23 @@ class GameStateContext:
 
 def parse_champion_stats(stats_json: Dict[str, Any]) -> ChampionStats:
     return ChampionStats(
-        health=stats_json.get("health", 0),
-        mana=stats_json.get("mana", 0),
+        health=stats_json.get("currentHealth", 0),
+        mana=stats_json.get("resourceValue", 0),
         armor=stats_json.get("armor", 0),
         magic_resist=stats_json.get("magicResist", 0),
         attack_damage=stats_json.get("attackDamage", 0),
         attack_speed=stats_json.get("attackSpeed", 0),
         ability_haste=stats_json.get("abilityHaste", 0),
-        movement_speed=stats_json.get("moveSpeed", 0)
+        ability_power=stats_json.get("abilityPower", 0),
+        movement_speed=stats_json.get("moveSpeed", 0),
+        crit_chance=stats_json.get("critChance", 0),
+        lethality=stats_json.get("lethality", 0),
+        armor_pen=stats_json.get("armorPenetrationPercent", 0),
+        magic_pen=stats_json.get("magicPenetrationPercent", 0),
+        tenacity=stats_json.get("tenacity", 0),
+        max_health=stats_json.get("maxHealth", 0),
+        max_mana=stats_json.get("resourceMax", 0),
+        resource_type=stats_json.get("resourceType", ""),
     )
 
 def parse_event(event_json: Dict[str, Any]) -> Event:
@@ -574,6 +592,7 @@ def count_turrets_taken(events: List[Event]):
                 turrets_taken[team][lane].append(tier)
 
     return turrets_taken
+
 def players_team_lookup(players: List[Dict[str, Any]]):
     # Build riot_id -> team lookup if players provided
     players_by_riot_id = {}
@@ -620,7 +639,7 @@ def parse_game_state(game_state_json: Dict[str, Any]) -> GameStateContext:
     enemy_team = parse_team_state(enemy_team_name, players, events, enemy_structures=player_team_structures, monsters=monsters)
     objectives = parse_objective_timers(game_state_json, events, monsters=monsters)
 
-    enemy_laner_champ = next((p["champion"] for p in players if p["team"] == enemy_team_name and p.get("lane") == active.get("position")), None)
+    enemy_laner_champ = next((p["champion"] for p in players if p["team"] == enemy_team_name and p.get("lane") == players[active_player_idx].get("lane")), None)
     # Try to match player's lane/role if possible
     active_lane = players[active_player_idx].get("lane") if active_player_idx is not None else None
     if not active_lane: #practice tool
@@ -649,3 +668,58 @@ def parse_game_state(game_state_json: Dict[str, Any]) -> GameStateContext:
         enemy_team_structures=enemy_team_structures,
         monsters=monsters
     )
+
+def summarize_all_stats(stats: ChampionStats) -> str:
+            hp = f"{stats.health:.0f}/{stats.max_health:.0f}"
+            mana = f"{stats.mana:.0f}/{stats.max_mana:.0f}"
+            armor = stats.armor
+            mr = stats.magic_resist
+            ad = stats.attack_damage
+            AS = stats.attack_speed
+            ap = stats.ability_power
+            ah = stats.ability_haste
+            crit = stats.crit_chance
+            lethality = stats.lethality
+            armor_pen = stats.armor_pen
+            magic_pen = stats.magic_pen
+            ms = stats.movement_speed
+            tenacity = stats.tenacity
+            resource = f" {stats.resource_type.capitalize()}: {mana} |" if stats.max_mana > 0 else ""
+            return (
+                f"HP: {hp} |{resource} Armor: {armor:.0f} | MR: {mr:.0f}\n"
+                f"AD: {ad:.0f} | AS: {AS:.2f} | Crit: {int(crit*100)}% | AH: {ah:.0f} | AP: {ap:.0f}\n"
+                f"Lethality: {lethality:.0f} | Armor Pen: {armor_pen:.0f} | Magic Pen: {magic_pen:.0f}\n"
+                f"MS: {ms:.0f} | Tenacity: {tenacity:.0f}"
+            )
+
+def format_time(seconds):
+            minutes = int(seconds) // 60
+            sec = int(seconds) % 60
+            return f"{minutes}:{sec:02}"
+
+def format_items_string(items_dict: dict[str, list[str]], include_list: Optional[list[str]]) -> str:
+    """
+    Formats the items dictionary into a string:
+    champion1: item1, item2, itemN\n
+    champion2: item1, item2, itemN\n
+    Keeps items only if present in the include_list.
+    """
+    lines = []
+    for champion, items in items_dict.items():
+        filtered_items = [item for item in items if not include_list or item in include_list] 
+        items_str = ", ".join(filtered_items) or "no items"
+        lines.append(f"{champion}: {items_str}")
+    return "\n".join(lines)
+
+def summarize_players(champions, include_list):
+    lines = []
+    for champ in champions:
+        role = champ.lane or "?"
+        name = champ.name
+        level = champ.level
+        score = champ.score
+        status = f"Respawning in {format_time(champ.respawn_timer)}" if champ.is_dead else "Alive"
+        items = [item for item in champ.items]
+        items = format_items_string({"Items": items}, include_list)
+        lines.append(f"[{role.capitalize()}] {name} (Lv {level}) | {score.kills}/{score.deaths}/{score.assists} | {status} | {items}")
+    return lines

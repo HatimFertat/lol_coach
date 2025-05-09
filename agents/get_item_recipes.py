@@ -44,14 +44,30 @@ def get_legendary_items(item_data, map_id):
         if "into" in item:
             continue
         # Must not be a consumable
-        if "Consumable" in item.get("tags", []):
+        if "Consumable" in item.get("tags", []) or "Trinket" in item.get("tags", []):
             continue
-        # Total cost must be different from base cost
+        # Total cost must be different from base cost (exclude starter items)
         gold = item.get("gold", {})
         if gold.get("total", 0) == gold.get("base", 0) and gold.get("total", 0) < 1500:
             continue
         legendary_items.append(item["name"])
     return legendary_items
+
+def get_non_consumable_items(item_data, map_id):
+    non_consumable_items = []
+    data = item_data.get("data", {})
+    for _, item in data.items():
+        # Must be purchasable
+        if not item.get("gold", {}).get("purchasable", False):
+            continue
+        # Must be on the specified map
+        if not item.get("maps", {}).get(str(map_id), False):
+            continue
+        # Must not be a consumable
+        if "Consumable" in item.get("tags", []) or "Trinket" in item.get("tags", []):
+            continue
+        non_consumable_items.append(item["name"])
+    return non_consumable_items
 
 def get_max_entries(section_name: str, legendary_count: int) -> int:
     if section_name.startswith("item_"):

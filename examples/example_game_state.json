@@ -2,7 +2,7 @@
 	"activePlayer": {
 		"abilities": {
 			"E": {
-				"abilityLevel": 5,
+				"abilityLevel": 1,
 				"displayName": "90 Caliber Net",
 				"id": "CaitlynE",
 				"rawDescription": "GeneratedTip_Spell_CaitlynE_Description",
@@ -15,21 +15,21 @@
 				"rawDisplayName": "GeneratedTip_Passive_CaitlynPassive_DisplayName"
 			},
 			"Q": {
-				"abilityLevel": 5,
+				"abilityLevel": 4,
 				"displayName": "Piltover Peacemaker",
 				"id": "CaitlynQ",
 				"rawDescription": "GeneratedTip_Spell_CaitlynQ_Description",
 				"rawDisplayName": "GeneratedTip_Spell_CaitlynQ_DisplayName"
 			},
 			"R": {
-				"abilityLevel": 3,
+				"abilityLevel": 1,
 				"displayName": "Ace in the Hole",
 				"id": "CaitlynR",
 				"rawDescription": "GeneratedTip_Spell_CaitlynR_Description",
 				"rawDisplayName": "GeneratedTip_Spell_CaitlynR_DisplayName"
 			},
 			"W": {
-				"abilityLevel": 5,
+				"abilityLevel": 1,
 				"displayName": "Yordle Snap Trap",
 				"id": "CaitlynW",
 				"rawDescription": "GeneratedTip_Spell_CaitlynW_Description",
@@ -37,39 +37,39 @@
 			}
 		},
 		"championStats": {
-			"abilityHaste": 0.0,
+			"abilityHaste": 10.0,
 			"abilityPower": 0.0,
-			"armor": 106.90000915527344,
+			"armor": 49.77149963378906,
 			"armorPenetrationFlat": 0.0,
 			"armorPenetrationPercent": 0.6000000238418579,
-			"attackDamage": 365.4000244140625,
-			"attackRange": 800.0,
-			"attackSpeed": 1.4810001850128174,
+			"attackDamage": 239.21099853515626,
+			"attackRange": 650.0,
+			"attackSpeed": 0.9583749771118164,
 			"bonusArmorPenetrationPercent": 1.0,
 			"bonusMagicPenetrationPercent": 1.0,
-			"critChance": 1.0,
+			"critChance": 0.75,
 			"critDamage": 215.00001525878907,
-			"currentHealth": 2579.000244140625,
+			"currentHealth": 1168.4150390625,
 			"healShieldPower": 0.0,
-			"healthRegenRate": 2.570000171661377,
-			"lifeSteal": 0.15000000596046449,
+			"healthRegenRate": 1.23294997215271,
+			"lifeSteal": 0.0,
 			"magicLethality": 0.0,
 			"magicPenetrationFlat": 0.0,
 			"magicPenetrationPercent": 1.0,
-			"magicResist": 52.10000228881836,
-			"maxHealth": 2579.000244140625,
-			"moveSpeed": 599.5743408203125,
+			"magicResist": 36.298500061035159,
+			"maxHealth": 1168.4150390625,
+			"moveSpeed": 535.2638549804688,
 			"omnivamp": 0.0,
 			"physicalLethality": 10.0,
 			"physicalVamp": 0.0,
-			"resourceMax": 995.0000610351563,
-			"resourceRegenRate": 3.8600003719329836,
+			"resourceMax": 508.8000183105469,
+			"resourceRegenRate": 12.246299743652344,
 			"resourceType": "MANA",
-			"resourceValue": 995.0000610351563,
+			"resourceValue": 508.8000183105469,
 			"spellVamp": 0.0,
 			"tenacity": 5.0
 		},
-		"currentGold": 28552.49609375,
+		"currentGold": 12447.08984375,
 		"fullRunes": {
 			"generalRunes": [
 				{
@@ -142,7 +142,7 @@
 				}
 			]
 		},
-		"level": 18,
+		"level": 7,
 		"riotId": "hisawt#SQUU3",
 		"riotIdGameName": "hisawt",
 		"riotIdTagLine": "SQUU3",
@@ -159,22 +159,22 @@
 					"canUse": false,
 					"consumable": false,
 					"count": 1,
-					"displayName": "Bloodthirster",
-					"itemID": 3072,
-					"price": 325,
-					"rawDescription": "GeneratedTip_Item_3072_Description",
-					"rawDisplayName": "Item_3072_Name",
+					"displayName": "Infinity Edge",
+					"itemID": 3031,
+					"price": 675,
+					"rawDescription": "GeneratedTip_Item_3031_Description",
+					"rawDisplayName": "Item_3031_Name",
 					"slot": 0
 				},
 				{
 					"canUse": false,
 					"consumable": false,
 					"count": 1,
-					"displayName": "Rapid Firecannon",
-					"itemID": 3094,
-					"price": 850,
-					"rawDescription": "GeneratedTip_Item_3094_Description",
-					"rawDisplayName": "Item_3094_Name",
+					"displayName": "The Collector",
+					"itemID": 6676,
+					"price": 525,
+					"rawDescription": "GeneratedTip_Item_6676_Description",
+					"rawDisplayName": "Item_6676_Name",
 					"slot": 1
 				},
 				{
@@ -192,34 +192,12 @@
 					"canUse": false,
 					"consumable": false,
 					"count": 1,
-					"displayName": "The Collector",
-					"itemID": 6676,
-					"price": 525,
-					"rawDescription": "GeneratedTip_Item_6676_Description",
-					"rawDisplayName": "Item_6676_Name",
-					"slot": 3
-				},
-				{
-					"canUse": false,
-					"consumable": false,
-					"count": 1,
-					"displayName": "Infinity Edge",
-					"itemID": 3031,
-					"price": 675,
-					"rawDescription": "GeneratedTip_Item_3031_Description",
-					"rawDisplayName": "Item_3031_Name",
-					"slot": 4
-				},
-				{
-					"canUse": false,
-					"consumable": false,
-					"count": 1,
 					"displayName": "Lord Dominik's Regards",
 					"itemID": 3036,
 					"price": 350,
 					"rawDescription": "GeneratedTip_Item_3036_Description",
 					"rawDisplayName": "Item_3036_Name",
-					"slot": 5
+					"slot": 3
 				},
 				{
 					"canUse": true,
@@ -233,8 +211,8 @@
 					"slot": 6
 				}
 			],
-			"level": 18,
-			"position": "",
+			"level": 7,
+			"position": "BOTTOM",
 			"rawChampionName": "game_character_displayname_Caitlyn",
 			"rawSkinName": "game_character_skin_displayname_Caitlyn_0",
 			"respawnTimer": 0.0,
@@ -263,19 +241,19 @@
 			},
 			"scores": {
 				"assists": 0,
-				"creepScore": 40,
+				"creepScore": 20,
 				"deaths": 0,
-				"kills": 0,
-				"wardScore": 1.6152842044830323
+				"kills": 1,
+				"wardScore": 0.0
 			},
 			"skinID": 0,
 			"skinName": "",
 			"summonerName": "hisawt#SQUU3",
 			"summonerSpells": {
 				"summonerSpellOne": {
-					"displayName": "Ignite",
-					"rawDescription": "GeneratedTip_SummonerSpell_SummonerDot_Description",
-					"rawDisplayName": "GeneratedTip_SummonerSpell_SummonerDot_DisplayName"
+					"displayName": "Cleanse",
+					"rawDescription": "GeneratedTip_SummonerSpell_SummonerBoost_Description",
+					"rawDisplayName": "GeneratedTip_SummonerSpell_SummonerBoost_DisplayName"
 				},
 				"summonerSpellTwo": {
 					"displayName": "Flash",
@@ -286,7 +264,7 @@
 			"team": "ORDER"
 		},
 		{
-			"championName": "Cassiopeia",
+			"championName": "Nocturne",
 			"isBot": true,
 			"isDead": false,
 			"items": [
@@ -294,13 +272,104 @@
 					"canUse": false,
 					"consumable": false,
 					"count": 1,
-					"displayName": "Doran's Ring",
-					"itemID": 1056,
-					"price": 400,
-					"rawDescription": "GeneratedTip_Item_1056_Description",
-					"rawDisplayName": "Item_1056_Name",
+					"displayName": "Mosstomper Seedling",
+					"itemID": 1103,
+					"price": 450,
+					"rawDescription": "GeneratedTip_Item_1103_Description",
+					"rawDisplayName": "Item_1103_Name",
 					"slot": 0
 				},
+				{
+					"canUse": false,
+					"consumable": false,
+					"count": 1,
+					"displayName": "Experimental Hexplate",
+					"itemID": 3073,
+					"price": 500,
+					"rawDescription": "GeneratedTip_Item_3073_Description",
+					"rawDisplayName": "Item_3073_Name",
+					"slot": 1
+				},
+				{
+					"canUse": true,
+					"consumable": true,
+					"count": 1,
+					"displayName": "Control Ward",
+					"itemID": 2055,
+					"price": 75,
+					"rawDescription": "GeneratedTip_Item_2055_Description",
+					"rawDisplayName": "Item_2055_Name",
+					"slot": 2
+				},
+				{
+					"canUse": true,
+					"consumable": false,
+					"count": 1,
+					"displayName": "Stealth Ward",
+					"itemID": 3340,
+					"price": 0,
+					"rawDescription": "GeneratedTip_Item_3340_Description",
+					"rawDisplayName": "Item_3340_Name",
+					"slot": 6
+				}
+			],
+			"level": 6,
+			"position": "JUNGLE",
+			"rawChampionName": "game_character_displayname_Nocturne",
+			"rawSkinName": "game_character_skin_displayname_Nocturne_0",
+			"respawnTimer": 0.0,
+			"riotId": "Nocturne#BOT",
+			"riotIdGameName": "Nocturne",
+			"riotIdTagLine": "BOT",
+			"runes": {
+				"keystone": {
+					"displayName": "Electrocute",
+					"id": 8112,
+					"rawDescription": "perk_tooltip_Electrocute",
+					"rawDisplayName": "perk_displayname_Electrocute"
+				},
+				"primaryRuneTree": {
+					"displayName": "Domination",
+					"id": 8100,
+					"rawDescription": "perkstyle_tooltip_7200",
+					"rawDisplayName": "perkstyle_displayname_7200"
+				},
+				"secondaryRuneTree": {
+					"displayName": "Precision",
+					"id": 8000,
+					"rawDescription": "perkstyle_tooltip_7201",
+					"rawDisplayName": "perkstyle_displayname_7201"
+				}
+			},
+			"scores": {
+				"assists": 1,
+				"creepScore": 30,
+				"deaths": 1,
+				"kills": 3,
+				"wardScore": 5.930264472961426
+			},
+			"skinID": 0,
+			"skinName": "",
+			"summonerName": "Nocturne Bot",
+			"summonerSpells": {
+				"summonerSpellOne": {
+					"displayName": "Flash",
+					"rawDescription": "GeneratedTip_SummonerSpell_SummonerFlash_Description",
+					"rawDisplayName": "GeneratedTip_SummonerSpell_SummonerFlash_DisplayName"
+				},
+				"summonerSpellTwo": {
+					"displayName": "Smite",
+					"rawDescription": "GeneratedTip_SummonerSpell_SummonerSmite_Description",
+					"rawDisplayName": "GeneratedTip_SummonerSpell_SummonerSmite_DisplayName"
+				}
+			},
+			"team": "ORDER"
+		},
+		{
+			"championName": "Veigar",
+			"isBot": true,
+			"isDead": false,
+			"items": [
 				{
 					"canUse": false,
 					"consumable": false,
@@ -310,29 +379,7 @@
 					"price": 400,
 					"rawDescription": "GeneratedTip_Item_3070_Description",
 					"rawDisplayName": "Item_3070_Name",
-					"slot": 1
-				},
-				{
-					"canUse": false,
-					"consumable": false,
-					"count": 1,
-					"displayName": "Rod of Ages",
-					"itemID": 6657,
-					"price": 450,
-					"rawDescription": "GeneratedTip_Item_6657_Description",
-					"rawDisplayName": "Item_6657_Name",
-					"slot": 2
-				},
-				{
-					"canUse": false,
-					"consumable": false,
-					"count": 1,
-					"displayName": "Lost Chapter",
-					"itemID": 3802,
-					"price": 250,
-					"rawDescription": "GeneratedTip_Item_3802_Description",
-					"rawDisplayName": "Item_3802_Name",
-					"slot": 3
+					"slot": 0
 				},
 				{
 					"canUse": false,
@@ -343,7 +390,18 @@
 					"price": 400,
 					"rawDescription": "GeneratedTip_Item_1052_Description",
 					"rawDisplayName": "Item_1052_Name",
-					"slot": 4
+					"slot": 1
+				},
+				{
+					"canUse": false,
+					"consumable": false,
+					"count": 1,
+					"displayName": "Sapphire Crystal",
+					"itemID": 1027,
+					"price": 300,
+					"rawDescription": "GeneratedTip_Item_1027_Description",
+					"rawDisplayName": "Item_1027_Name",
+					"slot": 2
 				},
 				{
 					"canUse": false,
@@ -354,27 +412,49 @@
 					"price": 250,
 					"rawDescription": "GeneratedTip_Item_2022_Description",
 					"rawDisplayName": "Item_2022_Name",
+					"slot": 3
+				},
+				{
+					"canUse": false,
+					"consumable": false,
+					"count": 1,
+					"displayName": "Ruby Crystal",
+					"itemID": 1028,
+					"price": 400,
+					"rawDescription": "GeneratedTip_Item_1028_Description",
+					"rawDisplayName": "Item_1028_Name",
+					"slot": 4
+				},
+				{
+					"canUse": false,
+					"consumable": false,
+					"count": 1,
+					"displayName": "Ruby Crystal",
+					"itemID": 1028,
+					"price": 400,
+					"rawDescription": "GeneratedTip_Item_1028_Description",
+					"rawDisplayName": "Item_1028_Name",
 					"slot": 5
 				},
 				{
 					"canUse": true,
 					"consumable": false,
 					"count": 1,
-					"displayName": "Farsight Alteration",
-					"itemID": 3363,
+					"displayName": "Stealth Ward",
+					"itemID": 3340,
 					"price": 0,
-					"rawDescription": "GeneratedTip_Item_3363_Description",
-					"rawDisplayName": "Item_3363_Name",
+					"rawDescription": "GeneratedTip_Item_3340_Description",
+					"rawDisplayName": "Item_3340_Name",
 					"slot": 6
 				}
 			],
-			"level": 12,
+			"level": 9,
 			"position": "MIDDLE",
-			"rawChampionName": "game_character_displayname_Cassiopeia",
-			"rawSkinName": "game_character_skin_displayname_Cassiopeia_0",
+			"rawChampionName": "game_character_displayname_Veigar",
+			"rawSkinName": "game_character_skin_displayname_Veigar_0",
 			"respawnTimer": 0.0,
-			"riotId": "Cassiopeia#BOT",
-			"riotIdGameName": "Cassiopeia",
+			"riotId": "Veigar#BOT",
+			"riotIdGameName": "Veigar",
 			"riotIdTagLine": "BOT",
 			"runes": {
 				"keystone": {
@@ -397,15 +477,15 @@
 				}
 			},
 			"scores": {
-				"assists": 0,
-				"creepScore": 70,
-				"deaths": 2,
-				"kills": 2,
-				"wardScore": 25.39310646057129
+				"assists": 2,
+				"creepScore": 30,
+				"deaths": 1,
+				"kills": 3,
+				"wardScore": 8.177248001098633
 			},
 			"skinID": 0,
 			"skinName": "",
-			"summonerName": "Cassiopeia Bot",
+			"summonerName": "Veigar Bot",
 			"summonerSpells": {
 				"summonerSpellOne": {
 					"displayName": "Flash",
@@ -421,7 +501,7 @@
 			"team": "ORDER"
 		},
 		{
-			"championName": "Lux",
+			"championName": "Shyvana",
 			"isBot": true,
 			"isDead": false,
 			"items": [
@@ -429,22 +509,157 @@
 					"canUse": false,
 					"consumable": false,
 					"count": 1,
-					"displayName": "Seraph's Embrace",
-					"itemID": 3040,
-					"price": 2900,
-					"rawDescription": "GeneratedTip_Item_3040_Description",
-					"rawDisplayName": "Item_3040_Name",
+					"displayName": "Gustwalker Hatchling",
+					"itemID": 1102,
+					"price": 450,
+					"rawDescription": "GeneratedTip_Item_1102_Description",
+					"rawDisplayName": "Item_1102_Name",
 					"slot": 0
 				},
 				{
 					"canUse": false,
 					"consumable": false,
 					"count": 1,
-					"displayName": "Ionian Boots of Lucidity",
-					"itemID": 3158,
+					"displayName": "Long Sword",
+					"itemID": 1036,
 					"price": 350,
-					"rawDescription": "GeneratedTip_Item_3158_Description",
-					"rawDisplayName": "Item_3158_Name",
+					"rawDescription": "GeneratedTip_Item_1036_Description",
+					"rawDisplayName": "Item_1036_Name",
+					"slot": 1
+				},
+				{
+					"canUse": false,
+					"consumable": false,
+					"count": 1,
+					"displayName": "Boots",
+					"itemID": 1001,
+					"price": 300,
+					"rawDescription": "GeneratedTip_Item_1001_Description",
+					"rawDisplayName": "Item_1001_Name",
+					"slot": 2
+				},
+				{
+					"canUse": false,
+					"consumable": false,
+					"count": 1,
+					"displayName": "Ruby Crystal",
+					"itemID": 1028,
+					"price": 400,
+					"rawDescription": "GeneratedTip_Item_1028_Description",
+					"rawDisplayName": "Item_1028_Name",
+					"slot": 3
+				},
+				{
+					"canUse": true,
+					"consumable": true,
+					"count": 1,
+					"displayName": "Control Ward",
+					"itemID": 2055,
+					"price": 75,
+					"rawDescription": "GeneratedTip_Item_2055_Description",
+					"rawDisplayName": "Item_2055_Name",
+					"slot": 4
+				},
+				{
+					"canUse": true,
+					"consumable": false,
+					"count": 1,
+					"displayName": "Stealth Ward",
+					"itemID": 3340,
+					"price": 0,
+					"rawDescription": "GeneratedTip_Item_3340_Description",
+					"rawDisplayName": "Item_3340_Name",
+					"slot": 6
+				}
+			],
+			"level": 5,
+			"position": "JUNGLE",
+			"rawChampionName": "game_character_displayname_Shyvana",
+			"rawSkinName": "game_character_skin_displayname_Shyvana_0",
+			"respawnTimer": 0.0,
+			"riotId": "Shyvana#BOT",
+			"riotIdGameName": "Shyvana",
+			"riotIdTagLine": "BOT",
+			"runes": {
+				"keystone": {
+					"displayName": "Grasp of the Undying",
+					"id": 8437,
+					"rawDescription": "perk_tooltip_GraspOfTheUndying",
+					"rawDisplayName": "perk_displayname_GraspOfTheUndying"
+				},
+				"primaryRuneTree": {
+					"displayName": "Resolve",
+					"id": 8400,
+					"rawDescription": "perkstyle_tooltip_7204",
+					"rawDisplayName": "perkstyle_displayname_7204"
+				},
+				"secondaryRuneTree": {
+					"displayName": "Sorcery",
+					"id": 8200,
+					"rawDescription": "perkstyle_tooltip_7202",
+					"rawDisplayName": "perkstyle_displayname_7202"
+				}
+			},
+			"scores": {
+				"assists": 1,
+				"creepScore": 0,
+				"deaths": 3,
+				"kills": 1,
+				"wardScore": 4.711287498474121
+			},
+			"skinID": 0,
+			"skinName": "",
+			"summonerName": "Shyvana Bot",
+			"summonerSpells": {
+				"summonerSpellOne": {
+					"displayName": "Flash",
+					"rawDescription": "GeneratedTip_SummonerSpell_SummonerFlash_Description",
+					"rawDisplayName": "GeneratedTip_SummonerSpell_SummonerFlash_DisplayName"
+				},
+				"summonerSpellTwo": {
+					"displayName": "Smite",
+					"rawDescription": "GeneratedTip_SummonerSpell_SummonerSmite_Description",
+					"rawDisplayName": "GeneratedTip_SummonerSpell_SummonerSmite_DisplayName"
+				}
+			},
+			"team": "CHAOS"
+		},
+		{
+			"championName": "Kassadin",
+			"isBot": true,
+			"isDead": false,
+			"items": [
+				{
+					"canUse": false,
+					"consumable": false,
+					"count": 1,
+					"displayName": "Doran's Shield",
+					"itemID": 1054,
+					"price": 450,
+					"rawDescription": "GeneratedTip_Item_1054_Description",
+					"rawDisplayName": "Item_1054_Name",
+					"slot": 0
+				},
+				{
+					"canUse": true,
+					"consumable": true,
+					"count": 1,
+					"displayName": "Control Ward",
+					"itemID": 2055,
+					"price": 75,
+					"rawDescription": "GeneratedTip_Item_2055_Description",
+					"rawDisplayName": "Item_2055_Name",
+					"slot": 1
+				},
+				{
+					"canUse": false,
+					"consumable": false,
+					"count": 1,
+					"displayName": "Glowing Mote",
+					"itemID": 2022,
+					"price": 250,
+					"rawDescription": "GeneratedTip_Item_2022_Description",
+					"rawDisplayName": "Item_2022_Name",
 					"slot": 2
 				},
 				{
@@ -459,46 +674,24 @@
 					"slot": 3
 				},
 				{
-					"canUse": false,
-					"consumable": false,
-					"count": 1,
-					"displayName": "Sapphire Crystal",
-					"itemID": 1027,
-					"price": 300,
-					"rawDescription": "GeneratedTip_Item_1027_Description",
-					"rawDisplayName": "Item_1027_Name",
-					"slot": 4
-				},
-				{
-					"canUse": false,
-					"consumable": false,
-					"count": 1,
-					"displayName": "Glowing Mote",
-					"itemID": 2022,
-					"price": 250,
-					"rawDescription": "GeneratedTip_Item_2022_Description",
-					"rawDisplayName": "Item_2022_Name",
-					"slot": 5
-				},
-				{
 					"canUse": true,
 					"consumable": false,
 					"count": 1,
-					"displayName": "Farsight Alteration",
-					"itemID": 3363,
+					"displayName": "Stealth Ward",
+					"itemID": 3340,
 					"price": 0,
-					"rawDescription": "GeneratedTip_Item_3363_Description",
-					"rawDisplayName": "Item_3363_Name",
+					"rawDescription": "GeneratedTip_Item_3340_Description",
+					"rawDisplayName": "Item_3340_Name",
 					"slot": 6
 				}
 			],
-			"level": 14,
+			"level": 7,
 			"position": "MIDDLE",
-			"rawChampionName": "game_character_displayname_Lux",
-			"rawSkinName": "game_character_skin_displayname_Lux_0",
+			"rawChampionName": "game_character_displayname_Kassadin",
+			"rawSkinName": "game_character_skin_displayname_Kassadin_0",
 			"respawnTimer": 0.0,
-			"riotId": "Lux#BOT",
-			"riotIdGameName": "Lux",
+			"riotId": "Kassadin#BOT",
+			"riotIdGameName": "Kassadin",
 			"riotIdTagLine": "BOT",
 			"runes": {
 				"keystone": {
@@ -522,14 +715,14 @@
 			},
 			"scores": {
 				"assists": 0,
-				"creepScore": 80,
-				"deaths": 2,
-				"kills": 2,
-				"wardScore": 22.83094024658203
+				"creepScore": 20,
+				"deaths": 4,
+				"kills": 1,
+				"wardScore": 1.5085879564285279
 			},
 			"skinID": 0,
 			"skinName": "",
-			"summonerName": "Lux Bot",
+			"summonerName": "Kassadin Bot",
 			"summonerSpells": {
 				"summonerSpellOne": {
 					"displayName": "Flash",
@@ -543,6 +736,108 @@
 				}
 			},
 			"team": "CHAOS"
+		},
+		{
+			"championName": "Kai'Sa",
+			"isBot": true,
+			"isDead": false,
+			"items": [
+				{
+					"canUse": false,
+					"consumable": false,
+					"count": 1,
+					"displayName": "Doran's Blade",
+					"itemID": 1055,
+					"price": 450,
+					"rawDescription": "GeneratedTip_Item_1055_Description",
+					"rawDisplayName": "Item_1055_Name",
+					"slot": 0
+				},
+				{
+					"canUse": false,
+					"consumable": false,
+					"count": 1,
+					"displayName": "Scout's Slingshot",
+					"itemID": 3144,
+					"price": 100,
+					"rawDescription": "GeneratedTip_Item_3144_Description",
+					"rawDisplayName": "Item_3144_Name",
+					"slot": 1
+				},
+				{
+					"canUse": false,
+					"consumable": false,
+					"count": 1,
+					"displayName": "Boots",
+					"itemID": 1001,
+					"price": 300,
+					"rawDescription": "GeneratedTip_Item_1001_Description",
+					"rawDisplayName": "Item_1001_Name",
+					"slot": 2
+				},
+				{
+					"canUse": true,
+					"consumable": false,
+					"count": 1,
+					"displayName": "Stealth Ward",
+					"itemID": 3340,
+					"price": 0,
+					"rawDescription": "GeneratedTip_Item_3340_Description",
+					"rawDisplayName": "Item_3340_Name",
+					"slot": 6
+				}
+			],
+			"level": 8,
+			"position": "BOTTOM",
+			"rawChampionName": "game_character_displayname_Kaisa",
+			"rawSkinName": "game_character_skin_displayname_Kaisa_0",
+			"respawnTimer": 0.0,
+			"riotId": "Kaisa#BOT",
+			"riotIdGameName": "Kaisa",
+			"riotIdTagLine": "BOT",
+			"runes": {
+				"keystone": {
+					"displayName": "Press the Attack",
+					"id": 8005,
+					"rawDescription": "perk_tooltip_PressTheAttack",
+					"rawDisplayName": "perk_displayname_PressTheAttack"
+				},
+				"primaryRuneTree": {
+					"displayName": "Precision",
+					"id": 8000,
+					"rawDescription": "perkstyle_tooltip_7201",
+					"rawDisplayName": "perkstyle_displayname_7201"
+				},
+				"secondaryRuneTree": {
+					"displayName": "Sorcery",
+					"id": 8200,
+					"rawDescription": "perkstyle_tooltip_7202",
+					"rawDisplayName": "perkstyle_displayname_7202"
+				}
+			},
+			"scores": {
+				"assists": 0,
+				"creepScore": 30,
+				"deaths": 0,
+				"kills": 0,
+				"wardScore": 6.3289690017700199
+			},
+			"skinID": 0,
+			"skinName": "",
+			"summonerName": "Kai'Sa Bot",
+			"summonerSpells": {
+				"summonerSpellOne": {
+					"displayName": "Barrier",
+					"rawDescription": "GeneratedTip_SummonerSpell_SummonerBarrier_Description",
+					"rawDisplayName": "GeneratedTip_SummonerSpell_SummonerBarrier_DisplayName"
+				},
+				"summonerSpellTwo": {
+					"displayName": "Flash",
+					"rawDescription": "GeneratedTip_SummonerSpell_SummonerFlash_Description",
+					"rawDisplayName": "GeneratedTip_SummonerSpell_SummonerFlash_DisplayName"
+				}
+			},
+			"team": "CHAOS"
 		}
 	],
 	"events": {
@@ -550,141 +845,150 @@
 			{
 				"EventID": 0,
 				"EventName": "GameStart",
-				"EventTime": 0.04464341327548027
+				"EventTime": 0.05361681059002876
 			},
 			{
 				"EventID": 1,
 				"EventName": "MinionsSpawning",
-				"EventTime": 65.07048797607422
+				"EventTime": 65.03868103027344
 			},
 			{
-				"Assisters": [],
+				"Assisters": [
+					"Veigar Bot"
+				],
 				"EventID": 2,
 				"EventName": "ChampionKill",
-				"EventTime": 308.21868896484377,
-				"KillerName": "Cassiopeia Bot",
-				"VictimName": "Lux Bot"
+				"EventTime": 365.6108703613281,
+				"KillerName": "Nocturne Bot",
+				"VictimName": "Kassadin Bot"
 			},
 			{
 				"EventID": 3,
 				"EventName": "FirstBlood",
-				"EventTime": 308.21868896484377,
-				"Recipient": "Cassiopeia Bot"
+				"EventTime": 365.6108703613281,
+				"Recipient": "Nocturne Bot"
 			},
 			{
-				"Acer": "Cassiopeia Bot",
-				"AcingTeam": "ORDER",
+				"Assisters": [
+					"Nocturne Bot"
+				],
 				"EventID": 4,
-				"EventName": "Ace",
-				"EventTime": 308.21868896484377
+				"EventName": "ChampionKill",
+				"EventTime": 385.3879089355469,
+				"KillerName": "Veigar Bot",
+				"VictimName": "Shyvana Bot"
 			},
 			{
 				"Assisters": [],
 				"EventID": 5,
-				"EventName": "TurretKilled",
-				"EventTime": 548.7164916992188,
-				"KillerName": "hisawt",
-				"TurretKilled": "Turret_T200_L0_P3_511845594"
-			},
-			{
-				"EventID": 6,
-				"EventName": "FirstBrick",
-				"EventTime": 548.7164916992188,
-				"KillerName": "hisawt"
+				"EventName": "ChampionKill",
+				"EventTime": 441.08966064453127,
+				"KillerName": "Nocturne Bot",
+				"VictimName": "Kassadin Bot"
 			},
 			{
 				"Assisters": [],
-				"DragonType": "Air",
+				"EventID": 6,
+				"EventName": "TurretKilled",
+				"EventTime": 487.98321533203127,
+				"KillerName": "Minion_T200L2S08N0048",
+				"TurretKilled": "Turret_T100_L2_P3_1509986696"
+			},
+			{
 				"EventID": 7,
-				"EventName": "DragonKill",
-				"EventTime": 629.3497924804688,
-				"KillerName": "hisawt",
-				"Stolen": "False"
+				"EventName": "FirstBrick",
+				"EventTime": 487.98321533203127,
+				"KillerName": "Minion_T200L2S08N0048"
 			},
 			{
 				"Assisters": [],
 				"EventID": 8,
-				"EventName": "TurretKilled",
-				"EventTime": 663.5071411132813,
-				"KillerName": "hisawt",
-				"TurretKilled": "Turret_T200_L0_P2_528623213"
+				"EventName": "ChampionKill",
+				"EventTime": 576.9976806640625,
+				"KillerName": "Veigar Bot",
+				"VictimName": "Kassadin Bot"
 			},
 			{
 				"Assisters": [],
 				"EventID": 9,
 				"EventName": "ChampionKill",
-				"EventTime": 935.5635375976563,
-				"KillerName": "Lux Bot",
-				"VictimName": "Cassiopeia Bot"
+				"EventTime": 612.2926025390625,
+				"KillerName": "Shyvana Bot",
+				"VictimName": "Veigar Bot"
 			},
 			{
 				"Assisters": [],
 				"EventID": 10,
 				"EventName": "ChampionKill",
-				"EventTime": 1003.1754150390625,
-				"KillerName": "Cassiopeia Bot",
-				"VictimName": "Lux Bot"
+				"EventTime": 614.4281005859375,
+				"KillerName": "Veigar Bot",
+				"VictimName": "Shyvana Bot"
 			},
 			{
-				"Acer": "Cassiopeia Bot",
-				"AcingTeam": "ORDER",
+				"Assisters": [],
 				"EventID": 11,
-				"EventName": "Ace",
-				"EventTime": 1003.1754150390625
+				"EventName": "TurretKilled",
+				"EventTime": 623.5624389648438,
+				"KillerName": "Minion_T100L2S06N0036",
+				"TurretKilled": "Turret_T200_L2_P3_2521511112"
 			},
 			{
 				"Assisters": [],
 				"EventID": 12,
 				"EventName": "TurretKilled",
-				"EventTime": 1035.464111328125,
-				"KillerName": "Minion_T100L0S31N0193",
-				"TurretKilled": "Turret_T200_L0_P1_478290356"
+				"EventTime": 655.729736328125,
+				"KillerName": "Minion_T200L0S15N0092",
+				"TurretKilled": "Turret_T100_L0_P3_3795288474"
 			},
 			{
 				"Assisters": [],
 				"EventID": 13,
-				"EventName": "ChampionKill",
-				"EventTime": 1106.0345458984376,
-				"KillerName": "Lux Bot",
-				"VictimName": "Cassiopeia Bot"
+				"EventName": "TurretKilled",
+				"EventTime": 699.0809936523438,
+				"KillerName": "Minion_T100L0S16N0100",
+				"TurretKilled": "Turret_T200_L0_P3_511845594"
 			},
 			{
-				"Assisters": [],
+				"Assisters": [
+					"Veigar Bot"
+				],
 				"EventID": 14,
-				"EventName": "InhibKilled",
-				"EventTime": 1145.4527587890626,
-				"InhibKilled": "Inhib_T200_L0_P1_2116220407",
-				"KillerName": "Minion_T100L0S35N0219"
+				"EventName": "ChampionKill",
+				"EventTime": 711.0177001953125,
+				"KillerName": "Nocturne Bot",
+				"VictimName": "Kassadin Bot"
 			},
 			{
 				"Assisters": [],
 				"EventID": 15,
 				"EventName": "TurretKilled",
-				"EventTime": 1206.916015625,
-				"KillerName": "Cassiopeia Bot",
+				"EventTime": 772.513671875,
+				"KillerName": "Veigar Bot",
 				"TurretKilled": "Turret_T200_L1_P3_2254202041"
 			},
 			{
-				"Assisters": [],
+				"Assisters": [
+					"Shyvana Bot"
+				],
 				"EventID": 16,
-				"EventName": "TurretKilled",
-				"EventTime": 1244.2099609375,
-				"KillerName": "Minion_T100L0S37N0235",
-				"TurretKilled": "Turret_T200_L1_P5_342097928"
+				"EventName": "ChampionKill",
+				"EventTime": 778.0972290039063,
+				"KillerName": "Kassadin Bot",
+				"VictimName": "Nocturne Bot"
 			},
 			{
 				"Assisters": [],
 				"EventID": 17,
-				"EventName": "TurretKilled",
-				"EventTime": 1306.581298828125,
-				"KillerName": "Minion_T100L0S40N0250",
-				"TurretKilled": "Turret_T200_L1_P4_392430785"
+				"EventName": "ChampionKill",
+				"EventTime": 807.185791015625,
+				"KillerName": "hisawt",
+				"VictimName": "Shyvana Bot"
 			}
 		]
 	},
 	"gameData": {
 		"gameMode": "PRACTICETOOL",
-		"gameTime": 1313.3228759765626,
+		"gameTime": 840.5771484375,
 		"mapName": "Map11",
 		"mapNumber": 11,
 		"mapTerrain": "Default"
