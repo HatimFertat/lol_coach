@@ -1,7 +1,7 @@
 # game_state_fetcher.py
 
 import requests
-from game_state import parse_game_state
+from game_context.game_state import parse_game_state
 import time
 
 def fetch_game_state():

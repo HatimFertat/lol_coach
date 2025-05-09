@@ -6,7 +6,7 @@ from openai import OpenAI
 import os
 from dotenv import load_dotenv
 import json
-from agents.get_item_recipes import (get_legendary_items, get_non_consumable_items, download_json_or_load_local,
+from utils.get_item_recipes import (get_legendary_items, get_non_consumable_items, download_json_or_load_local,
                                      get_max_entries, build_section_text, ITEM_URL, cache_path)
 
 load_dotenv()
@@ -16,6 +16,9 @@ non_consumable_item_list = get_non_consumable_items(
     map_id=11
 )
 class MacroAgent(Agent):
+
+    def __init__(self):
+        self.conversation_history = []
 
     def summarize_game_state(self, game_state: GameStateContext) -> str:
 
@@ -120,27 +123,58 @@ class MacroAgent(Agent):
 
         return "\n".join(summary_lines)
 
-    def run(self, game_state: GameStateContext) -> str:
-        client = OpenAI(
-        api_key=os.getenv("GEMINI_API_KEY"),
-        base_url="https://generativelanguage.googleapis.com/v1beta/openai/"
-        )
+    def standalone_message(self, user_message: str) -> str:
+        self.conversation_history.append({"role": "user", "content": user_message})
+        try:
+            client = OpenAI(
+                api_key=os.getenv("GEMINI_API_KEY"),
+                base_url="https://generativelanguage.googleapis.com/v1beta/openai/"
+            )
+            messages = [{"role": "system", "content": "You are a macro-level coach for a League of Legends game."}] + self.conversation_history
+            response = client.chat.completions.create(
+                model="gemini-2.0-flash",
+                messages=messages,
+                max_tokens=256
+            )
+            advice = response.choices[0].message.content
+            self.conversation_history.append({"role": "assistant", "content": advice})
+            return advice
+        except Exception as e:
+            return f"MacroAgent Error: {str(e)}"
+        
+    def run(self, game_state: GameStateContext = None, user_message: str = None) -> str:
+        # Free-form chat, just append user message
+        if game_state is None and user_message is not None:
+            return self.standalone_message(user_message)
+
+        # Summarize game state
         summary = self.summarize_game_state(game_state)
-        prompt = (
-            "Based on the following game state summary, provide a concise macro strategy recommendation:\n\n"
-            f"{summary}\n\n"
-            "Recommendation:"
-        )
-        print(prompt)
-        response = client.chat.completions.create(
-            model="gemini-2.0-flash",
-            messages=[
-                {"role": "system", "content": "You are a macro-level coach for a League of Legends game."},
-                {"role": "user", "content": prompt}
-            ],
-            max_tokens=1024)
-        advice = response.choices[0].message.content
-        return f"MacroAgent: {advice}"
+        prefix = "Based on the following game state summary, provide a quick macro strategy recommendation for the next 2 minutes."
+        suffix = "Recommendation:"
+        if user_message:
+            suffix = user_message + "\n" + suffix
+        
+        # Add user message to conversation history
+        prompt = f"{prefix}\n{summary}\n{suffix}"
+        self.conversation_history.append({"role": "user", "content": prompt})
+        try:
+            client = OpenAI(
+                api_key=os.getenv("GEMINI_API_KEY"),
+                base_url="https://generativelanguage.googleapis.com/v1beta/openai/"
+            )
+            # Always start with a system prompt
+            messages = [{"role": "system", "content": "You are a macro-level coach for a League of Legends game."}] + self.conversation_history
+            response = client.chat.completions.create(
+                model="gemini-2.0-flash-lite",
+                messages=messages,
+                max_tokens=512
+            )
+            advice = response.choices[0].message.content
+            # Add assistant reply to conversation history
+            self.conversation_history.append({"role": "assistant", "content": advice})
+            return prompt, advice
+        except Exception as e:
+            return f"MacroAgent Error: {str(e)}"
     
 if __name__ == "__main__":
     # get data from the examples folder

@@ -1,7 +1,7 @@
 import os
 import json
 import requests
-from agents.lolalytics_client import ItemSet
+from utils.lolalytics_client import ItemSet
 from dotenv import load_dotenv
 import logging
 
@@ -9,12 +9,9 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 load_dotenv()
 
-CURRENT_PATCH = os.getenv("CURRENT_PATCH", "15.7.1")
+PATCH_URL = "https://ddragon.leagueoflegends.com/api/versions.json"
 ITEM_URL = "https://ddragon.leagueoflegends.com/cdn/{patch}/data/en_US/item.json"
 
-CACHE_DIR = "patch_item_data"
-os.makedirs(CACHE_DIR, exist_ok=True)
-cache_path = os.path.join(CACHE_DIR, f"items_{CURRENT_PATCH}.json")
 
 def download_json_or_load_local(url, cache_path):
     if os.path.exists(cache_path):
@@ -30,6 +27,30 @@ def download_json_or_load_local(url, cache_path):
             json.dump(data, f, indent=2)
         return data
     
+def get_current_patch():
+    """
+    Fetches the current patch version from the Riot API.
+    """
+    try:
+        response = requests.get(PATCH_URL)
+        response.raise_for_status()
+        versions = response.json()
+        if versions:
+            return versions[0]
+        else:
+            raise ValueError("No versions found in the response.")
+    except requests.RequestException as e:
+        logger.error(f"Error fetching current patch: {e}")
+        return None
+    
+CURRENT_PATCH = get_current_patch()
+os.environ["CURRENT_PATCH"] = CURRENT_PATCH
+CACHE_DIR = "patch_item_data"
+os.makedirs(CACHE_DIR, exist_ok=True)
+cache_path = os.path.join(CACHE_DIR, f"items_{CURRENT_PATCH}.json")
+
+
+
 def get_legendary_items(item_data, map_id):
     legendary_items = []
     data = item_data.get("data", {})
