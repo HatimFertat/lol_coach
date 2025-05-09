@@ -33,10 +33,11 @@ class AgentChatTab:
         self.update_button = tk.Button(control_frame, text="Update", command=self.update_with_game_state)
         self.update_button.grid(row=0, column=2, padx=2)
 
-        self.reset_button = tk.Button(control_frame, text="Reset", command=self.reset_conversation)
+        self.reset_button = tk.Button(control_frame, text="Clear", command=self.reset_conversation)
         self.reset_button.grid(row=0, column=3, padx=2)
 
         self.frame.pack(fill=tk.BOTH, expand=True)
+
 
     def display_message(self, sender, message):
         self.text_area['state'] = 'normal'
@@ -60,6 +61,8 @@ class AgentChatTab:
 
     def update_with_game_state(self):
         try:
+            if self.auto_clear.get():
+                self.agent.conversation_history = []
             print(f"[DEBUG] update_with_game_state called for {self.agent_name}")
             user_message = self.entry.get().strip()
             self.entry.delete(0, tk.END)
@@ -70,15 +73,15 @@ class AgentChatTab:
         except Exception as e:
             print(f"[ERROR] Exception in update_with_game_state: {e}")
 
-    def reset_conversation(self):
+    def clear_conversation(self):
         try:
-            print(f"[DEBUG] reset_conversation called for {self.agent_name}")
+            print(f"[DEBUG] clear_conversation called for {self.agent_name}")
             self.agent.conversation_history = []
             self.text_area['state'] = 'normal'
             self.text_area.delete(1.0, tk.END)
             self.text_area['state'] = 'disabled'
         except Exception as e:
-            print(f"[ERROR] Exception in reset_conversation: {e}")
+            print(f"[ERROR] Exception in clear_conversation: {e}")
 
 class LoLCoachGUI(tk.Tk):
     def __init__(self):
@@ -89,11 +92,17 @@ class LoLCoachGUI(tk.Tk):
         self.notebook.pack(fill=tk.BOTH, expand=True)
         self.build_agent = BuildAgent()
         self.macro_agent = MacroAgent()
-        # --- BEGIN: TESTING ONLY ---
-        self.use_mock = tk.BooleanVar(value=MOCK)
 
         mode_frame = ttk.Frame(self)
         mode_frame.pack(fill=tk.X, padx=5, pady=2)
+
+        # Add bottom frame for auto-clear checkbox
+        self.auto_clear = tk.BooleanVar(value=False)
+        self.auto_clear_checkbox = tk.Checkbutton(mode_frame, text="Auto-Reset after Update", variable=self.auto_clear)
+        self.auto_clear_checkbox.pack(side="right", padx=8, pady=6)
+        # --- BEGIN: TESTING ONLY ---
+        self.use_mock = tk.BooleanVar(value=MOCK)
+
         ttk.Label(mode_frame, text="Use mock game state").pack(side=tk.LEFT)
         ttk.Checkbutton(mode_frame, variable=self.use_mock).pack(side=tk.LEFT)
         def get_game_state():
