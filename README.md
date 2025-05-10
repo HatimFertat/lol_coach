@@ -15,7 +15,7 @@ The application features a graphical user interface (GUI) for interacting with t
 
 1. Clone the repository:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/HatimFertat/lol_coach.git
    cd lol_coach
    ```
 
