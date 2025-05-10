@@ -75,7 +75,7 @@ def scrape_actual_builds(champion="fiora", role='top', vs="singed", allowed_sect
         allowed_section_types = allowed_section_types + ['item_sets']
 
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False)  # set to True for silent scraping
+        browser = p.chromium.launch(headless=True)  # set to True for silent scraping
         page = browser.new_page()
         page.goto(url)
         logger.debug(f"Navigated to {url}")
