@@ -1,3 +1,5 @@
+import logging
+logging.basicConfig(level=logging.INFO, format='[%(levelname)s] %(message)s')
 import tkinter as tk
 from tkinter import ttk, scrolledtext
 from agents.build_agent import BuildAgent
@@ -10,18 +12,22 @@ import os
 MOCK = True
 
 class AgentChatTab:
-    def __init__(self, parent, agent, agent_name, get_game_state_func):
+    def __init__(self, parent, agent, agent_name, get_game_state_func, auto_clear_var):
         self.agent = agent
         self.agent_name = agent_name
         self.get_game_state_func = get_game_state_func
+        self.auto_clear = auto_clear_var
         self.frame = ttk.Frame(parent)
-        self.text_area = scrolledtext.ScrolledText(self.frame, wrap=tk.WORD, height=20, width=80, state='disabled')
-        self.text_area.pack(padx=5, pady=5, fill=tk.BOTH, expand=True)
-        self.text_area.tag_configure("user", foreground="blue")
-        self.text_area.tag_configure("agent", foreground="green")
+        self.text_area = scrolledtext.ScrolledText(
+            self.frame, wrap=tk.WORD, height=20, width=80, state='disabled',
+            font=("Courier New", 14), spacing1=4, spacing3=4
+        )
+        # Improved appearance for in-game readability
+        self.text_area.configure(bg="#1e1e1e", fg="#d4d4d4", insertbackground="white")
+        self.text_area.tag_configure("user", foreground="#a6e22e", font=("Courier New", 14, "bold"))
+        self.text_area.tag_configure("agent", foreground="#4fc1ff", font=("Courier New", 14, "bold"))
 
         control_frame = ttk.Frame(self.frame)
-        control_frame.pack(fill=tk.X, padx=5, pady=5)
 
         self.entry = tk.Entry(control_frame, width=60)
         self.entry.grid(row=0, column=0, padx=(0, 5), pady=2, sticky='ew')
@@ -33,10 +39,19 @@ class AgentChatTab:
         self.update_button = tk.Button(control_frame, text="Update", command=self.update_with_game_state)
         self.update_button.grid(row=0, column=2, padx=2)
 
-        self.reset_button = tk.Button(control_frame, text="Clear", command=self.reset_conversation)
+        self.reset_button = tk.Button(control_frame, text="Clear", command=self.clear_conversation)
         self.reset_button.grid(row=0, column=3, padx=2)
 
-        self.frame.pack(fill=tk.BOTH, expand=True)
+        # Layout using grid to ensure controls are always visible
+        self.text_area.pack_forget()
+        self.text_area.grid(row=0, column=0, sticky="nsew", padx=5, pady=(5, 0))
+        control_frame.grid(row=1, column=0, sticky="ew", padx=5, pady=5)
+        self.status_label = ttk.Label(self.frame, text="", foreground="orange")
+        self.status_label.grid(row=2, column=0, sticky="ew", padx=5, pady=(0, 5))
+        self.frame.grid_rowconfigure(0, weight=1)
+        self.frame.grid_rowconfigure(1, weight=0)
+        self.frame.grid_rowconfigure(2, weight=0)
+        self.frame.grid_columnconfigure(0, weight=1)
 
 
     def display_message(self, sender, message):
@@ -48,53 +63,65 @@ class AgentChatTab:
 
     def send_message(self):
         try:
-            print(f"[DEBUG] send_message called for {self.agent_name}")
+            logging.debug(f"send_message called for {self.agent_name}")
             user_message = self.entry.get().strip()
             if not user_message:
                 return
+            self.status_label.config(text="Processing...")
+            self.frame.update_idletasks()
             self.display_message("You", user_message)
             self.entry.delete(0, tk.END)
             response = self.agent.run(None, user_message)
             self.display_message(self.agent_name, response)
+            self.status_label.config(text="")
         except Exception as e:
-            print(f"[ERROR] Exception in send_message: {e}")
+            logging.exception("Exception in send_message")
+            self.status_label.config(text="Error during processing")
 
     def update_with_game_state(self):
         try:
-            if self.auto_clear.get():
+            self.status_label.config(text="Fetching and processing game state...")
+            self.frame.update_idletasks()
+            if self.auto_clear and self.auto_clear.get():
                 self.agent.conversation_history = []
-            print(f"[DEBUG] update_with_game_state called for {self.agent_name}")
+            logging.debug(f"update_with_game_state called for {self.agent_name}")
             user_message = self.entry.get().strip()
             self.entry.delete(0, tk.END)
             game_state = self.get_game_state_func()
             prompt, response = self.agent.run(game_state, user_message)
             self.display_message("You", prompt)
             self.display_message(self.agent_name, response)
+            self.status_label.config(text="")
         except Exception as e:
-            print(f"[ERROR] Exception in update_with_game_state: {e}")
+            logging.exception("Exception in update_with_game_state")
+            self.status_label.config(text="Error during processing")
 
     def clear_conversation(self):
         try:
-            print(f"[DEBUG] clear_conversation called for {self.agent_name}")
+            logging.debug(f"clear_conversation called for {self.agent_name}")
             self.agent.conversation_history = []
             self.text_area['state'] = 'normal'
             self.text_area.delete(1.0, tk.END)
             self.text_area['state'] = 'disabled'
         except Exception as e:
-            print(f"[ERROR] Exception in clear_conversation: {e}")
+            logging.exception("Exception in clear_conversation")
 
 class LoLCoachGUI(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("LoL Coach Agents")
         self.geometry("800x500")
-        self.notebook = ttk.Notebook(self)
-        self.notebook.pack(fill=tk.BOTH, expand=True)
-        self.build_agent = BuildAgent()
-        self.macro_agent = MacroAgent()
+        self.rowconfigure(0, weight=1)
+        self.columnconfigure(0, weight=1)
 
         mode_frame = ttk.Frame(self)
         mode_frame.pack(fill=tk.X, padx=5, pady=2)
+
+        self.notebook = ttk.Notebook(self)
+        self.notebook.pack(fill=tk.BOTH, expand=True)
+        self.notebook.pack_configure(expand=True, fill='both')
+        self.build_agent = BuildAgent()
+        self.macro_agent = MacroAgent()
 
         # Add bottom frame for auto-clear checkbox
         self.auto_clear = tk.BooleanVar(value=False)
@@ -113,8 +140,8 @@ class LoLCoachGUI(tk.Tk):
             else:
                 return fetch_game_state()
         # --- END: TESTING ONLY ---
-        self.macro_tab = AgentChatTab(self.notebook, self.macro_agent, "MacroAgent", get_game_state)
-        self.build_tab = AgentChatTab(self.notebook, self.build_agent, "BuildAgent", get_game_state)
+        self.macro_tab = AgentChatTab(self.notebook, self.macro_agent, "MacroAgent", get_game_state, self.auto_clear)
+        self.build_tab = AgentChatTab(self.notebook, self.build_agent, "BuildAgent", get_game_state, self.auto_clear)
         self.notebook.add(self.macro_tab.frame, text="Macro Agent")
         self.notebook.add(self.build_tab.frame, text="Build Agent")
 
