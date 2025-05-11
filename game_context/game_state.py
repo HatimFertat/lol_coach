@@ -482,7 +482,7 @@ def parse_team_state(
     enemy_structures: Structures = None,
     monsters: Monsters = None
 ) -> TeamState:
-    lane_mapping = {"UTILITY": "SUPPORT", "MIDDLE": "MID", "BOTTOM": "BOT"}
+    lane_mapping = {"UTILITY": "SUPPORT", "MIDDLE": "MIDDLE", "BOTTOM": "BOT"}
     members = [p for p in all_players if p.get("team") == team_name]
     team_state = TeamState(
         champions=[ChampionState(
@@ -623,7 +623,7 @@ def parse_game_state(game_state_json: Dict[str, Any]) -> GameStateContext:
 
     #just for testing
     if game_state_json.get("gameData", {}).get("gameMode") == "PRACTICETOOL":
-        players[active_player_idx]["lane"] = "Mid"
+        players[active_player_idx]["lane"] = "MIDDLE"
 
     # Initialize structures for both teams
     player_team_structures = Structures(team=player_team_name)

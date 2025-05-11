@@ -132,19 +132,32 @@ class MacroAgent(Agent):
     def standalone_message(self, user_message: str) -> str:
         self.conversation_history.append({"role": "user", "content": user_message})
         try:
-            client = OpenAI(
-                api_key=os.getenv("GEMINI_API_KEY"),
-                base_url="https://generativelanguage.googleapis.com/v1beta/openai/"
-            )
-            messages = [{"role": "system", "content": "You are a macro-level coach for a League of Legends game."}] + self.conversation_history
-            response = client.chat.completions.create(
-                model="gemini-2.0-flash",
-                messages=messages,
-                max_tokens=256
-            )
-            advice = response.choices[0].message.content
-            self.conversation_history.append({"role": "assistant", "content": advice})
-            return advice
+            # Handle proxy environment variables
+            original_http_proxy = os.environ.pop('http_proxy', None)
+            original_https_proxy = os.environ.pop('https_proxy', None)
+            original_HTTP_PROXY = os.environ.pop('HTTP_PROXY', None)
+            original_HTTPS_PROXY = os.environ.pop('HTTPS_PROXY', None)
+            
+            try:
+                client = OpenAI(
+                    api_key=os.getenv("GEMINI_API_KEY"),
+                    base_url="https://generativelanguage.googleapis.com/v1beta/openai/"
+                )
+                messages = [{"role": "system", "content": "You are a macro-level coach for a League of Legends game."}] + self.conversation_history
+                response = client.chat.completions.create(
+                    model="gemini-2.0-flash",
+                    messages=messages,
+                    max_tokens=256
+                )
+                advice = response.choices[0].message.content
+                self.conversation_history.append({"role": "assistant", "content": advice})
+                return advice
+            finally:
+                # Restore original proxy settings
+                if original_http_proxy: os.environ['http_proxy'] = original_http_proxy
+                if original_https_proxy: os.environ['https_proxy'] = original_https_proxy
+                if original_HTTP_PROXY: os.environ['HTTP_PROXY'] = original_HTTP_PROXY
+                if original_HTTPS_PROXY: os.environ['HTTPS_PROXY'] = original_HTTPS_PROXY
         except Exception as e:
             return f"MacroAgent Error: {str(e)}"
         
@@ -172,32 +185,45 @@ class MacroAgent(Agent):
         prompt = f"{prefix}\n{summary}\n{suffix}"
         self.conversation_history.append({"role": "user", "content": prompt})
         try:
-            client = OpenAI(
-                api_key=os.getenv("GEMINI_API_KEY"),
-                base_url="https://generativelanguage.googleapis.com/v1beta/openai/"
-            )
-            # Always start with a system prompt
-            messages = [{"role": "system", "content": "You are a macro-level coach for a League of Legends game."}] + self.conversation_history
-            if image_path and os.path.exists(image_path):
-                encoded_img = encode_image(image_path)
-                # Replace last user message content with structured content list
-                # Find last user message index
-                for i in range(len(messages)-1, -1, -1):
-                    if messages[i]["role"] == "user" and messages[i]["content"] == prompt:
-                        messages[i]["content"] = [
-                            {"type": "text", "text": prompt},
-                            {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{encoded_img}"}}
-                        ]
-                        break
-            response = client.chat.completions.create(
-                model="gemini-2.0-flash-lite",
-                messages=messages,
-                max_tokens=1024
-            )
-            advice = response.choices[0].message.content
-            # Add assistant reply to conversation history
-            self.conversation_history.append({"role": "assistant", "content": advice})
-            return prompt, advice
+            # Handle proxy environment variables
+            original_http_proxy = os.environ.pop('http_proxy', None)
+            original_https_proxy = os.environ.pop('https_proxy', None)
+            original_HTTP_PROXY = os.environ.pop('HTTP_PROXY', None)
+            original_HTTPS_PROXY = os.environ.pop('HTTPS_PROXY', None)
+            
+            try:
+                client = OpenAI(
+                    api_key=os.getenv("GEMINI_API_KEY"),
+                    base_url="https://generativelanguage.googleapis.com/v1beta/openai/"
+                )
+                # Always start with a system prompt
+                messages = [{"role": "system", "content": "You are a macro-level coach for a League of Legends game."}] + self.conversation_history
+                if image_path and os.path.exists(image_path):
+                    encoded_img = encode_image(image_path)
+                    # Replace last user message content with structured content list
+                    # Find last user message index
+                    for i in range(len(messages)-1, -1, -1):
+                        if messages[i]["role"] == "user" and messages[i]["content"] == prompt:
+                            messages[i]["content"] = [
+                                {"type": "text", "text": prompt},
+                                {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{encoded_img}"}}
+                            ]
+                            break
+                response = client.chat.completions.create(
+                    model="gemini-2.0-flash-lite",
+                    messages=messages,
+                    max_tokens=1024
+                )
+                advice = response.choices[0].message.content
+                # Add assistant reply to conversation history
+                self.conversation_history.append({"role": "assistant", "content": advice})
+                return prompt, advice
+            finally:
+                # Restore original proxy settings
+                if original_http_proxy: os.environ['http_proxy'] = original_http_proxy
+                if original_https_proxy: os.environ['https_proxy'] = original_https_proxy
+                if original_HTTP_PROXY: os.environ['HTTP_PROXY'] = original_HTTP_PROXY
+                if original_HTTPS_PROXY: os.environ['HTTPS_PROXY'] = original_HTTPS_PROXY
         except Exception as e:
             return f"MacroAgent Error: {str(e)}"
     
