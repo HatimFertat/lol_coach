@@ -106,7 +106,7 @@ class MacroAgent(Agent):
             f"Here is the current state of my league of legends game:\n",
             f"Game Time: {time_str}",
 
-            f"Our team is {"blue" if game_state.team_side == 'ORDER' else "red"} side",
+            f"Our team is {'blue' if game_state.team_side == 'ORDER' else 'red'} side",
             f"I am playing {champ} {role} with the following stats:",
             f"{summarize_all_stats(game_state.active_player_stats)}",
             f"{active_player_summary[0]}\n",
