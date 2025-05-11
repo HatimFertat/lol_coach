@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 import json
 from utils.get_item_recipes import (get_legendary_items, get_non_consumable_items, download_json_or_load_local,
                                      get_max_entries, build_section_text, ITEM_URL, cache_path)
+import base64
 
 load_dotenv()
 CURRENT_PATCH = os.getenv("CURRENT_PATCH", "15.7.1")
@@ -15,6 +16,11 @@ non_consumable_item_list = get_non_consumable_items(
     download_json_or_load_local(ITEM_URL.format(patch=CURRENT_PATCH), cache_path),
     map_id=11
 )
+
+def encode_image(image_path):
+    with open(image_path, "rb") as image_file:
+        return base64.b64encode(image_file.read()).decode('utf-8')
+
 class MacroAgent(Agent):
 
     def __init__(self):
@@ -142,15 +148,23 @@ class MacroAgent(Agent):
         except Exception as e:
             return f"MacroAgent Error: {str(e)}"
         
-    def run(self, game_state: GameStateContext = None, user_message: str = None) -> str:
+    def run(self, game_state: GameStateContext = None, user_message: str = None, image_path: str = None) -> str:
         # Free-form chat, just append user message
         if game_state is None and user_message is not None:
             return self.standalone_message(user_message)
 
         # Summarize game state
         summary = self.summarize_game_state(game_state)
-        prefix = "Based on the following game state summary, provide a quick macro strategy recommendation for the next 2 minutes."
-        suffix = "Recommendation:"
+        prefix = "Based on the following game state summary"
+        if image_path:
+            prefix += " and the attached minimap image"
+        prefix += ", provide a quick macro strategy recommendation for the next 2 minutes."
+        
+        suffix = ""
+        if image_path:
+            suffix += "Describe briefly the champion positions in the map then make a recommendation."
+        suffix += "Recommendation:"
+
         if user_message:
             suffix = user_message + "\n" + suffix
         
@@ -164,10 +178,21 @@ class MacroAgent(Agent):
             )
             # Always start with a system prompt
             messages = [{"role": "system", "content": "You are a macro-level coach for a League of Legends game."}] + self.conversation_history
+            if image_path and os.path.exists(image_path):
+                encoded_img = encode_image(image_path)
+                # Replace last user message content with structured content list
+                # Find last user message index
+                for i in range(len(messages)-1, -1, -1):
+                    if messages[i]["role"] == "user" and messages[i]["content"] == prompt:
+                        messages[i]["content"] = [
+                            {"type": "text", "text": prompt},
+                            {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{encoded_img}"}}
+                        ]
+                        break
             response = client.chat.completions.create(
                 model="gemini-2.0-flash-lite",
                 messages=messages,
-                max_tokens=512
+                max_tokens=1024
             )
             advice = response.choices[0].message.content
             # Add assistant reply to conversation history

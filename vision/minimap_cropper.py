@@ -5,7 +5,7 @@ from pathlib import Path
 import numpy as np
 
 # Directory containing full-screen screenshots
-SCREENSHOT_DIR = Path("screenshots")
+SCREENSHOT_DIR = Path(__file__).parent / "screenshots"
 
 def get_latest_full_screenshot(directory: Path):
     files = list(directory.glob("*.png"))
@@ -110,14 +110,14 @@ def process_latest_minimap_crop():
 
     print(f"Saved cropped minimap to: {output_path}")
 
-def process_minimap_crop(full_img_path: str):
+def process_minimap_crop(full_img_path: str, minimap_right: bool = True):
     full_img = cv2.imread(full_img_path)
-    anchor = find_minimap_anchor_shape(full_img, minimap_right=True)
+    anchor = find_minimap_anchor_shape(full_img, minimap_right)
     if anchor is None:
         print("Could not detect minimap anchor by shape.")
         return
 
-    cropped = crop_minimap_from_anchor(full_img, anchor, minimap_right=True)
+    cropped = crop_minimap_from_anchor(full_img, anchor, minimap_right)
     output_path = save_minimap_crop(cropped, Path(full_img_path))
 
     print(f"Saved cropped minimap to: {output_path}")

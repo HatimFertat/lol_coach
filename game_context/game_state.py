@@ -482,12 +482,13 @@ def parse_team_state(
     enemy_structures: Structures = None,
     monsters: Monsters = None
 ) -> TeamState:
+    lane_mapping = {"UTILITY": "SUPPORT", "MIDDLE": "MID", "BOTTOM": "BOT"}
     members = [p for p in all_players if p.get("team") == team_name]
     team_state = TeamState(
         champions=[ChampionState(
             name=p["champion"],
             items=[item.name for item in p.get("items", [])],
-            lane=p["lane"],
+            lane=lane_mapping.get(p["lane"], p["lane"]),
             level=p["level"],
             score=parse_score(p.get("scores", {})),
             is_bot=p.get("is_bot", False),
@@ -620,6 +621,10 @@ def parse_game_state(game_state_json: Dict[str, Any]) -> GameStateContext:
     player_team_name = players[active_player_idx]["team"] if players else ""
     enemy_team_name = "ORDER" if player_team_name == "CHAOS" else "CHAOS"
 
+    #just for testing
+    if game_state_json.get("gameData", {}).get("gameMode") == "PRACTICETOOL":
+        players[active_player_idx]["lane"] = "Mid"
+
     # Initialize structures for both teams
     player_team_structures = Structures(team=player_team_name)
     enemy_team_structures = Structures(team=enemy_team_name)
@@ -642,9 +647,6 @@ def parse_game_state(game_state_json: Dict[str, Any]) -> GameStateContext:
     enemy_laner_champ = next((p["champion"] for p in players if p["team"] == enemy_team_name and p.get("lane") == players[active_player_idx].get("lane")), None)
     # Try to match player's lane/role if possible
     active_lane = players[active_player_idx].get("lane") if active_player_idx is not None else None
-    if not active_lane: #practice tool
-        # fallback: use summoner spell type or champion position
-        active_lane = next((p["lane"] for p in players if p["riot_id"] == active_player_riot_id and p["lane"]), "Mid")
     enemy_laner = next((p for p in players if p["team"] == enemy_team_name and p.get("lane") == active_lane), None)
     #print items for all players
     return GameStateContext(

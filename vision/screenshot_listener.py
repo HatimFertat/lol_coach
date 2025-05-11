@@ -4,7 +4,8 @@ from datetime import datetime
 from pynput import keyboard
 import mss
 from PIL import Image
-from minimap_cropper import process_minimap_crop  # Adjust if your cropper function has a different name
+import time
+from vision.minimap_cropper import process_minimap_crop  # Adjust if your cropper function has a different name
 
 # Directory to save screenshots
 SCREENSHOT_DIR = os.path.join(os.path.dirname(__file__), 'screenshots')
