@@ -482,13 +482,12 @@ def parse_team_state(
     enemy_structures: Structures = None,
     monsters: Monsters = None
 ) -> TeamState:
-    lane_mapping = {"UTILITY": "SUPPORT", "MIDDLE": "MID", "BOTTOM": "BOT"}
     members = [p for p in all_players if p.get("team") == team_name]
     team_state = TeamState(
         champions=[ChampionState(
             name=p["champion"],
             items=[item.name for item in p.get("items", [])],
-            lane=lane_mapping.get(p["lane"], p["lane"]),
+            lane=p["lane"],
             level=p["level"],
             score=parse_score(p.get("scores", {})),
             is_bot=p.get("is_bot", False),
@@ -623,7 +622,7 @@ def parse_game_state(game_state_json: Dict[str, Any]) -> GameStateContext:
 
     #just for testing
     if game_state_json.get("gameData", {}).get("gameMode") == "PRACTICETOOL":
-        players[active_player_idx]["lane"] = "Mid"
+        players[active_player_idx]["lane"] = "MIDDLE"
 
     # Initialize structures for both teams
     player_team_structures = Structures(team=player_team_name)
@@ -713,10 +712,12 @@ def format_items_string(items_dict: dict[str, list[str]], include_list: Optional
         lines.append(f"{champion}: {items_str}")
     return "\n".join(lines)
 
-def summarize_players(champions, include_list):
+lane_mapping = {"UTILITY": "SUPPORT", "MIDDLE": "MIDDLE", "BOTTOM": "BOT"}
+
+def summarize_players(champions, include_list, lane_mapping=lane_mapping):
     lines = []
     for champ in champions:
-        role = champ.lane or "?"
+        role = lane_mapping.get(champ.lane, champ.lane) or "?"
         name = champ.name
         level = champ.level
         score = champ.score

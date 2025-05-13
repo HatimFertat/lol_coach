@@ -11,10 +11,6 @@ from vision.minimap_cropper import process_minimap_crop  # Adjust if your croppe
 SCREENSHOT_DIR = os.path.join(os.path.dirname(__file__), 'screenshots')
 os.makedirs(SCREENSHOT_DIR, exist_ok=True)
 
-# Hotkey combination
-COMBINATION = {keyboard.Key.shift, keyboard.Key.tab}
-current_keys = set()
-
 def take_screenshot_and_crop():
     # Take screenshot
     with mss.mss() as sct:
@@ -32,20 +28,10 @@ def take_screenshot_and_crop():
         except Exception as e:
             print(f'Error calling minimap cropper: {e}')
 
-def on_press(key):
-    if key in COMBINATION:
-        current_keys.add(key)
-        if all(k in current_keys for k in COMBINATION):
-            take_screenshot_and_crop()
-
-def on_release(key):
-    if key in current_keys:
-        current_keys.remove(key)
-
 def main():
-    print(f'Listening for Shift+Tab to take a screenshot and crop minimap... (OS: {platform.system()})')
-    with keyboard.Listener(on_press=on_press, on_release=on_release) as listener:
-        listener.join()
+    print(f'Listening for keyboard shortcuts to take a screenshot and crop minimap... (OS: {platform.system()})')
+    # The keyboard listener is now managed by the GUI
+    pass
 
 if __name__ == '__main__':
     main()

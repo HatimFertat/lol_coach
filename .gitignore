@@ -1,5 +1,19 @@
+uv.lock
+.python-version
+
+**/*.png
+**/*.jpg
+**/*.jpeg
+**/*.gif
+**/*.webp
+**/*.svg
+**/*.ico
+**/*.bmp
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
+**/__pycache__/
+**/*.py[cod]
 *.py[cod]
 *$py.class
 .DS_Store

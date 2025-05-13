@@ -1,7 +1,7 @@
 # macro_agent.py
 
 from agents.base_agent import Agent
-from game_context.game_state import GameStateContext, format_time, summarize_all_stats, summarize_players
+from game_context.game_state import GameStateContext, format_time, summarize_all_stats, summarize_players, lane_mapping
 from openai import OpenAI
 import os
 from dotenv import load_dotenv
@@ -16,6 +16,7 @@ non_consumable_item_list = get_non_consumable_items(
     download_json_or_load_local(ITEM_URL.format(patch=CURRENT_PATCH), cache_path),
     map_id=11
 )
+
 
 def encode_image(image_path):
     with open(image_path, "rb") as image_file:
@@ -94,11 +95,11 @@ class MacroAgent(Agent):
             getattr(game_state.enemy_team, "elder_buff_expires_at", None)
         )
         
-        active_player_summary = summarize_players([game_state.player_team.champions[active_player_index]], non_consumable_item_list)
-        our_players = summarize_players([c for c in game_state.player_team.champions if c.name != game_state.player_champion], non_consumable_item_list)
-        enemy_players = summarize_players(game_state.enemy_team.champions, non_consumable_item_list)
+        active_player_summary = summarize_players([game_state.player_team.champions[active_player_index]], non_consumable_item_list, lane_mapping)
+        our_players = summarize_players([c for c in game_state.player_team.champions if c.name != game_state.player_champion], non_consumable_item_list, lane_mapping)
+        enemy_players = summarize_players(game_state.enemy_team.champions, non_consumable_item_list, lane_mapping)
 
-        role = game_state.role.capitalize()
+        role = lane_mapping.get(game_state.role, game_state.role).capitalize()
         champ = game_state.player_champion
 
         # Final summary

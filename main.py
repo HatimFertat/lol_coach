@@ -8,11 +8,17 @@ from agents.build_agent import BuildAgent
 from agents.macro_agent import MacroAgent
 import time
 from dotenv import load_dotenv
+from PySide6.QtWidgets import QApplication
 
 load_dotenv()
 
 from GUI.gui import LoLCoachGUI
 
 if __name__ == "__main__":
-    app = LoLCoachGUI()
-    app.mainloop()
+    # Create QApplication instance before any widgets
+    app = QApplication([])
+    # Create the GUI window
+    window = LoLCoachGUI()
+    window.show()
+    # Start the Qt event loop
+    app.exec()
