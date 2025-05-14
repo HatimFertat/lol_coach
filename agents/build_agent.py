@@ -8,19 +8,21 @@ import os
 from dotenv import load_dotenv
 from utils.lolalytics_client import get_build, ItemSet, Section, toggle_mapping
 from utils.get_item_recipes import (get_legendary_items, get_non_consumable_items, download_json_or_load_local,
-                                     get_max_entries, build_section_text, ITEM_URL, cache_path)
+                                     get_max_entries, build_section_text, ITEM_URL, CHAMPION_TAGS_URL, cache_path, champion_tags)
 
 load_dotenv()
 CURRENT_PATCH = os.getenv("CURRENT_PATCH", "15.7.1")
 legendary_item_list = get_legendary_items(
-    download_json_or_load_local(ITEM_URL.format(patch=CURRENT_PATCH), cache_path),
+    download_json_or_load_local(ITEM_URL.format(patch=CURRENT_PATCH), cache_path, "items.json"),
     map_id=11
 )
 non_consumable_item_list = get_non_consumable_items(
-    download_json_or_load_local(ITEM_URL.format(patch=CURRENT_PATCH), cache_path),
+    download_json_or_load_local(ITEM_URL.format(patch=CURRENT_PATCH), cache_path, "items.json"),
     map_id=11
 )
 
+champion_name_to_lolalytics = {champ_data['name']: champ_data['id'] for champ_data in champion_tags['data'].values()}
+champion_name_to_lolalytics['MonkeyKing'] = 'Wukong'
 def build_section_text(section_name: str, item_sets: list[ItemSet]) -> str:
     header = f"== {section_name.replace('_', ' ').title()} =="
     lines = []
@@ -32,6 +34,7 @@ def build_section_text(section_name: str, item_sets: list[ItemSet]) -> str:
 class BuildAgent(Agent):
     def __init__(self):
         self.conversation_history = []
+        self.champion_to_lolalytics = {}
 
     def get_reference_build_text(self, game_time: int, completed_items: list[str], champion: str, role: str, enemy: str) -> tuple[str, str]:
         build_sections = get_build(champion=champion, role=role, vs=enemy)

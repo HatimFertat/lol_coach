@@ -4,6 +4,8 @@ import requests
 from utils.lolalytics_client import ItemSet
 from dotenv import load_dotenv
 import logging
+import shutil
+from tqdm import tqdm
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -11,21 +13,9 @@ load_dotenv()
 
 PATCH_URL = "https://ddragon.leagueoflegends.com/api/versions.json"
 ITEM_URL = "https://ddragon.leagueoflegends.com/cdn/{patch}/data/en_US/item.json"
+CHAMPION_TAGS_URL = "https://ddragon.leagueoflegends.com/cdn/{patch}/data/en_US/champion.json"
 
-
-def download_json_or_load_local(url, cache_path):
-    if os.path.exists(cache_path):
-        logger.info(f"Loading cached data from {cache_path}")
-        with open(cache_path, "r") as f:
-            return json.load(f)
-    else:
-        logger.info(f"Downloading from {url}")
-        r = requests.get(url)
-        r.raise_for_status()
-        data = r.json()
-        with open(cache_path, "w") as f:
-            json.dump(data, f, indent=2)
-        return data
+CHAMPION_ICONS_URL = "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/"
     
 def get_current_patch():
     """
@@ -36,19 +26,72 @@ def get_current_patch():
         response.raise_for_status()
         versions = response.json()
         if versions:
-            return versions[0]
+            return versions[0], versions[1]
         else:
             raise ValueError("No versions found in the response.")
     except requests.RequestException as e:
         logger.error(f"Error fetching current patch: {e}")
         return None
-    
-CURRENT_PATCH = get_current_patch()
-os.environ["CURRENT_PATCH"] = CURRENT_PATCH
-CACHE_DIR = "patch_item_data"
-os.makedirs(CACHE_DIR, exist_ok=True)
-cache_path = os.path.join(CACHE_DIR, f"items_{CURRENT_PATCH}.json")
 
+CURRENT_PATCH, PREVIOUS_PATCH = get_current_patch()
+os.environ["CURRENT_PATCH"] = CURRENT_PATCH
+os.environ["PREVIOUS_PATCH"] = PREVIOUS_PATCH
+
+def download_json_or_load_local(url, cache_path, filename, fallback_patch=PREVIOUS_PATCH):
+    if os.path.exists(os.path.join(cache_path, filename)):
+        logger.info(f"Loading cached data from {cache_path}")
+        with open(os.path.join(cache_path, filename), "r") as f:
+            return json.load(f)
+    else:
+        try:
+            logger.info(f"Downloading from {url}")
+            r = requests.get(url)
+            r.raise_for_status()
+            data = r.json()
+        except Exception as e:
+            logger.error(f"Error downloading from {url}: {e}, trying fallback patch {fallback_patch}")
+            try:
+                r = requests.get(url.format(patch=fallback_patch))
+                r.raise_for_status()
+                data = r.json()
+            except Exception as e:
+                logger.error(f"Error downloading from {url.format(patch=fallback_patch)}: {e}")
+                return None
+        with open(os.path.join(cache_path, filename), "w") as f:
+            json.dump(data, f, indent=2)
+        return data
+    
+def remove_old_patch_dirs_keep_latest(cache_dir: str, CURRENT_PATCH: str):
+    """
+    Removes old patch directories and keeps only the latest one.
+    """
+    if not os.path.exists(os.path.join(cache_dir, CURRENT_PATCH)):
+        os.makedirs(os.path.join(cache_dir, CURRENT_PATCH))
+    #remove all other directories
+    for dir in os.listdir(cache_dir):
+        if dir != CURRENT_PATCH:
+            shutil.rmtree(os.path.join(cache_dir, dir))
+
+
+CACHE_DIR = "patch_data"
+os.makedirs(CACHE_DIR, exist_ok=True)
+cache_path = os.path.join(CACHE_DIR, CURRENT_PATCH)
+
+remove_old_patch_dirs_keep_latest(CACHE_DIR, CURRENT_PATCH)
+champion_tags = download_json_or_load_local(CHAMPION_TAGS_URL.format(patch=CURRENT_PATCH), cache_path, "champion_tags.json")
+
+def download_champion_icons(champion_name_to_key=champion_tags['data'],
+                            CHAMPION_ICONS_URL=CHAMPION_ICONS_URL, cache_path='./vision/icons'):
+    os.makedirs(cache_path, exist_ok=True)
+    for champion_data in tqdm(champion_name_to_key.values()):
+        champion_name = champion_data['name']
+        #check if the file exists already
+        if os.path.exists(os.path.join(cache_path, f"{champion_name}.png")):
+            logger.info(f"Skipping {champion_name} because it already exists")
+            continue
+        response = requests.get(CHAMPION_ICONS_URL + f"{champion_data['key']}.png")
+        with open(os.path.join(cache_path, f"{champion_name}.png"), "wb") as f:
+            f.write(response.content)
 
 
 def get_legendary_items(item_data, map_id):

@@ -6,6 +6,7 @@ import numpy as np
 
 # Directory containing full-screen screenshots
 SCREENSHOT_DIR = Path(__file__).parent / "screenshots"
+os.makedirs(SCREENSHOT_DIR, exist_ok=True)
 
 def get_latest_full_screenshot(directory: Path):
     files = list(directory.glob("*.png"))

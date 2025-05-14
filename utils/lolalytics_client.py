@@ -64,7 +64,7 @@ def classify_section(label: str, mapping: dict) -> str:
 
 def scrape_actual_builds(champion="fiora", role='top', vs="singed", allowed_section_types=allowed_section_types, toggle=None) -> List[Section]:
     logger.debug(f"Starting scrape for champion: {champion}, role: {role}, toggle: {toggle}")
-    champion = champion.replace("'", "").lower()
+    champion = champion.lower()
     base_url = f"https://lolalytics.com/lol/{champion}/"
     if vs:
         vs = vs.replace("'", "").lower()

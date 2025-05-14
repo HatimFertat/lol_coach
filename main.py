@@ -1,7 +1,8 @@
 # main.py
 import os
-from utils.get_item_recipes import CURRENT_PATCH
+from utils.get_item_recipes import CURRENT_PATCH, PREVIOUS_PATCH
 os.environ["CURRENT_PATCH"] = CURRENT_PATCH
+os.environ["PREVIOUS_PATCH"] = PREVIOUS_PATCH
 
 from game_context.game_state import GameStateContext, TeamState, ChampionState, ObjectiveTimers
 from agents.build_agent import BuildAgent

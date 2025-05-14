@@ -7,13 +7,13 @@ import os
 from dotenv import load_dotenv
 import json
 from utils.get_item_recipes import (get_legendary_items, get_non_consumable_items, download_json_or_load_local,
-                                     get_max_entries, build_section_text, ITEM_URL, cache_path)
+                                     get_max_entries, build_section_text, ITEM_URL, cache_path, download_champion_icons, champion_tags)
 import base64
 
 load_dotenv()
 CURRENT_PATCH = os.getenv("CURRENT_PATCH", "15.7.1")
 non_consumable_item_list = get_non_consumable_items(
-    download_json_or_load_local(ITEM_URL.format(patch=CURRENT_PATCH), cache_path),
+    download_json_or_load_local(ITEM_URL.format(patch=CURRENT_PATCH), cache_path, "items.json"),
     map_id=11
 )
 
@@ -26,6 +26,7 @@ class MacroAgent(Agent):
 
     def __init__(self):
         self.conversation_history = []
+        download_champion_icons()
 
     def summarize_game_state(self, game_state: GameStateContext) -> str:
 

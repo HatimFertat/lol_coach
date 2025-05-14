@@ -1,0 +1,1625 @@
+<?xml version="1.0" encoding="utf-8"?>
+<annotations>
+  <version>1.1</version>
+  <meta>
+    <job>
+      <id>2462917</id>
+      <size>1</size>
+      <mode>annotation</mode>
+      <overlap>0</overlap>
+      <bugtracker></bugtracker>
+      <created>2025-05-14 07:30:13.176554+00:00</created>
+      <updated>2025-05-14 12:09:20.923515+00:00</updated>
+      <subset>default</subset>
+      <start_frame>0</start_frame>
+      <stop_frame>0</stop_frame>
+      <frame_filter></frame_filter>
+      <segments>
+        <segment>
+          <id>2465195</id>
+          <start>0</start>
+          <stop>0</stop>
+          <url>https://app.cvat.ai/api/jobs/2462917</url>
+        </segment>
+      </segments>
+      <owner>
+        <username>hatim0</username>
+        <email>thefreezer11@gmail.com</email>
+      </owner>
+      <assignee></assignee>
+      <labels>
+        <label>
+          <name>top-lane alcove brush</name>
+          <color>#83e070</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>neutral</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>blueside top-lane Tier 1 brush</name>
+          <color>#83e070</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>blue</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>redside top-lane Tier 1 brush</name>
+          <color>#83e070</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>red</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>blueside top-lane Tier 2 brush</name>
+          <color>#83e070</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>blue</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>redside top-lane Tier 2 brush</name>
+          <color>#83e070</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>red</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>bot-lane alcove brush</name>
+          <color>#83e070</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>neutral</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>blueside bot-lane Tier 1 brush</name>
+          <color>#83e070</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>blue</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>redside bot-lane Tier 1 brush</name>
+          <color>#83e070</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>red</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>blueside bot-lane Tier 2 brush</name>
+          <color>#83e070</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>blue</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>redside bot-lane Tier 2 brush</name>
+          <color>#83e070</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>red</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>blueside Blue-buff brush</name>
+          <color>#83e070</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>blue</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>redside Blue-buff brush</name>
+          <color>#83e070</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>red</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>blueside Red-buff brush</name>
+          <color>#83e070</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>blue</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>redside Red-buff brush</name>
+          <color>#83e070</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>red</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>blueside top-lane tri-brush</name>
+          <color>#83e070</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>blue</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>redside top-lane tri-brush</name>
+          <color>#83e070</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>red</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>blueside bot-lane tri-brush</name>
+          <color>#83e070</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>blue</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>redside bot-lane tri-brush</name>
+          <color>#83e070</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>red</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>blueside Krugs-camp brush</name>
+          <color>#83e070</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>blue</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>redside Krugs-camp brush</name>
+          <color>#83e070</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>red</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>blueside Raptor-camp brush</name>
+          <color>#83e070</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>blue</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>redside Raptor-camp brush</name>
+          <color>#83e070</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>red</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>blueside Gromp-camp brush</name>
+          <color>#83e070</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>blue</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>redside Gromp-camp brush</name>
+          <color>#83e070</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>red</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>blueside Behind wolf-camp brush</name>
+          <color>#83e070</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>blue</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>redside Behind wolf-camp brush</name>
+          <color>#83e070</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>red</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>blueside Behind red-buff brush</name>
+          <color>#83e070</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>blue</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>redside Behind red-buff brush</name>
+          <color>#83e070</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>red</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>top-side river brush</name>
+          <color>#83e070</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>neutral</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>bot-side river brush</name>
+          <color>#83e070</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>neutral</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>top-side river pixel brush</name>
+          <color>#83e070</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>neutral</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>bot-side river pixel brush</name>
+          <color>#83e070</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>neutral</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>Mid-lane top-side river brush</name>
+          <color>#83e070</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>neutral</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>Mid-lane bot-side river brush</name>
+          <color>#83e070</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>neutral</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>west jungle brush</name>
+          <color>#83e070</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>blue</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>north jungle brush</name>
+          <color>#83e070</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>red</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>south jungle brush</name>
+          <color>#83e070</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>blue</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>east jungle brush</name>
+          <color>#83e070</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>red</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>north jungle entrance brush</name>
+          <color>#83e070</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>red</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>south jungle entrance brush</name>
+          <color>#83e070</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>blue</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>blueside top-lane tier 1</name>
+          <color>#32b7fa</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>blueside</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>redside top-lane tier 1</name>
+          <color>#fa3253</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>redside</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>blueside top-lane tier 2</name>
+          <color>#32b7fa</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>blueside</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>redside top-lane tier 2</name>
+          <color>#fa3253</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>redside</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>blueside top-lane tier 3</name>
+          <color>#32b7fa</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>blueside</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>redside top-lane tier 3</name>
+          <color>#fa3253</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>redside</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>blueside bot-lane tier 1</name>
+          <color>#32b7fa</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>blueside</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>redside bot-lane tier 1</name>
+          <color>#fa3253</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>redside</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>blueside bot-lane tier 2</name>
+          <color>#32b7fa</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>blueside</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>redside bot-lane tier 2</name>
+          <color>#fa3253</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>redside</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>blueside bot-lane tier 3</name>
+          <color>#32b7fa</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>blueside</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>redside bot-lane tier 3</name>
+          <color>#fa3253</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>redside</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>blueside top-lane inhibitor</name>
+          <color>#32b7fa</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>blueside</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>redside top-lane inhibitor</name>
+          <color>#fa3253</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>redside</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>blueside Nexus turret 1</name>
+          <color>#32b7fa</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>blueside</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>redside Nexus turret 1</name>
+          <color>#fa3253</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>redside</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>blueside Nexus turret 2</name>
+          <color>#32b7fa</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>blueside</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>redside Nexus turret 2</name>
+          <color>#fa3253</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>redside</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>blueside Nexus</name>
+          <color>#32b7fa</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>blueside</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>redside Nexus</name>
+          <color>#fa3253</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>redside</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>blueside Wolf</name>
+          <color>#32b7fa</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>blueside</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>redside Wolf</name>
+          <color>#fa3253</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>redside</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>blueside Gromp</name>
+          <color>#32b7fa</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>blueside</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>redside Gromp</name>
+          <color>#fa3253</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>redside</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>blueside Krugs</name>
+          <color>#32b7fa</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>blueside</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>redside Krugs</name>
+          <color>#fa3253</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>redside</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>blueside Raptor</name>
+          <color>#32b7fa</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>blueside</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>redside Raptor</name>
+          <color>#fa3253</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>redside</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>blueside Blue-buff</name>
+          <color>#32b7fa</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>blueside</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>redside Blue-buff</name>
+          <color>#fa3253</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>redside</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>blueside Red-buff</name>
+          <color>#32b7fa</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>blueside</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>redside Red-buff</name>
+          <color>#fa3253</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>redside</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>blueside mid-lane tier 1</name>
+          <color>#32b7fa</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>blueside</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>redside mid-lane tier 1</name>
+          <color>#fa3253</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>redside</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>blueside mid-lane tier 2</name>
+          <color>#32b7fa</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>blueside</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>redside mid-lane tier 2</name>
+          <color>#fa3253</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>redside</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>blueside mid-lane tier 3</name>
+          <color>#32b7fa</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>blueside</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>redside mid-lane tier 3</name>
+          <color>#fa3253</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>redside</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>blueside botlane</name>
+          <color>#32b7fa</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>blueside</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>redside botlane</name>
+          <color>#fa3253</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>redside</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>blueside toplane</name>
+          <color>#32b7fa</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>blueside</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>redside toplane</name>
+          <color>#fa3253</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>redside</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>blueside midlane</name>
+          <color>#32b7fa</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>blueside</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>redside midlane</name>
+          <color>#fa3253</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>redside</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>blueside top-lane alcove</name>
+          <color>#32b7fa</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>blueside</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>redside top-lane alcove</name>
+          <color>#fa3253</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>redside</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>blueside bot-lane alcove</name>
+          <color>#32b7fa</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>blueside</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>redside bot-lane alcove</name>
+          <color>#fa3253</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>side</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>neutral</default_value>
+              <values>redside</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>top-side river</name>
+          <color>#33ddff</color>
+          <type>any</type>
+          <attributes>
+          </attributes>
+        </label>
+        <label>
+          <name>bot-side river</name>
+          <color>#cf123e</color>
+          <type>any</type>
+          <attributes>
+          </attributes>
+        </label>
+        <label>
+          <name>top-side alcove</name>
+          <color>#ffcc33</color>
+          <type>any</type>
+          <attributes>
+          </attributes>
+        </label>
+        <label>
+          <name>bot-side alcove</name>
+          <color>#ffcc33</color>
+          <type>any</type>
+          <attributes>
+          </attributes>
+        </label>
+        <label>
+          <name>dragon pit</name>
+          <color>#ffcc33</color>
+          <type>any</type>
+          <attributes>
+          </attributes>
+        </label>
+        <label>
+          <name>baron pit</name>
+          <color>#ffcc33</color>
+          <type>any</type>
+          <attributes>
+          </attributes>
+        </label>
+        <label>
+          <name>west jungle</name>
+          <color>#cc9933</color>
+          <type>any</type>
+          <attributes>
+          </attributes>
+        </label>
+        <label>
+          <name>east jungle</name>
+          <color>#cc9933</color>
+          <type>any</type>
+          <attributes>
+          </attributes>
+        </label>
+        <label>
+          <name>north jungle</name>
+          <color>#cc9933</color>
+          <type>any</type>
+          <attributes>
+          </attributes>
+        </label>
+        <label>
+          <name>south jungle</name>
+          <color>#cc9933</color>
+          <type>any</type>
+          <attributes>
+          </attributes>
+        </label>
+        <label>
+          <name>blueside</name>
+          <color>#32b7fa</color>
+          <type>any</type>
+          <attributes>
+          </attributes>
+        </label>
+        <label>
+          <name>redside</name>
+          <color>#fa3253</color>
+          <type>any</type>
+          <attributes>
+          </attributes>
+        </label>
+        <label>
+          <name>toplane</name>
+          <color>#cc9933</color>
+          <type>any</type>
+          <attributes>
+          </attributes>
+        </label>
+        <label>
+          <name>midlane</name>
+          <color>#cc9933</color>
+          <type>any</type>
+          <attributes>
+          </attributes>
+        </label>
+        <label>
+          <name>botlane</name>
+          <color>#cc9933</color>
+          <type>any</type>
+          <attributes>
+          </attributes>
+        </label>
+      </labels>
+    </job>
+    <dumped>2025-05-14 12:14:10.147921+00:00</dumped>
+  </meta>
+  <image id="0" name="Summoner's_Rift_Minimap.png" width="512" height="512">
+    <polygon label="top-lane alcove brush" source="manual" occluded="0" points="58.20,56.70;57.31,59.23;48.32,67.82;47.00,68.30;50.70,71.50;62.00,59.80" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </polygon>
+    <polygon label="blueside top-lane Tier 1 brush" source="manual" occluded="0" points="41.52,77.22;42.12,81.81;38.40,89.90;44.40,89.10;45.80,83.60;46.50,77.00" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </polygon>
+    <polygon label="redside top-lane Tier 1 brush" source="manual" occluded="0" points="69.54,46.41;68.90,49.60;73.90,51.50;78.00,49.40;81.00,45.40;81.20,42.40;73.52,47.27" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </polygon>
+    <polygon label="redside top-lane Tier 2 brush" source="manual" occluded="0" points="231.50,25.10;231.40,32.20;239.50,31.60;242.80,25.20" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </polygon>
+    <polygon label="bot-lane alcove brush" source="manual" occluded="0" points="451.60,455.10;447.90,452.10;452.40,445.34;459.20,440.60;463.44,443.30" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </polygon>
+    <polygon label="blueside bot-lane Tier 1 brush" source="manual" occluded="0" points="441.25,465.31;441.53,461.42;437.10,459.60;433.50,463.20;427.70,466.80;430.50,470.40;437.79,465.31" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </polygon>
+    <polygon label="redside bot-lane Tier 1 brush" source="manual" occluded="0" points="469.89,432.75;464.36,432.24;464.88,424.11;468.68,420.66;475.07,419.28;471.10,426.70" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </polygon>
+    <polygon label="blueside Krugs-camp brush" source="manual" occluded="0" points="310.68,440.42;316.16,447.89;325.36,442.66;325.11,439.18;321.88,435.70" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </polygon>
+    <polygon label="blueside bot-lane Tier 2 brush" source="manual" occluded="0" points="278.33,486.96;278.09,479.99;269.38,479.99;265.64,487.20" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </polygon>
+    <polygon label="blueside bot-lane tri-brush" source="manual" occluded="0" points="352.93,413.87;353.55,400.39;357.90,400.18;358.73,397.70;368.69,406.61;366.82,408.89;368.69,411.17;355.62,419.68;356.04,415.53" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </polygon>
+    <polygon label="south jungle brush" source="manual" occluded="0" points="244.89,404.75;244.69,407.44;239.92,409.52;234.80,411.20;226.60,407.40;227.06,404.12;235.35,406.61;239.71,406.20" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </polygon>
+    <polygon label="south jungle entrance brush" source="manual" occluded="0" points="189.05,399.17;186.50,393.50;198.20,388.60;203.36,392.74" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </polygon>
+    <ellipse label="blueside Raptor-camp brush" source="manual" occluded="0" cx="227.51" cy="351.23" rx="4.57" ry="6.84" rotation="10.10" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </ellipse>
+    <polygon label="blueside Red-buff brush" source="manual" occluded="0" points="275.26,391.35;270.10,392.40;272.40,395.70;277.60,397.50;284.40,395.20;293.10,388.50;292.80,383.10;280.44,392.21;274.39,393.08" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </polygon>
+    <polygon label="blueside Behind red-buff brush" source="manual" occluded="0" points="297.00,359.54;301.18,358.52;302.47,353.49;299.02,341.83;291.24,344.84;291.10,348.16;297.43,350.31;297.87,355.93" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </polygon>
+    <ellipse label="bot-side river pixel brush" source="manual" occluded="0" cx="399.07" cy="381.96" rx="5.27" ry="5.64" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </ellipse>
+    <ellipse label="top-side river pixel brush" source="manual" occluded="0" cx="113.51" cy="119.07" rx="4.85" ry="4.86" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </ellipse>
+    <polygon label="redside bot-lane Tier 2 brush" source="manual" occluded="0" points="485.53,265.55;476.45,263.82;477.46,268.29;475.88,276.64;485.67,277.94" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </polygon>
+    <polygon label="redside Gromp-camp brush" source="manual" occluded="0" points="443.77,303.37;443.77,313.45;448.90,313.70;448.81,302.65" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </polygon>
+    <polygon label="redside Blue-buff brush" source="manual" occluded="0" points="392.07,266.65;390.05,270.25;394.10,272.00;400.00,270.70;401.29,266.93;399.56,265.35;394.95,267.51" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </polygon>
+    <polygon label="east jungle brush" source="manual" occluded="0" points="411.40,313.62;407.25,316.74;411.91,327.10;417.27,324.34;414.68,318.12" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </polygon>
+    <polygon label="bot-side river brush" source="manual" occluded="0" points="352.99,309.31;352.82,312.59;347.11,314.66;343.66,305.16;346.25,296.00;351.43,296.86;353.33,300.15;349.19,302.22;349.36,306.71" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </polygon>
+    <polygon label="Mid-lane bot-side river brush" source="manual" occluded="0" points="271.90,296.30;304.20,271.90;311.20,278.50;280.00,304.70" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </polygon>
+    <polygon label="redside Behind wolf-camp brush" source="manual" occluded="0" points="338.00,226.00;336.80,235.30;339.62,246.53;346.40,243.90;343.40,237.30;343.40,226.50" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </polygon>
+    <ellipse label="redside Raptor-camp brush" source="manual" occluded="0" cx="283.70" cy="158.72" rx="5.45" ry="7.97" rotation="8.50" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </ellipse>
+    <polygon label="redside top-lane tri-brush" source="manual" occluded="0" points="142.70,99.80;154.64,93.08;158.87,96.81;156.60,101.00;159.37,109.25;154.64,108.51;153.64,111.49;149.20,106.00;142.20,104.03" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </polygon>
+    <polygon label="redside Krugs-camp brush" source="manual" occluded="0" points="188.51,63.35;181.05,65.21;182.91,73.92;192.43,73.09;188.70,70.19" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </polygon>
+    <polygon label="redside Red-buff brush" source="manual" occluded="0" points="226.37,120.30;226.66,116.12;233.43,112.67;247.54,118.14;247.25,121.88;237.17,122.75" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </polygon>
+    <polygon label="north jungle brush" source="manual" occluded="0" points="267.04,107.77;266.74,101.80;277.20,98.22;292.72,105.98;289.44,111.06" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </polygon>
+    <polygon label="north jungle entrance brush" source="manual" occluded="0" points="308.25,119.42;308.85,123.30;324.67,121.21;327.66,115.53;326.17,108.67" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </polygon>
+    <polygon label="redside Behind red-buff brush" source="manual" occluded="0" points="216.88,151.67;212.40,152.86;212.10,162.41;218.97,171.07;225.24,168.39;225.24,164.21" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </polygon>
+    <polygon label="blueside top-lane tri-brush" source="manual" occluded="0" points="75.76,166.24;81.73,173.40;89.50,172.51;89.50,180.27;77.85,188.03;75.76,181.17;72.18,183.26;72.18,172.21" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </polygon>
+    <polygon label="blueside Blue-buff brush" source="manual" occluded="0" points="123.24,246.86;122.64,238.50;113.68,238.80;109.80,245.66;113.09,247.75" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </polygon>
+    <polygon label="blueside Behind wolf-camp brush" source="manual" occluded="0" points="167.73,262.68;163.25,265.97;168.03,287.77;172.51,287.17;173.10,273.43" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </polygon>
+    <polygon label="top-side river brush" source="manual" occluded="0" points="159.97,212.52;156.38,217.60;162.10,222.40;177.28,214.31;179.37,205.05;171.01,202.37;167.13,208.04" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </polygon>
+    <polygon label="Mid-lane top-side river brush" source="manual" occluded="0" points="232.60,216.00;205.47,238.44;211.44,244.71;239.81,222.31" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </polygon>
+    <polygon label="west jungle brush" source="manual" occluded="0" points="102.96,197.38;107.89,194.69;112.64,206.40;108.16,208.64;103.92,203.65" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </polygon>
+    <polygon label="blueside top-lane Tier 2 brush" source="manual" occluded="0" points="25.60,223.40;34.52,227.93;34.52,241.96;25.57,241.66" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </polygon>
+    <polygon label="redside bot-lane tri-brush" source="manual" occluded="0" points="404.39,351.89;409.62,354.13;416.83,362.59;423.30,359.60;418.58,338.70;410.12,346.17" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </polygon>
+    <ellipse label="redside Wolf" source="manual" occluded="0" cx="382.24" cy="222.51" rx="27.35" ry="24.85" rotation="50.50" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </ellipse>
+    <ellipse label="blueside Wolf" source="manual" occluded="0" cx="130.85" cy="285.72" rx="24.15" ry="22.92" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </ellipse>
+    <ellipse label="blueside Raptor" source="manual" occluded="0" cx="248.03" cy="333.65" rx="20.81" ry="21.71" rotation="330.00" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </ellipse>
+    <ellipse label="blueside Krugs" source="manual" occluded="0" cx="291.09" cy="427.27" rx="22.42" ry="17.40" rotation="338.50" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </ellipse>
+    <ellipse label="blueside Red-buff" source="manual" occluded="0" cx="263.52" cy="380.66" rx="20.17" ry="19.88" rotation="17.10" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </ellipse>
+    <ellipse label="blueside Blue-buff" source="manual" occluded="0" cx="129.31" cy="234.85" rx="20.83" ry="21.01" rotation="294.60" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </ellipse>
+    <ellipse label="blueside Gromp" source="manual" occluded="0" cx="82.70" cy="217.88" rx="20.55" ry="19.51" rotation="52.90" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </ellipse>
+    <ellipse label="redside Red-buff" source="manual" occluded="0" cx="249.91" cy="128.13" rx="23.86" ry="21.20" rotation="22.10" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </ellipse>
+    <ellipse label="redside Krugs" source="manual" occluded="0" cx="221.10" cy="83.59" rx="23.59" ry="17.42" rotation="346.10" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </ellipse>
+    <ellipse label="redside Raptor" source="manual" occluded="0" cx="265.92" cy="176.07" rx="20.91" ry="20.25" rotation="324.20" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </ellipse>
+    <ellipse label="redside Blue-buff" source="manual" occluded="0" cx="387.67" cy="278.11" rx="20.91" ry="21.33" rotation="309.20" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </ellipse>
+    <ellipse label="redside Gromp" source="manual" occluded="0" cx="433.51" cy="293.15" rx="18.12" ry="19.05" rotation="36.90" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </ellipse>
+    <ellipse label="redside Nexus" source="manual" occluded="0" cx="467.71" cy="45.25" rx="29.06" ry="28.46" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </ellipse>
+    <ellipse label="redside Nexus turret 1" source="manual" occluded="0" cx="421.54" cy="62.44" rx="21.40" ry="19.41" rotation="251.00" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </ellipse>
+    <ellipse label="redside Nexus turret 2" source="manual" occluded="0" cx="447.78" cy="88.71" rx="22.19" ry="20.42" rotation="186.60" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </ellipse>
+    <ellipse label="blueside Nexus" source="manual" occluded="0" cx="47.75" cy="463.60" rx="32.20" ry="25.91" rotation="224.40" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </ellipse>
+    <ellipse label="blueside Nexus turret 1" source="manual" occluded="0" cx="69.63" cy="417.61" rx="22.43" ry="24.46" rotation="31.70" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </ellipse>
+    <ellipse label="blueside Nexus turret 2" source="manual" occluded="0" cx="92.23" cy="443.67" rx="22.27" ry="23.53" rotation="68.70" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </ellipse>
+    <ellipse label="blueside bot-lane tier 1" source="manual" occluded="0" cx="361.00" cy="470.60" rx="35.30" ry="24.15" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </ellipse>
+    <ellipse label="blueside bot-lane tier 2" source="manual" occluded="0" cx="248.95" cy="466.70" rx="40.55" ry="26.00" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </ellipse>
+    <ellipse label="redside bot-lane tier 1" source="manual" occluded="0" cx="469.95" cy="354.60" rx="24.15" ry="38.70" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </ellipse>
+    <ellipse label="redside bot-lane tier 2" source="manual" occluded="0" cx="467.50" cy="240.04" rx="25.40" ry="35.29" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </ellipse>
+    <ellipse label="redside top-lane tier 1" source="manual" occluded="0" cx="145.83" cy="43.44" rx="39.93" ry="24.79" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </ellipse>
+    <ellipse label="redside top-lane tier 2" source="manual" occluded="0" cx="255.11" cy="43.46" rx="37.46" ry="22.29" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </ellipse>
+    <ellipse label="redside top-lane tier 3" source="manual" occluded="0" cx="362.42" cy="44.41" rx="35.12" ry="25.75" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </ellipse>
+    <ellipse label="redside bot-lane tier 3" source="manual" occluded="0" cx="464.09" cy="153.43" rx="30.35" ry="35.67" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </ellipse>
+    <ellipse label="blueside top-lane tier 3" source="manual" occluded="0" cx="44.29" cy="362.77" rx="24.14" ry="32.67" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </ellipse>
+    <ellipse label="blueside bot-lane tier 3" source="manual" occluded="0" cx="150.90" cy="468.15" rx="34.50" ry="25.70" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </ellipse>
+    <ellipse label="blueside top-lane tier 1" source="manual" occluded="0" cx="42.72" cy="153.61" rx="21.93" ry="34.59" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </ellipse>
+    <ellipse label="blueside top-lane tier 2" source="manual" occluded="0" cx="42.75" cy="266.67" rx="23.55" ry="36.80" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </ellipse>
+    <ellipse label="redside mid-lane tier 1" source="manual" occluded="0" cx="288.18" cy="231.11" rx="25.82" ry="28.13" rotation="228.80" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </ellipse>
+    <ellipse label="redside mid-lane tier 2" source="manual" occluded="0" cx="336.36" cy="178.95" rx="22.24" ry="24.07" rotation="224.40" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </ellipse>
+    <ellipse label="redside mid-lane tier 3" source="manual" occluded="0" cx="388.37" cy="126.99" rx="27.37" ry="36.31" rotation="222.30" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </ellipse>
+    <ellipse label="blueside mid-lane tier 1" source="manual" occluded="0" cx="217.24" cy="292.27" rx="24.35" ry="25.40" rotation="43.20" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </ellipse>
+    <ellipse label="blueside mid-lane tier 2" source="manual" occluded="0" cx="172.77" cy="336.86" rx="22.68" ry="25.45" rotation="44.50" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </ellipse>
+    <ellipse label="blueside mid-lane tier 3" source="manual" occluded="0" cx="126.91" cy="387.40" rx="28.18" ry="30.17" rotation="44.10" z_order="0">
+      <attribute name="side">neutral</attribute>
+    </ellipse>
+    <polygon label="top-side alcove" source="manual" occluded="0" points="40.29,76.39;24.30,58.60;53.20,28.30;69.53,45.96;58.19,56.10;51.70,53.30;50.43,60.87;42.60,62.40;47.45,66.84" z_order="0">
+    </polygon>
+    <polygon label="bot-side alcove" source="manual" occluded="0" points="440.03,464.51;454.71,478.69;478.10,466.00;489.79,446.10;470.38,432.66;468.14,447.09;452.22,458.29" z_order="0">
+    </polygon>
+    <polygon label="west jungle" source="manual" occluded="0" points="60.80,314.20;139.60,335.02;178.98,299.35;213.16,263.69;213.16,248.83;164.12,207.96;124.74,181.96;66.00,122.50;59.36,226.54" z_order="0">
+    </polygon>
+    <polygon label="south jungle" source="manual" occluded="0" points="196.82,451.67;372.17,450.92;402.63,432.35;381.82,379.60;322.38,384.80;311.24,325.36;251.06,288.95;171.55,364.74;193.84,407.09" z_order="0">
+    </polygon>
+    <polygon label="north jungle" source="manual" occluded="0" points="251.80,231.00;199.04,181.96;187.20,124.70;131.43,128.46;130.69,70.50;191.61,63.82;317.18,62.33;343.19,147.03" z_order="0">
+    </polygon>
+    <polygon label="east jungle" source="manual" occluded="0" points="449.40,387.00;450.18,193.84;370.68,173.78;298.61,263.69;349.13,305.30;389.26,324.61;413.03,369.19" z_order="0">
+    </polygon>
+    <polygon label="top-side river" source="manual" occluded="0" points="75.00,119.50;113.60,78.68;129.20,101.71;129.20,132.92;145.55,163.38;168.58,176.75;203.50,188.64;229.50,214.60;205.00,236.20;160.41,203.50;126.23,183.44;100.97,139.60" z_order="0">
+    </polygon>
+    <polygon label="bot-side river" source="manual" occluded="0" points="311.98,280.03;280.78,306.04;315.70,325.36;350.62,338.73;385.54,377.37;390.00,399.66;404.86,413.03;424.18,395.20;403.37,351.36;385.54,329.81" z_order="0">
+    </polygon>
+    <ellipse label="dragon pit" source="manual" occluded="0" cx="343.14" cy="360.64" rx="18.56" ry="16.74" z_order="0">
+    </ellipse>
+    <ellipse label="baron pit" source="manual" occluded="0" cx="168.96" cy="151.48" rx="19.74" ry="19.72" z_order="0">
+    </ellipse>
+    <polygon label="toplane" source="manual" occluded="0" points="24.17,329.41;59.98,330.00;59.38,142.03;74.30,120.00;116.10,71.60;128.01,57.29;332.09,59.08;333.28,25.07;125.62,25.07;70.72,41.18;26.56,91.31" z_order="0">
+    </polygon>
+    <polygon label="botlane" source="manual" occluded="0" points="182.90,451.70;182.90,486.90;431.75,484.56;486.65,427.87;492.61,174.85;451.44,177.83;448.50,382.50;389.40,444.00" z_order="0">
+    </polygon>
+    <polygon label="midlane" source="manual" occluded="0" points="123.80,353.30;356.56,128.30;389.38,155.16;155.46,386.10" z_order="0">
+    </polygon>
+  </image>
+</annotations>
