@@ -68,9 +68,10 @@ def remove_old_patch_dirs_keep_latest(cache_dir: str, CURRENT_PATCH: str):
     if not os.path.exists(os.path.join(cache_dir, CURRENT_PATCH)):
         os.makedirs(os.path.join(cache_dir, CURRENT_PATCH))
     #remove all other directories
-    for dir in os.listdir(cache_dir):
-        if dir != CURRENT_PATCH:
-            shutil.rmtree(os.path.join(cache_dir, dir))
+    for item in os.listdir(cache_dir):
+        item_path = os.path.join(cache_dir, item)
+        if item != CURRENT_PATCH and os.path.isdir(item_path):
+            shutil.rmtree(item_path)
 
 
 CACHE_DIR = "patch_data"
