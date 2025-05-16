@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 from pathlib import Path
 from typing import List, Tuple, Optional, Dict
-from map_semantics.minimap_coordinate_mapper import MinimapCoordinateMapper
+from vision.map_semantics.minimap_coordinate_mapper import MinimapCoordinateMapper
 
 def create_circular_mask(icon: np.ndarray) -> np.ndarray:
     """
