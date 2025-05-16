@@ -19,12 +19,33 @@ The application features a graphical user interface (GUI) for interacting with t
    cd lol_coach
    ```
 
-2. Install dependencies:
+2. Create and activate a virtual environment (choose one):
+
+   - Using **venv** (Python 3.9+):
+     ```bash
+     python3 -m venv .venv
+     source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+     ```
+
+   - Using **virtualenv**:
+     ```bash
+     pip install virtualenv
+     virtualenv venv --python=python3.9
+     source venv/bin/activate  # On Windows: venv\Scripts\activate
+     ```
+
+   - Using **conda**:
+     ```bash
+     conda create -n lol_coach python=3.9
+     conda activate lol_coach
+     ```
+
+3. Install the package:
    ```bash
-   python -m venv .venv
-   source activate .venv/bin/activate
    pip install .
    ```
+   
+
 
 3. Set up environment variables:
    - Create a `.env` file in the root directory.

@@ -23,15 +23,13 @@ def take_screenshot_and_crop():
         print(f'Screenshot saved to {screenshot_path}')
         # Call minimap cropper
         try:
-            process_minimap_crop(screenshot_path)
-            print('Minimap cropper called successfully.')
+            minimap_path = process_minimap_crop(screenshot_path)
+            if minimap_path:
+                print('Minimap cropper called successfully.')
+                return minimap_path
+            else:
+                print('Minimap cropper did not find a valid minimap.')
+                return None
         except Exception as e:
             print(f'Error calling minimap cropper: {e}')
-
-def main():
-    print(f'Listening for keyboard shortcuts to take a screenshot and crop minimap... (OS: {platform.system()})')
-    # The keyboard listener is now managed by the GUI
-    pass
-
-if __name__ == '__main__':
-    main()
+            return None

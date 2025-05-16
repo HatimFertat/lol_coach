@@ -16,9 +16,53 @@ class MinimapCoordinateMapper:
         self.descriptor = create_minimap_descriptor("vision/map_semantics/annotations.xml")
         self.regions = parse_annotations("vision/map_semantics/annotations.xml")
         
+        # Define reference points in the 512x512 minimap
+        # These are key points that we can reliably identify in any minimap
+        self.reference_points = np.float32([
+            [256, 256],  # Center
+            [256, 0],    # Top center
+            [256, 512],  # Bottom center
+            [0, 256],    # Left center
+            [512, 256],  # Right center
+            [0, 0],      # Top-left
+            [512, 0],    # Top-right
+            [0, 512],    # Bottom-left
+            [512, 512]   # Bottom-right
+        ])
+        
+    def compute_homography(self, real_minimap_size):
+        """
+        Compute homography matrix between reference and real minimap.
+        
+        Args:
+            real_minimap_size: (width, height) of the real minimap
+            
+        Returns:
+            Homography matrix
+        """
+        width, height = real_minimap_size
+        
+        # Define corresponding points in the real minimap
+        # These points should correspond to the reference points
+        real_points = np.float32([
+            [width/2, height/2],    # Center
+            [width/2, 0],           # Top center
+            [width/2, height],      # Bottom center
+            [0, height/2],          # Left center
+            [width, height/2],      # Right center
+            [0, 0],                 # Top-left
+            [width, 0],             # Top-right
+            [0, height],            # Bottom-left
+            [width, height]         # Bottom-right
+        ])
+        
+        # Compute homography matrix
+        H, _ = cv2.findHomography(self.reference_points, real_points)
+        return H
+    
     def normalize_coordinates(self, x, y, minimap_size):
         """
-        Convert coordinates from a real minimap to our reference 512x512 minimap.
+        Convert coordinates from a real minimap to our reference 512x512 minimap using homography.
         
         Args:
             x, y: Coordinates in the real minimap
@@ -34,7 +78,7 @@ class MinimapCoordinateMapper:
     
     def denormalize_coordinates(self, x, y, minimap_size):
         """
-        Convert coordinates from reference 512x512 minimap to real minimap size.
+        Convert coordinates from reference 512x512 minimap to real minimap size using homography.
         
         Args:
             x, y: Coordinates in the reference minimap
@@ -43,10 +87,13 @@ class MinimapCoordinateMapper:
         Returns:
             (x, y) coordinates in the real minimap
         """
-        width, height = minimap_size
-        real_x = (x / self.reference_size[0]) * width
-        real_y = (y / self.reference_size[1]) * height
-        return real_x, real_y
+        H = self.compute_homography(minimap_size)
+        
+        # Convert point to homogeneous coordinates and reshape for perspectiveTransform
+        point = np.float32([[x, y]])
+        transformed = cv2.perspectiveTransform(point.reshape(-1, 1, 2), H)
+        
+        return transformed[0][0]
     
     def describe_location(self, x, y, minimap_size):
         """
@@ -60,6 +107,7 @@ class MinimapCoordinateMapper:
             String description of the location
         """
         norm_x, norm_y = self.normalize_coordinates(x, y, minimap_size)
+        # norm_x, norm_y = x, y
         return self.descriptor(norm_x, norm_y)
     
     def visualize_regions(self, image_path, output_path=None, alpha=0.3):
@@ -86,7 +134,7 @@ class MinimapCoordinateMapper:
             if isinstance(region['polygon'], np.ndarray):
                 points = region['polygon']
             else:
-                points = np.array(region['polygon'].exterior.coords, dtype=np.int32)
+                points = np.array(region['polygon'].exterior.coords, dtype=np.float32)
             
             # Convert points to the target image size
             scaled_points = []
@@ -97,13 +145,6 @@ class MinimapCoordinateMapper:
             
             # Draw the polygon
             cv2.polylines(overlay, [scaled_points], True, (0, 255, 0), 2)
-            
-            # Add label
-            # if len(scaled_points) > 0:
-            #     center_x = np.mean(scaled_points[:, 0])
-            #     center_y = np.mean(scaled_points[:, 1])
-            #     cv2.putText(overlay, region['label'], (int(center_x), int(center_y)),
-            #                cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 255, 0), 1)
         
         # Blend the overlay with the original image
         result = cv2.addWeighted(overlay, alpha, img, 1 - alpha, 0)

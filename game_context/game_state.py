@@ -712,12 +712,12 @@ def format_items_string(items_dict: dict[str, list[str]], include_list: Optional
         lines.append(f"{champion}: {items_str}")
     return "\n".join(lines)
 
-lane_mapping = {"UTILITY": "SUPPORT", "MIDDLE": "MIDDLE", "BOTTOM": "BOT"}
+role_mapping = {"UTILITY": "SUPPORT", "MIDDLE": "MIDDLE", "BOTTOM": "BOT"}
 
-def summarize_players(champions, include_list, lane_mapping=lane_mapping):
+def summarize_players(champions, include_list, lane_mapping=role_mapping):
     lines = []
     for champ in champions:
-        role = lane_mapping.get(champ.lane, champ.lane) or "?"
+        role = role_mapping.get(champ.lane, champ.lane) or "?"
         name = champ.name
         level = champ.level
         score = champ.score

@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 from utils.lolalytics_client import get_build, ItemSet, Section, toggle_mapping
 from utils.get_item_recipes import (get_legendary_items, get_non_consumable_items, download_json_or_load_local,
                                      get_max_entries, build_section_text, ITEM_URL, CHAMPION_TAGS_URL, cache_path, champion_tags)
+from typing import Tuple, Optional
 
 load_dotenv()
 CURRENT_PATCH = os.getenv("CURRENT_PATCH", "15.7.1")
@@ -125,9 +126,9 @@ class BuildAgent(Agent):
         except Exception as e:
             return f"BuildAgent Error: {str(e)}"
         
-    def run(self, game_state: GameStateContext = None, user_message: str = None) -> str:
+    def run(self, game_state: Optional[GameStateContext] = None, user_message: str = None) -> Tuple[str, str]:
         if game_state is None and user_message is not None:
-            return self.standalone_message(user_message)
+            return user_message, self.standalone_message(user_message)
         
         # Summarize game state
         summary = self.summarize_game_state(game_state)

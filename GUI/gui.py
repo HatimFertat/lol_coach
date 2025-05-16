@@ -17,6 +17,7 @@ from PySide6.QtGui import QFont, QColor, QTextCursor, QTextCharFormat
 
 from agents.build_agent import BuildAgent
 from agents.macro_agent import MacroAgent
+from agents.vision_agent import VisionAgent
 from game_context.game_state import parse_game_state
 from game_context.game_state_fetcher import fetch_game_state
 from vision.screenshot_listener import take_screenshot_and_crop
@@ -199,6 +200,9 @@ class EventType:
     UpdateGameState = QEvent.Type(QEvent.registerEventType())
     ScreenshotReady = QEvent.Type(QEvent.registerEventType())
     ScreenshotError = QEvent.Type(QEvent.registerEventType())
+    BuildAgentTrigger = QEvent.Type(QEvent.registerEventType())
+    MacroAgentTrigger = QEvent.Type(QEvent.registerEventType())
+    VisionAgentTrigger = QEvent.Type(QEvent.registerEventType())
 
 class _UpdateTextEvent(QEvent):
     def __init__(self, sender, message):
@@ -227,34 +231,72 @@ class SettingsTab(QWidget):
         super().__init__()
         layout = QVBoxLayout(self)
         
-        # Keyboard shortcut settings
-        shortcut_group = QWidget()
-        shortcut_layout = QHBoxLayout(shortcut_group)
+        # Create shortcut settings for each action
+        self.shortcut_settings = {}
         
-        shortcut_label = QLabel("Screenshot Shortcut:")
-        self.shortcut_input = QLineEdit()
-        self.shortcut_input.setPlaceholderText("Press keys...")
-        self.shortcut_input.setReadOnly(True)
-        self.shortcut_input.setFocusPolicy(Qt.StrongFocus)
-        self.shortcut_input.installEventFilter(self)
+        # Screenshot shortcut
+        screenshot_group = self._create_shortcut_group("Screenshot Shortcut:")
+        self.shortcut_settings['screenshot'] = {
+            'input': screenshot_group['input'],
+            'shortcut': {keyboard.Key.shift, keyboard.Key.tab}  # Default
+        }
+        layout.addWidget(screenshot_group['widget'])
         
-        shortcut_layout.addWidget(shortcut_label)
-        shortcut_layout.addWidget(self.shortcut_input)
+        # Build Agent shortcut
+        build_group = self._create_shortcut_group("Build Agent Shortcut (Ctrl+Alt+B):")
+        self.shortcut_settings['build'] = {
+            'input': build_group['input'],
+            'shortcut': {keyboard.Key.ctrl, keyboard.Key.alt, keyboard.KeyCode.from_char('b')}  # Default
+        }
+        layout.addWidget(build_group['widget'])
+        
+        # Macro Agent shortcut
+        macro_group = self._create_shortcut_group("Macro Agent Shortcut (Ctrl+Alt+M):")
+        self.shortcut_settings['macro'] = {
+            'input': macro_group['input'],
+            'shortcut': {keyboard.Key.ctrl, keyboard.Key.alt, keyboard.KeyCode.from_char('m')}  # Default
+        }
+        layout.addWidget(macro_group['widget'])
+        
+        # Vision Agent shortcut
+        vision_group = self._create_shortcut_group("Vision Agent Shortcut (Ctrl+Alt+V):")
+        self.shortcut_settings['vision'] = {
+            'input': vision_group['input'],
+            'shortcut': {keyboard.Key.ctrl, keyboard.Key.alt, keyboard.KeyCode.from_char('v')}  # Default
+        }
+        layout.addWidget(vision_group['widget'])
         
         # Add a note about the shortcut
         note_label = QLabel("Note: Press the desired key combination to set the shortcut")
         note_label.setStyleSheet("color: #888; font-size: 10px;")
-        
-        layout.addWidget(shortcut_group)
         layout.addWidget(note_label)
         layout.addStretch()
         
-        # Initialize with default shortcut
-        self.current_shortcut = {keyboard.Key.shift, keyboard.Key.tab}
-        self.update_shortcut_display()
+        # Update all shortcut displays
+        self.update_all_shortcut_displays()
+    
+    def _create_shortcut_group(self, label_text):
+        """Helper method to create a shortcut input group"""
+        group = QWidget()
+        group_layout = QHBoxLayout(group)
+        
+        label = QLabel(label_text)
+        input_field = QLineEdit()
+        input_field.setPlaceholderText("Press keys...")
+        input_field.setReadOnly(True)
+        input_field.setFocusPolicy(Qt.StrongFocus)
+        input_field.installEventFilter(self)
+        
+        group_layout.addWidget(label)
+        group_layout.addWidget(input_field)
+        
+        return {
+            'widget': group,
+            'input': input_field
+        }
     
     def eventFilter(self, obj, event):
-        if obj == self.shortcut_input and event.type() == QEvent.KeyPress:
+        if event.type() == QEvent.KeyPress:
             key = event.key()
             modifiers = event.modifiers()
             
@@ -271,29 +313,45 @@ class SettingsTab(QWidget):
             # Get the pynput key if it exists
             pynput_key = qt_to_pynput.get(key)
             if pynput_key:
-                self.current_shortcut = {pynput_key}
-                if modifiers & Qt.ShiftModifier:
-                    self.current_shortcut.add(keyboard.Key.shift)
-                if modifiers & Qt.ControlModifier:
-                    self.current_shortcut.add(keyboard.Key.ctrl)
-                if modifiers & Qt.AltModifier:
-                    self.current_shortcut.add(keyboard.Key.alt)
-                if modifiers & Qt.MetaModifier:
-                    self.current_shortcut.add(keyboard.Key.cmd)
-                
-                self.update_shortcut_display()
-                return True
+                # Find which shortcut input field triggered this
+                for shortcut_type, settings in self.shortcut_settings.items():
+                    if obj == settings['input']:
+                        new_shortcut = {pynput_key}
+                        if modifiers & Qt.ShiftModifier:
+                            new_shortcut.add(keyboard.Key.shift)
+                        if modifiers & Qt.ControlModifier:
+                            new_shortcut.add(keyboard.Key.ctrl)
+                        if modifiers & Qt.AltModifier:
+                            new_shortcut.add(keyboard.Key.alt)
+                        if modifiers & Qt.MetaModifier:
+                            new_shortcut.add(keyboard.Key.cmd)
+                        
+                        settings['shortcut'] = new_shortcut
+                        self.update_shortcut_display(settings['input'], new_shortcut)
+                        return True
             
         return super().eventFilter(obj, event)
     
-    def update_shortcut_display(self):
+    def update_shortcut_display(self, input_field, shortcut):
+        """Update the display for a single shortcut"""
         key_names = []
-        for key in self.current_shortcut:
+        for key in shortcut:
             if hasattr(key, 'name'):
                 key_names.append(key.name.capitalize())
+            elif hasattr(key, 'char'):
+                key_names.append(key.char.upper())
             else:
                 key_names.append(str(key))
-        self.shortcut_input.setText(' + '.join(key_names))
+        input_field.setText(' + '.join(key_names))
+    
+    def update_all_shortcut_displays(self):
+        """Update all shortcut displays"""
+        for settings in self.shortcut_settings.values():
+            self.update_shortcut_display(settings['input'], settings['shortcut'])
+    
+    def get_shortcut(self, shortcut_type):
+        """Get the current shortcut for a specific type"""
+        return self.shortcut_settings[shortcut_type]['shortcut']
 
 class LoLCoachGUI(QMainWindow):
     def __init__(self):
@@ -310,11 +368,6 @@ class LoLCoachGUI(QMainWindow):
         mode_frame = QWidget()
         mode_layout = QHBoxLayout(mode_frame)
         mode_layout.setContentsMargins(5, 2, 5, 2)
-        
-        # Add screenshot button
-        # screenshot_button = QPushButton("Take Screenshot")
-        # screenshot_button.clicked.connect(self._take_screenshot_and_process)
-        # mode_layout.addWidget(screenshot_button)
         
         # Mock mode checkbox
         self.use_mock = QCheckBox("Use mock game state")
@@ -342,109 +395,110 @@ class LoLCoachGUI(QMainWindow):
         # Create the agent tabs
         self.build_agent = BuildAgent()
         self.macro_agent = MacroAgent()
+        self.vision_agent = VisionAgent()
         
         self.macro_tab = AgentChatTab(self.macro_agent, "MacroAgent", get_game_state, self.auto_clear)
         self.build_tab = AgentChatTab(self.build_agent, "BuildAgent", get_game_state, self.auto_clear)
+        self.vision_tab = AgentChatTab(self.vision_agent, "VisionAgent", get_game_state, self.auto_clear)
         self.settings_tab = SettingsTab()
         
         self.tab_widget.addTab(self.macro_tab, "Macro Agent")
         self.tab_widget.addTab(self.build_tab, "Build Agent")
+        self.tab_widget.addTab(self.vision_tab, "Vision Agent")
         self.tab_widget.addTab(self.settings_tab, "Settings")
         
         # Add everything to the main layout
         main_layout.addWidget(mode_frame)
         main_layout.addWidget(self.tab_widget)
         
-        # Initialize keyboard shortcut handling
+        # Initialize keyboard listener
         self.current_keys = set()
-        self.installEventFilter(self)
+        self.listener = None
+        self.start_keyboard_listener()
 
-    def eventFilter(self, obj, event):
-        if event.type() == QEvent.KeyPress:
-            key = event.key()
-            modifiers = event.modifiers()
-            
-            # Convert Qt key to pynput key
-            qt_to_pynput = {
-                Qt.Key_Shift: keyboard.Key.shift,
-                Qt.Key_Control: keyboard.Key.ctrl,
-                Qt.Key_Alt: keyboard.Key.alt,
-                Qt.Key_Meta: keyboard.Key.cmd,
-                Qt.Key_Tab: keyboard.Key.tab,
-                Qt.Key_Space: keyboard.Key.space,
-            }
-            
-            # Get the pynput key if it exists
-            pynput_key = qt_to_pynput.get(key)
-            if pynput_key:
-                self.current_keys.add(pynput_key)
-                if modifiers & Qt.ShiftModifier:
-                    self.current_keys.add(keyboard.Key.shift)
-                if modifiers & Qt.ControlModifier:
-                    self.current_keys.add(keyboard.Key.ctrl)
-                if modifiers & Qt.AltModifier:
-                    self.current_keys.add(keyboard.Key.alt)
-                if modifiers & Qt.MetaModifier:
-                    self.current_keys.add(keyboard.Key.cmd)
+    def start_keyboard_listener(self):
+        def on_press(key):
+            try:
+                # Add the key to current keys
+                self.current_keys.add(key)
                 
-                # Check if the current key combination matches the shortcut
-                if self.current_keys == self.settings_tab.current_shortcut:
-                    self._take_screenshot_and_process()
-                    return True
-        
-        elif event.type() == QEvent.KeyRelease:
-            key = event.key()
-            modifiers = event.modifiers()
-            
-            # Convert Qt key to pynput key
-            qt_to_pynput = {
-                Qt.Key_Shift: keyboard.Key.shift,
-                Qt.Key_Control: keyboard.Key.ctrl,
-                Qt.Key_Alt: keyboard.Key.alt,
-                Qt.Key_Meta: keyboard.Key.cmd,
-                Qt.Key_Tab: keyboard.Key.tab,
-                Qt.Key_Space: keyboard.Key.space,
-            }
-            
-            # Get the pynput key if it exists
-            pynput_key = qt_to_pynput.get(key)
-            if pynput_key:
-                self.current_keys.discard(pynput_key)
-                if not (modifiers & Qt.ShiftModifier):
-                    self.current_keys.discard(keyboard.Key.shift)
-                if not (modifiers & Qt.ControlModifier):
-                    self.current_keys.discard(keyboard.Key.ctrl)
-                if not (modifiers & Qt.AltModifier):
-                    self.current_keys.discard(keyboard.Key.alt)
-                if not (modifiers & Qt.MetaModifier):
-                    self.current_keys.discard(keyboard.Key.cmd)
-        
-        return super().eventFilter(obj, event)
+                # Get all current shortcuts
+                screenshot_shortcut = self.settings_tab.get_shortcut('screenshot')
+                build_shortcut = self.settings_tab.get_shortcut('build')
+                macro_shortcut = self.settings_tab.get_shortcut('macro')
+                vision_shortcut = self.settings_tab.get_shortcut('vision')
+                
+                # Check if the current keys match any shortcut
+                if self.current_keys == screenshot_shortcut or self.current_keys == macro_shortcut:
+                    # Switch to macro tab first
+                    self.tab_widget.setCurrentWidget(self.macro_tab)
+                    # Then trigger the update
+                    QApplication.instance().postEvent(self, QEvent(EventType.MacroAgentTrigger))
+                elif self.current_keys == build_shortcut:
+                    # Switch to build tab first
+                    self.tab_widget.setCurrentWidget(self.build_tab)
+                    # Then trigger the update
+                    QApplication.instance().postEvent(self, QEvent(EventType.BuildAgentTrigger))
+                elif self.current_keys == vision_shortcut:
+                    # Switch to vision tab first
+                    self.tab_widget.setCurrentWidget(self.vision_tab)
+                    # Then trigger the update
+                    QApplication.instance().postEvent(self, QEvent(EventType.VisionAgentTrigger))
+            except Exception as e:
+                logging.exception("Error in keyboard listener on_press")
 
-    def _take_screenshot_and_process(self):
-        """Safe version of screenshot processing that runs entirely on the main thread"""
+        def on_release(key):
+            try:
+                # Remove the released key from current keys
+                self.current_keys.discard(key)
+            except Exception as e:
+                logging.exception("Error in keyboard listener on_release")
+
+        # Start the listener in non-blocking mode
+        self.listener = keyboard.Listener(on_press=on_press, on_release=on_release)
+        self.listener.start()
+
+    def closeEvent(self, event):
+        # Stop the keyboard listener when the window is closed
+        if self.listener:
+            self.listener.stop()
+        super().closeEvent(event)
+
+    def customEvent(self, event):
+        if event.type() == EventType.ScreenshotReady:
+            self.macro_tab.update_with_game_state_and_image(event.image_path)
+            self.vision_tab.update_with_game_state_and_image(event.image_path)
+        elif event.type() == EventType.ScreenshotError:
+            self.macro_tab.status_label.setText(f"Screenshot error: {event.error_msg}")
+            self.vision_tab.status_label.setText(f"Screenshot error: {event.error_msg}")
+        elif event.type() == EventType.BuildAgentTrigger:
+            # Trigger build agent update
+            self.build_tab.update_with_game_state()
+        elif event.type() == EventType.MacroAgentTrigger:
+            # Try to take a new screenshot and process it
+            self._trigger_macro_agent_update()
+        elif event.type() == EventType.VisionAgentTrigger:
+            # Try to take a new screenshot and process it
+            self._trigger_vision_agent_update()
+
+    def _trigger_macro_agent_update(self):
+        """Triggers macro agent update with a new screenshot or falls back to existing one"""
         try:
             self.macro_tab.status_label.setText("Taking screenshot...")
             # Use threading to prevent UI freeze
             def process_screenshot():
                 try:
                     logging.info("Taking screenshot...")
-                    take_screenshot_and_crop()
+                    minimap_path = take_screenshot_and_crop()
                     
-                    logging.info("Screenshot taken, finding most recent minimap image...")
-                    # Find the most recent minimap image
-                    minimaps = list(Path(SCREENSHOT_DIR).glob("*_minimap.png"))
-                    if minimaps:
-                        # Sort by timestamp in filename
-                        minimaps.sort(key=lambda f: f.stat().st_mtime, reverse=True)
-                        minimap_path = str(minimaps[0])
-                        
-                        logging.info(f"Using most recent minimap: {minimap_path}")
+                    if minimap_path:
+                        logging.info(f"Using minimap: {minimap_path}")
                         # Update UI on main thread
                         QApplication.instance().postEvent(self, _ScreenshotReadyEvent(minimap_path))
                     else:
-                        logging.info("No minimap images found.")
-                        QApplication.instance().postEvent(self, _ScreenshotErrorEvent("No minimap images found"))
+                        logging.info("No valid minimap found. Using regular update")
+                        # Fall back to regular update if no screenshot is available
+                        self.macro_tab.update_with_game_state()
                 except Exception as e:
                     logging.exception("Error in screenshot processing")
                     QApplication.instance().postEvent(self, _ScreenshotErrorEvent(str(e)[:50]))
@@ -454,12 +508,32 @@ class LoLCoachGUI(QMainWindow):
             logging.exception("Error starting screenshot process")
             self.macro_tab.status_label.setText(f"Screenshot error: {str(e)[:50]}")
 
-    # Handle custom events
-    def customEvent(self, event):
-        if event.type() == EventType.ScreenshotReady:
-            self.macro_tab.update_with_game_state_and_image(event.image_path)
-        elif event.type() == EventType.ScreenshotError:
-            self.macro_tab.status_label.setText(f"Screenshot error: {event.error_msg}")
+    def _trigger_vision_agent_update(self):
+        """Triggers vision agent update with a new screenshot"""
+        try:
+            self.vision_tab.status_label.setText("Taking screenshot...")
+            # Use threading to prevent UI freeze
+            def process_screenshot():
+                try:
+                    logging.info("Taking screenshot...")
+                    minimap_path = take_screenshot_and_crop()
+                    
+                    if minimap_path:
+                        logging.info(f"Using minimap: {minimap_path}")
+                        # Update UI on main thread
+                        QApplication.instance().postEvent(self, _ScreenshotReadyEvent(minimap_path))
+                    else:
+                        logging.info("No valid minimap found. Using regular update")
+                        # Fall back to regular update if no screenshot is available
+                        self.vision_tab.update_with_game_state()
+                except Exception as e:
+                    logging.exception("Error in screenshot processing")
+                    QApplication.instance().postEvent(self, _ScreenshotErrorEvent(str(e)[:50]))
+            
+            threading.Thread(target=process_screenshot, daemon=True).start()
+        except Exception as e:
+            logging.exception("Error starting screenshot process")
+            self.vision_tab.status_label.setText(f"Screenshot error: {str(e)[:50]}")
 
 # For standalone testing
 if __name__ == "__main__":
