@@ -112,7 +112,8 @@ class AgentChatTab(QWidget):
             cursor.insertText(f"{message}\n")
             
             # Speak the message with priority based on agent type
-            priority = 0 if self.agent_name == "VisionAgent" else 1
+            # priority = 0 if self.agent_name == "VisionAgent" else 0
+            priority = 0
             self.tts_manager.speak(message, priority)
         
         # Scroll to the bottom
@@ -131,7 +132,7 @@ class AgentChatTab(QWidget):
             
             # Process in background to keep UI responsive
             def process_message():
-                response = self.agent.run(None, user_message)
+                _, response = self.agent.run(None, user_message)
                 # Update UI on the main thread
                 QApplication.instance().postEvent(self, _UpdateTextEvent(self.agent_name, response))
             
@@ -376,6 +377,8 @@ class LoLCoachGUI(QMainWindow):
         
         # Initialize TTS manager
         self.tts_manager = TTSManager()
+        # Test TTS
+        self.tts_manager.speak("Hello, I am the LoL Coach. How can I help you today?")
         
         # Central widget
         central = QWidget()
