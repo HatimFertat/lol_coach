@@ -10,7 +10,9 @@ from agents.macro_agent import MacroAgent
 import time
 from dotenv import load_dotenv
 from PySide6.QtWidgets import QApplication
-
+#suppress the warning WARNING:darwin.py:This process is not trusted! Input event monitoring will not be possible until it is added to accessibility clients.
+import warnings
+warnings.filterwarnings("ignore", category=UserWarning, module="PySide6.QtWidgets")
 load_dotenv()
 
 from GUI.gui import LoLCoachGUI

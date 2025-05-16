@@ -70,6 +70,10 @@ class VisionAgent:
             Formatted string describing threats to each ally champion
         """
         lines = []
+        threats_found = False
+        # Add game time
+        minutes = int(game_state.timestamp) // 60
+        seconds = int(game_state.timestamp) % 60
         
         for ally, enemy_distances in distances.items():
             # Get ally's lane to determine threshold
@@ -83,11 +87,17 @@ class VisionAgent:
             }
             
             if threats:
-                lines.append(f"\n{ally} is threatened by:")
+                threats_found = True
+                # Use "You" if this is the active player
+                display_name = "You" if ally == game_state.player_champion else ally
+                lines.append(f"\n{display_name} is threatened by:")
                 for enemy, distance in sorted(threats.items(), key=lambda x: x[1]):
                     position = positions_str.get(enemy, "Unknown position")
                     lines.append(f"- {enemy} ({distance:.0f} units away) at {position}")
         
+        if threats_found:
+            lines[0] = f"Game Time: {minutes}:{seconds:02d}"
+
         return "\n".join(lines) if lines else "No immediate threats detected."
 
     def run(self, game_state: Optional[GameStateContext] = None, user_message: str = None, image_path: str = None) -> Tuple[str, str]:

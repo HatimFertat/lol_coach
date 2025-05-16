@@ -41,7 +41,9 @@ class MacroAgent(Agent):
             enemy_champions = [c.name for c in game_state.enemy_team.champions]
             positions_str, positions_xy = detect_champion_positions(minimap_path, ally_champions, enemy_champions, debug=False)
             champion_positions = format_champion_positions(positions_str, positions_xy, ally_champions, enemy_champions)
-
+        #replace [Ally] and [Enemy] by the lane of the champions
+        champion_positions = champion_positions.replace("[Ally]", game_state.player_team.champions[active_player_index].lane)
+        champion_positions = champion_positions.replace("[Enemy]", game_state.enemy_team.champions[active_player_index].lane)
         # Turrets Taken (per lane if > 0)
         def summarize_lane_turrets(turrets):
             return ", ".join(

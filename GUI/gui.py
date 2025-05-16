@@ -22,18 +22,20 @@ from game_context.game_state import parse_game_state
 from game_context.game_state_fetcher import fetch_game_state
 from vision.screenshot_listener import take_screenshot_and_crop
 from vision.minimap_cropper import SCREENSHOT_DIR
+from utils.tts_manager import TTSManager
 
 from pynput import keyboard
 
 MOCK = False
 
 class AgentChatTab(QWidget):
-    def __init__(self, agent, agent_name, get_game_state_func, auto_clear_var):
+    def __init__(self, agent, agent_name, get_game_state_func, auto_clear_var, tts_manager):
         super().__init__()
         self.agent = agent
         self.agent_name = agent_name
         self.get_game_state_func = get_game_state_func
         self.auto_clear = auto_clear_var
+        self.tts_manager = tts_manager
         
         # Create layout
         layout = QVBoxLayout(self)
@@ -108,6 +110,10 @@ class AgentChatTab(QWidget):
         else:
             cursor.insertText(f"{sender}: ", self.agent_format)
             cursor.insertText(f"{message}\n")
+            
+            # Speak the message with priority based on agent type
+            priority = 0 if self.agent_name == "VisionAgent" else 1
+            self.tts_manager.speak(message, priority)
         
         # Scroll to the bottom
         cursor.movePosition(QTextCursor.End)
@@ -203,6 +209,7 @@ class EventType:
     BuildAgentTrigger = QEvent.Type(QEvent.registerEventType())
     MacroAgentTrigger = QEvent.Type(QEvent.registerEventType())
     VisionAgentTrigger = QEvent.Type(QEvent.registerEventType())
+    TTSStopTrigger = QEvent.Type(QEvent.registerEventType())
 
 class _UpdateTextEvent(QEvent):
     def __init__(self, sender, message):
@@ -265,6 +272,14 @@ class SettingsTab(QWidget):
             'shortcut': {keyboard.Key.ctrl, keyboard.Key.alt, keyboard.KeyCode.from_char('v')}  # Default
         }
         layout.addWidget(vision_group['widget'])
+        
+        # TTS Stop shortcut
+        tts_stop_group = self._create_shortcut_group("TTS Stop Shortcut (Ctrl+Alt+K):")
+        self.shortcut_settings['tts_stop'] = {
+            'input': tts_stop_group['input'],
+            'shortcut': {keyboard.Key.ctrl, keyboard.Key.alt, keyboard.KeyCode.from_char('k')}  # Default
+        }
+        layout.addWidget(tts_stop_group['widget'])
         
         # Add a note about the shortcut
         note_label = QLabel("Note: Press the desired key combination to set the shortcut")
@@ -359,6 +374,9 @@ class LoLCoachGUI(QMainWindow):
         self.setWindowTitle("LoL Coach Agents")
         self.resize(800, 500)
         
+        # Initialize TTS manager
+        self.tts_manager = TTSManager()
+        
         # Central widget
         central = QWidget()
         self.setCentralWidget(central)
@@ -397,9 +415,9 @@ class LoLCoachGUI(QMainWindow):
         self.macro_agent = MacroAgent()
         self.vision_agent = VisionAgent()
         
-        self.macro_tab = AgentChatTab(self.macro_agent, "MacroAgent", get_game_state, self.auto_clear)
-        self.build_tab = AgentChatTab(self.build_agent, "BuildAgent", get_game_state, self.auto_clear)
-        self.vision_tab = AgentChatTab(self.vision_agent, "VisionAgent", get_game_state, self.auto_clear)
+        self.macro_tab = AgentChatTab(self.macro_agent, "MacroAgent", get_game_state, self.auto_clear, self.tts_manager)
+        self.build_tab = AgentChatTab(self.build_agent, "BuildAgent", get_game_state, self.auto_clear, self.tts_manager)
+        self.vision_tab = AgentChatTab(self.vision_agent, "VisionAgent", get_game_state, self.auto_clear, self.tts_manager)
         self.settings_tab = SettingsTab()
         
         self.tab_widget.addTab(self.macro_tab, "Macro Agent")
@@ -427,6 +445,7 @@ class LoLCoachGUI(QMainWindow):
                 build_shortcut = self.settings_tab.get_shortcut('build')
                 macro_shortcut = self.settings_tab.get_shortcut('macro')
                 vision_shortcut = self.settings_tab.get_shortcut('vision')
+                tts_stop_shortcut = self.settings_tab.get_shortcut('tts_stop')
                 
                 # Check if the current keys match any shortcut
                 if self.current_keys == screenshot_shortcut or self.current_keys == macro_shortcut:
@@ -444,6 +463,9 @@ class LoLCoachGUI(QMainWindow):
                     self.tab_widget.setCurrentWidget(self.vision_tab)
                     # Then trigger the update
                     QApplication.instance().postEvent(self, QEvent(EventType.VisionAgentTrigger))
+                elif self.current_keys == tts_stop_shortcut:
+                    # Stop TTS
+                    QApplication.instance().postEvent(self, QEvent(EventType.TTSStopTrigger))
             except Exception as e:
                 logging.exception("Error in keyboard listener on_press")
 
@@ -459,9 +481,12 @@ class LoLCoachGUI(QMainWindow):
         self.listener.start()
 
     def closeEvent(self, event):
-        # Stop the keyboard listener when the window is closed
+        # Stop the keyboard listener and TTS manager when the window is closed
         if self.listener:
             self.listener.stop()
+        self.tts_manager.cleanup()
+        # Clean up screenshots
+        self.tts_manager.cleanup_screenshots()
         super().closeEvent(event)
 
     def customEvent(self, event):
@@ -480,6 +505,9 @@ class LoLCoachGUI(QMainWindow):
         elif event.type() == EventType.VisionAgentTrigger:
             # Try to take a new screenshot and process it
             self._trigger_vision_agent_update()
+        elif event.type() == EventType.TTSStopTrigger:
+            # Stop TTS
+            self.tts_manager.stop_speaking()
 
     def _trigger_macro_agent_update(self):
         """Triggers macro agent update with a new screenshot or falls back to existing one"""

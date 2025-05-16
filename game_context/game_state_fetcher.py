@@ -1,11 +1,14 @@
 # game_state_fetcher.py
 
 import requests
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
 from game_context.game_state import parse_game_state
 import time
 import logging
 
 logging.basicConfig(level=logging.DEBUG)
+#suppress the warning InsecureRequestWarning: Unverified HTTPS request is being made to host '127.0.0.1'.
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 def fetch_game_state():
     logging.debug("Starting fetch_game_state()")
