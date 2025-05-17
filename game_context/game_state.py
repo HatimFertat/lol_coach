@@ -461,7 +461,7 @@ def parse_player_state(player_json: Dict[str, Any]) -> Dict[str, Any]:
 
     return {
         "name": player_json.get("summonerName", ""),
-        "riot_id": player_json.get("riotIdGameName", ""),
+        "riot_id": player_json.get("riotId", ""),
         "champion": player_json.get("championName", ""),
         "level": player_json.get("level", 0),
         "is_bot": player_json.get("isBot", False),
@@ -615,7 +615,7 @@ def parse_game_state(game_state_json: Dict[str, Any]) -> GameStateContext:
     # Parse runes for the active player
     active_player_runes = parse_runes(active.get("fullRunes", {}), is_active_player=True)
     # Find player team and enemy team names
-    active_player_riot_id = active.get("riotIdGameName", "")
+    active_player_riot_id = active.get("riotId", "")
     active_player_idx = next((i for i, p in enumerate(players) if p["riot_id"] == active_player_riot_id), None)
     player_team_name = players[active_player_idx]["team"] if players else ""
     enemy_team_name = "ORDER" if player_team_name == "CHAOS" else "CHAOS"
@@ -661,7 +661,7 @@ def parse_game_state(game_state_json: Dict[str, Any]) -> GameStateContext:
         active_player_stats=stats,
         active_player_gold=current_gold,
         active_player_summoner_name=active.get("summonerName", ""),
-        active_player_riot_id=active.get("riotIdGameName", ""),
+        active_player_riot_id=active.get("riotId", ""),
         active_player_runes=active_player_runes,
         enemy_laner_runes=enemy_laner.get("runes") if enemy_laner else None,
         events=events,

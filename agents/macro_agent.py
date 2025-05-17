@@ -42,8 +42,8 @@ class MacroAgent(Agent):
             positions_str, positions_xy = detect_champion_positions(minimap_path, ally_champions, enemy_champions, debug=False)
             champion_positions = format_champion_positions(positions_str, positions_xy, ally_champions, enemy_champions)
         #replace [Ally] and [Enemy] by the lane of the champions
-        champion_positions = champion_positions.replace("[Ally]", game_state.player_team.champions[active_player_index].lane)
-        champion_positions = champion_positions.replace("[Enemy]", game_state.enemy_team.champions[active_player_index].lane)
+        # champion_positions = champion_positions.replace("[Ally]", game_state.player_team.champions[active_player_index].lane)
+        # champion_positions = champion_positions.replace("[Enemy]", game_state.enemy_team.champions[active_player_index].lane)
         # Turrets Taken (per lane if > 0)
         def summarize_lane_turrets(turrets):
             return ", ".join(
@@ -108,7 +108,7 @@ class MacroAgent(Agent):
             getattr(game_state.enemy_team, "elder_buff_expires_at", None)
         )
         
-        active_player_summary = summarize_players([game_state.player_team.champions[active_player_index]], non_consumable_item_list, role_mapping)
+        active_player_summary = summarize_players([c for c in game_state.player_team.champions if c.name == game_state.player_champion], non_consumable_item_list, role_mapping)
         our_players = summarize_players([c for c in game_state.player_team.champions if c.name != game_state.player_champion], non_consumable_item_list, role_mapping)
         enemy_players = summarize_players(game_state.enemy_team.champions, non_consumable_item_list, role_mapping)
 
