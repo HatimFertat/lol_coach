@@ -1,5 +1,4 @@
 import logging
-logging.basicConfig(level=logging.INFO, format='[%(levelname)s] %(message)s')
 import os
 import json
 import time
@@ -8,7 +7,7 @@ from pathlib import Path
 from datetime import datetime
 
 # Remove Tkinter imports
-from PySide6.QtCore import Qt, QSize, Signal, Slot, QEvent
+from PySide6.QtCore import Qt, QSize, Signal, Slot, QEvent, QTimer
 from PySide6.QtWidgets import (QApplication, QMainWindow, QWidget, QTabWidget, 
                              QTextEdit, QLineEdit, QPushButton, QCheckBox,
                              QLabel, QVBoxLayout, QHBoxLayout, QGridLayout,
@@ -23,6 +22,7 @@ from game_context.game_state_fetcher import fetch_game_state
 from vision.screenshot_listener import take_screenshot_and_crop
 from vision.minimap_cropper import SCREENSHOT_DIR
 from utils.tts_manager import TTSManager
+# from utils.legacy_tts import TTSManager
 
 from pynput import keyboard
 
@@ -112,8 +112,7 @@ class AgentChatTab(QWidget):
             cursor.insertText(f"{message}\n")
             
             # Speak the message with priority based on agent type
-            # priority = 0 if self.agent_name == "VisionAgent" else 0
-            priority = 0
+            priority = 0 if self.agent_name == "VisionAgent" else 1
             self.tts_manager.speak(message, priority)
         
         # Scroll to the bottom
@@ -275,10 +274,10 @@ class SettingsTab(QWidget):
         layout.addWidget(vision_group['widget'])
         
         # TTS Stop shortcut
-        tts_stop_group = self._create_shortcut_group("TTS Stop Shortcut (Ctrl+Alt+K):")
+        tts_stop_group = self._create_shortcut_group("TTS Stop Shortcut (Ctrl+Alt+L):")
         self.shortcut_settings['tts_stop'] = {
             'input': tts_stop_group['input'],
-            'shortcut': {keyboard.Key.ctrl, keyboard.Key.alt, keyboard.KeyCode.from_char('k')}  # Default
+            'shortcut': {keyboard.Key.ctrl, keyboard.Key.alt, keyboard.KeyCode.from_char('l')}  # Default
         }
         layout.addWidget(tts_stop_group['widget'])
         
@@ -377,9 +376,11 @@ class LoLCoachGUI(QMainWindow):
         
         # Initialize TTS manager
         self.tts_manager = TTSManager()
-        # Test TTS
-        self.tts_manager.speak("Hello, I am the LoL Coach. How can I help you today?")
         
+        # Wait a moment for TTS to initialize before greeting
+        QTimer.singleShot(0, self._delayed_greeting)
+        # self._delayed_greeting()
+
         # Central widget
         central = QWidget()
         self.setCentralWidget(central)
@@ -394,6 +395,12 @@ class LoLCoachGUI(QMainWindow):
         self.use_mock = QCheckBox("Use mock game state")
         self.use_mock.setChecked(MOCK)
         mode_layout.addWidget(self.use_mock)
+        
+        # TTS enable/disable checkbox
+        self.enable_tts = QCheckBox("Enable Text-to-Speech")
+        self.enable_tts.setChecked(True)
+        self.enable_tts.stateChanged.connect(self._on_tts_state_changed)
+        mode_layout.addWidget(self.enable_tts)
         
         # Auto-clear checkbox
         self.auto_clear = QCheckBox("Auto-Reset after Update")
@@ -565,6 +572,21 @@ class LoLCoachGUI(QMainWindow):
         except Exception as e:
             logging.exception("Error starting screenshot process")
             self.vision_tab.status_label.setText(f"Screenshot error: {str(e)[:50]}")
+
+    def _on_tts_state_changed(self, state):
+        """Handle TTS enable/disable checkbox state change."""
+        self.tts_manager.set_disabled(not state)
+        if state:
+            # Send a test message when TTS is enabled
+            self.tts_manager.speak("Text to speech has been enabled.")
+
+    def _delayed_greeting(self):
+        """Send the greeting after a short delay to ensure TTS is ready."""
+        try:
+            if self.enable_tts.isChecked():
+                self.tts_manager.speak("Hello, I am the League of Legends Coach. How can I help you today?")
+        except Exception as e:
+            logging.error(f"Error sending greeting: {e}")
 
 # For standalone testing
 if __name__ == "__main__":

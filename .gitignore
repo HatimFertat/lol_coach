@@ -1,6 +1,8 @@
 
 .python-version
 cache_builds/*.pkl
+**.onnx
+**.bin
 
 **/*.jpg
 **/*.jpeg

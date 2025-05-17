@@ -4,14 +4,12 @@ import glob
 import subprocess
 import threading
 from queue import Queue
+from sys import stdout, stderr
+import time
 import tempfile
 import shutil
-from kokoro_onnx import Kokoro
 import sounddevice as sd
 import soundfile as sf
-from pathlib import Path
-import runpy
-
 
 class TTSManager:
     def __init__(self):
@@ -20,6 +18,7 @@ class TTSManager:
             self.speech_queue = Queue()
             self.is_speaking = False
             self.should_stop = False
+            self.current_process = None
             self.initialized = False
             self.temp_dir = None
             self.audio_thread = None
@@ -28,20 +27,12 @@ class TTSManager:
             # Get the absolute path to the kokoro-tts script
             script_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
             self.kokoro_tts_path = os.path.join(script_dir, 'kokoro-tts', 'kokoro-tts')
-            self.chunk_text = runpy.run_path(str(Path(self.kokoro_tts_path)))['chunk_text']
+            
             # Verify the script exists and is executable
             if not os.path.exists(self.kokoro_tts_path):
                 raise FileNotFoundError(f"kokoro-tts script not found at {self.kokoro_tts_path}")
             if not os.access(self.kokoro_tts_path, os.X_OK):
                 os.chmod(self.kokoro_tts_path, 0o755)
-            
-            # Initialize Kokoro TTS engine for direct calls
-            model_path = os.path.join(script_dir, 'kokoro-v1.0.onnx')
-            voices_path = os.path.join(script_dir, 'voices-v1.0.bin')
-            self.kokoro = Kokoro(model_path, voices_path)
-            self.voice = 'af_sarah'
-            self.lang = 'en-us'
-            self.speed = 1.0
             
             # Create temporary directory for audio files
             self.temp_dir = tempfile.mkdtemp(prefix='tts_audio_')
@@ -51,17 +42,25 @@ class TTSManager:
             
             # Test the TTS system with a simple message
             # self._test_tts()
-            
+
             # Start the speech processing thread
             self.process_thread = threading.Thread(target=self._process_speech_queue, daemon=True)
             self.process_thread.start()
             logging.info("TTS Manager initialized successfully")
             self.initialized = True
+
         except Exception as e:
             logging.error(f"Failed to initialize TTS Manager: {e}")
             if self.temp_dir and os.path.exists(self.temp_dir):
                 shutil.rmtree(self.temp_dir)
             raise
+    def _delayed_greeting(self):
+        """Send the greeting after a short delay to ensure TTS is ready."""
+        try:
+            if self.enable_tts.isChecked():
+                self.speak("Hello, I am the League of Legends Coach. How can I help you today?")
+        except Exception as e:
+            logging.error(f"Error sending greeting: {e}")
 
     def set_disabled(self, disabled: bool):
         """Enable or disable TTS functionality."""
@@ -76,7 +75,7 @@ class TTSManager:
         """Test the TTS system with a simple message."""
         try:
             logging.info("Testing TTS system...")
-            test_text = "Testing TTS system..."
+            test_text = "Testing text to speech system."
             
             # Create a temporary file for the test text
             with tempfile.NamedTemporaryFile(mode='w', suffix='.txt', delete=False) as temp_file:
@@ -94,7 +93,8 @@ class TTSManager:
                     output_wav,
                     '--lang', 'en-us',
                     '--voice', 'af_sarah',
-                    '--speed', '1.0'
+                    '--speed', '1.0',
+                    '--debug'
                 ]
                 
                 process = subprocess.Popen(
@@ -166,6 +166,16 @@ class TTSManager:
                 sd.stop()
                 self.audio_thread.join(timeout=1.0)
             
+            # Terminate the current process if it exists
+            if self.current_process:
+                logging.info("Terminating current process...")
+                try:
+                    self.current_process.terminate()
+                    self.current_process.wait(timeout=1.0)
+                except subprocess.TimeoutExpired:
+                    self.current_process.kill()
+                self.current_process = None
+            
             # Clear the queue
             while not self.speech_queue.empty():
                 self.speech_queue.get()
@@ -177,7 +187,6 @@ class TTSManager:
 
     def _process_speech_queue(self):
         """Process the speech queue in a separate thread."""
-
         while True:
             try:
                 # Get the next text to speak
@@ -187,16 +196,67 @@ class TTSManager:
                 self.should_stop = False
                 
                 try:
-                    # Direct synthesis using Kokoro without subprocess
-                    for chunk in self.chunk_text(text, initial_chunk_size=500):
-                        if self.should_stop:
-                            break
+                    # Create a temporary file for the text
+                    with tempfile.NamedTemporaryFile(mode='w', suffix='.txt', delete=False) as temp_file:
+                        temp_file.write(text)
+                        temp_path = temp_file.name
+                    
+                    try:
+                        # Generate unique output WAV file path
+                        output_wav = os.path.join(self.temp_dir, f'output_{int(time.time())}.wav')
+                        
+                        logging.info("Starting kokoro-tts process...")
+                        cmd = [
+                            'python3',
+                            self.kokoro_tts_path,
+                            temp_path,
+                            output_wav,
+                            '--lang', 'en-us',
+                            '--voice', 'af_sarah',
+                            '--speed', '1.0',
+                            '--debug'
+                        ]
+                        logging.info(f"Running command: {' '.join(cmd)}")
+                        
+                        # Create the process
+                        self.current_process = subprocess.Popen(
+                            cmd,
+                            stdout=subprocess.PIPE,
+                            stderr=subprocess.PIPE,
+                            universal_newlines=True,
+                            bufsize=1
+                        )
+                        
+                        # Stream output in real time
+                        # for line in self.current_process.stdout:
+                            # print(f"[kokoro-tts stdout] {line}", end='')
+                        # for line in self.current_process.stderr:
+                            # print(f"[kokoro-tts stderr] {line}", end='')
+                        self.current_process.wait()
+                        
+                        # Check return code
+                        if self.current_process.returncode != 0:
+                            logging.error(f"kokoro-tts failed with return code: {self.current_process.returncode}")
+                            if stderr:
+                                logging.error(f"Detailed error: {stderr}")
+                            continue
+                        
+                        # Play the audio
                         try:
-                            samples, samplerate = self.kokoro.create(chunk, voice=self.voice, speed=self.speed, lang=self.lang)
-                            sd.play(samples, samplerate)
+                            data, samplerate = sf.read(output_wav)
+                            sd.play(data, samplerate)
                             sd.wait()
                         except Exception as e:
-                            logging.error(f"Error synthesizing or playing chunk: {e}")
+                            logging.error(f"Error playing audio: {e}")
+                        
+                    finally:
+                        # Clean up temporary files
+                        try:
+                            os.unlink(temp_path)
+                            if os.path.exists(output_wav):
+                                os.unlink(output_wav)
+                        except Exception as e:
+                            logging.warning(f"Failed to delete temporary file: {e}")
                         
                 except Exception as e:
                     logging.error(f"Error running kokoro-tts: {e}")

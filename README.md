@@ -10,8 +10,16 @@ The application features a graphical user interface (GUI) for interacting with t
 
 ---
 
+## Requirements 
+python 3.12
 
 ## Installation
+
+0. Install python 3.12:
+   ```bash
+   pip install uv
+   uv python install 3.12
+   ```
 
 1. Clone the repository:
    ```bash
@@ -20,8 +28,13 @@ The application features a graphical user interface (GUI) for interacting with t
    ```
 
 2. Create and activate a virtual environment (choose one):
+   - Using **uv**:
+     ```bash
+     uv venv
+     source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+     ```
 
-   - Using **venv** (Python 3.9+):
+   - Using **venv**:
      ```bash
      python3 -m venv .venv
      source .venv/bin/activate  # On Windows: .venv\Scripts\activate
@@ -30,13 +43,13 @@ The application features a graphical user interface (GUI) for interacting with t
    - Using **virtualenv**:
      ```bash
      pip install virtualenv
-     virtualenv venv --python=python3.9
+     virtualenv venv --python=python3.12
      source venv/bin/activate  # On Windows: venv\Scripts\activate
      ```
 
    - Using **conda**:
      ```bash
-     conda create -n lol_coach python=3.9
+     conda create -n lol_coach python=3.12
      conda activate lol_coach
      ```
 
@@ -45,16 +58,27 @@ The application features a graphical user interface (GUI) for interacting with t
    pip install .
    ```
    
+4. Install TTS:
+   ```bash
+   git clone https://github.com/nazdridoy/kokoro-tts.git
+   
+   download models
+   ```
+   curl -LO https://github.com/nazdridoy/kokoro-tts/releases/download/v1.0.0/voices-v1.0.bin 
+   curl -LO https://github.com/nazdridoy/kokoro-tts/releases/download/v1.0.0/kokoro-v1.0.int8.onnx
+   Tip: alternatives for int8: 
+   - fp16 (apple silicon)
+   - fp16-gpu (CUDA)
+   
 
-
-3. Set up environment variables:
+5. Set up environment variables:
    - Create a `.env` file in the root directory.
    - Add the following variable:
      ```
      GEMINI_API_KEY=<your-api-key>
      ```
 
-4. Run the application:
+6. Run the application:
    ```bash
    python main.py
    ```
