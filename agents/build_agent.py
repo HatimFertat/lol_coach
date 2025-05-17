@@ -85,7 +85,7 @@ class BuildAgent(Agent):
         
         build_section = self.get_reference_build_text(game_time, sanitized_items, champ, role, enemy)
 
-        active_player_summary = summarize_players([game_state.player_team.champions[active_player_index]], non_consumable_item_list, role_mapping)
+        active_player_summary = summarize_players([c for c in game_state.player_team.champions if c.name == game_state.player_champion], non_consumable_item_list, role_mapping)
         our_players = summarize_players([c for c in game_state.player_team.champions if c.name != game_state.player_champion], non_consumable_item_list, role_mapping)
         enemy_players = summarize_players(game_state.enemy_team.champions, non_consumable_item_list, role_mapping)
 
