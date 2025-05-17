@@ -17,7 +17,7 @@ python 3.12
 
 0. Install python 3.12:
    ```bash
-   pip install uv
+   pip3 install uv
    uv python install 3.12
    ```
 
@@ -55,7 +55,11 @@ python 3.12
 
 3. Install the package:
    ```bash
-   pip install .
+   pip install -r requirements.txt
+   ```
+   Or with uv:
+   ```bash
+   uv sync
    ```
    
 4. Install TTS (download models):
