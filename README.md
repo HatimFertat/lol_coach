@@ -58,14 +58,11 @@ python 3.12
    pip install .
    ```
    
-4. Install TTS:
+4. Install TTS (download models):
    ```bash
-   git clone https://github.com/nazdridoy/kokoro-tts.git
-   
-   download models
-   ```
    curl -LO https://github.com/nazdridoy/kokoro-tts/releases/download/v1.0.0/voices-v1.0.bin 
    curl -LO https://github.com/nazdridoy/kokoro-tts/releases/download/v1.0.0/kokoro-v1.0.int8.onnx
+   ```
    Tip: alternatives for int8: 
    - fp16 (apple silicon)
    - fp16-gpu (CUDA)
