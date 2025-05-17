@@ -1,7 +1,7 @@
 # build_agent.py
 
 from agents.base_agent import Agent
-from game_context.game_state import (GameStateContext, parse_game_state, summarize_players,
+from game_context.game_state import (GameStateContext, ChampionState, parse_game_state, summarize_players,
                                     summarize_all_stats, format_time, format_items_string, role_mapping)
 from openai import OpenAI
 import os
@@ -75,7 +75,8 @@ class BuildAgent(Agent):
         game_time = game_state.timestamp
         champ = game_state.player_champion
         gold = game_state.active_player_gold
-        items = next((c.items for c in game_state.player_team.champions if c.name == champ), [])
+        # Get items from the champion in the player's lane
+        items = game_state.player_team.champions.get(game_state.role, ChampionState(name="", items=[])).items
         role = game_state.role.lower()
         enemy = game_state.enemy_laner_champ or ""
         active_player_index = game_state.active_player_idx
@@ -85,9 +86,11 @@ class BuildAgent(Agent):
         
         build_section = self.get_reference_build_text(game_time, sanitized_items, champ, role, enemy)
 
-        active_player_summary = summarize_players([c for c in game_state.player_team.champions if c.name == game_state.player_champion], non_consumable_item_list, role_mapping)
-        our_players = summarize_players([c for c in game_state.player_team.champions if c.name != game_state.player_champion], non_consumable_item_list, role_mapping)
-        enemy_players = summarize_players(game_state.enemy_team.champions, non_consumable_item_list, role_mapping)
+        # Get active player and other players
+        active_player = game_state.player_team.champions.get(game_state.role)
+        active_player_summary = summarize_players([active_player] if active_player else [], non_consumable_item_list)
+        our_players = summarize_players([c for lane, c in game_state.player_team.champions.items() if lane != game_state.role], non_consumable_item_list)
+        enemy_players = summarize_players([c for c in game_state.enemy_team.champions.values()], non_consumable_item_list)
 
         summary = [
             f"Here is the current state of my league of legends game:\n",

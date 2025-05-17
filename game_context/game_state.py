@@ -3,11 +3,11 @@
 from dataclasses import dataclass, field
 from typing import List, Dict, Optional, Any
 
+#region minor dataclasses
 @dataclass
 class SummonerSpells:
     spell_one: str
     spell_two: str
-
 
 @dataclass
 class Score:
@@ -28,19 +28,6 @@ class Score:
 
     def __post_init__(self):
         self.kda_string = self.__str__()
-
-
-@dataclass
-class ChampionState:
-    name: str
-    items: List[str]
-    lane: Optional[str] = None
-    level: int = 0
-    score: Score = field(default_factory=Score)  # kills, deaths, assists, etc.
-    is_bot: bool = False
-    is_dead: bool = False
-    respawn_timer: Optional[float] = None
-    summoner_spells: Optional[SummonerSpells] = None
 
 @dataclass
 class Event:
@@ -87,23 +74,6 @@ class Monsters:
         ms = [m for m in self.monsters if m.name == name]
         if not ms: return None
         return max(ms, key=lambda m: m.killed if m.killed is not None else -1)
-
-@dataclass
-class TeamState:
-    champions: List[ChampionState]
-    # total_gold: int = 0
-
-    # New fields for structure tracking
-    turrets_taken: Dict[str, List[str]] = field(default_factory=lambda: {"Bot": [], "Mid": [], "Top": []})
-    inhibs_taken: List[str] = field(default_factory=list)
-    num_turrets_taken: int = 0
-    num_inhibs_taken: int = 0
-
-    baron_buff_expires_at: Optional[float] = None
-    elder_buff_expires_at: Optional[float] = None
-    # New field: counts of each unique monster taken by this team
-    monster_counts: Dict[str, int] = field(default_factory=dict)
-
 
 @dataclass
 class Structure:
@@ -271,6 +241,39 @@ class ObjectiveTimers:
         else:
             self.baron_respawn = 1500.0
 
+#endregion
+
+#region dataclasses
+@dataclass
+class ChampionState:
+    name: str
+    items: List[str]
+    lane: Optional[str] = None
+    level: int = 0
+    score: Score = field(default_factory=Score)  # kills, deaths, assists, etc.
+    is_bot: bool = False
+    is_dead: bool = False
+    respawn_timer: Optional[float] = None
+    summoner_spells: Optional[SummonerSpells] = None
+
+
+@dataclass
+class TeamState:
+    champions: Dict[str, ChampionState]  # Changed from List[ChampionState] to Dict[str, ChampionState]
+    # total_gold: int = 0
+
+    # New fields for structure tracking
+    turrets_taken: Dict[str, List[str]] = field(default_factory=lambda: {"Bot": [], "Mid": [], "Top": []})
+    inhibs_taken: List[str] = field(default_factory=list)
+    num_turrets_taken: int = 0
+    num_inhibs_taken: int = 0
+
+    baron_buff_expires_at: Optional[float] = None
+    elder_buff_expires_at: Optional[float] = None
+    # New field: counts of each unique monster taken by this team
+    monster_counts: Dict[str, int] = field(default_factory=dict)
+
+
 @dataclass
 class GameStateContext:
     timestamp: float
@@ -296,6 +299,9 @@ class GameStateContext:
     enemy_team_structures: Structures = field(default_factory=Structures)
     monsters: Monsters = field(default_factory=Monsters)
 
+#endregion
+
+#region parsers
 
 def parse_champion_stats(stats_json: Dict[str, Any]) -> ChampionStats:
     return ChampionStats(
@@ -483,19 +489,25 @@ def parse_team_state(
     monsters: Monsters = None
 ) -> TeamState:
     members = [p for p in all_players if p.get("team") == team_name]
-    team_state = TeamState(
-        champions=[ChampionState(
-            name=p["champion"],
-            items=[item.name for item in p.get("items", [])],
-            lane=p["lane"],
-            level=p["level"],
-            score=parse_score(p.get("scores", {})),
-            is_bot=p.get("is_bot", False),
-            is_dead=p.get("is_dead", False),
-            respawn_timer=p.get("respawn_timer"),
-            summoner_spells=p.get("summoner_spells"),
-        ) for p in members]
-    )
+    
+    # Create dictionary of champions indexed by lane
+    champions_dict = {}
+    for p in members:
+        lane = p["lane"]
+        if lane:  # Only add if lane is not None
+            champions_dict[lane] = ChampionState(
+                name=p["champion"],
+                items=[item.name for item in p.get("items", [])],
+                lane=lane,
+                level=p["level"],
+                score=parse_score(p.get("scores", {})),
+                is_bot=p.get("is_bot", False),
+                is_dead=p.get("is_dead", False),
+                respawn_timer=p.get("respawn_timer"),
+                summoner_spells=p.get("summoner_spells"),
+            )
+    
+    team_state = TeamState(champions=champions_dict)
 
     # Compute turrets_taken and inhibs_taken from enemy_structures
     if enemy_structures is not None:
@@ -539,8 +551,6 @@ def parse_team_state(
     team_state.baron_buff_expires_at = baron_buff_expires_at
     team_state.elder_buff_expires_at = elder_buff_expires_at
 
-    # total_gold = sum(p["scores"].get("creepScore", 0) * 21 + p["scores"].get("kills", 0) * 300 for p in members)
-    # team_state.total_gold = total_gold
     return team_state
 
 def parse_objective_timers(game_state_json: Dict[str, Any], events: List[Event], monsters: Monsters = None) -> ObjectiveTimers:
@@ -670,6 +680,10 @@ def parse_game_state(game_state_json: Dict[str, Any]) -> GameStateContext:
         monsters=monsters
     )
 
+#endregion
+
+#region formatters
+
 def summarize_all_stats(stats: ChampionStats) -> str:
             hp = f"{stats.health:.0f}/{stats.max_health:.0f}"
             mana = f"{stats.mana:.0f}/{stats.max_mana:.0f}"
@@ -714,7 +728,7 @@ def format_items_string(items_dict: dict[str, list[str]], include_list: Optional
 
 role_mapping = {"UTILITY": "SUPPORT", "MIDDLE": "MIDDLE", "BOTTOM": "BOT"}
 
-def summarize_players(champions, include_list, lane_mapping=role_mapping):
+def summarize_players(champions, include_list):
     lines = []
     for champ in champions:
         role = role_mapping.get(champ.lane, champ.lane) or "?"
@@ -726,3 +740,5 @@ def summarize_players(champions, include_list, lane_mapping=role_mapping):
         items = format_items_string({"Items": items}, include_list)
         lines.append(f"[{role.capitalize()}] {name} (Lv {level}) | {score.kills}/{score.deaths}/{score.assists} | {status} | {items}")
     return lines
+
+#endregion

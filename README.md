@@ -66,6 +66,8 @@ python 3.12
    ```bash
    curl -LO https://github.com/nazdridoy/kokoro-tts/releases/download/v1.0.0/voices-v1.0.bin 
    curl -LO https://github.com/nazdridoy/kokoro-tts/releases/download/v1.0.0/kokoro-v1.0.int8.onnx
+
+   mv kokoro-v1.0.int8.onnx kokoro-v1.0.onnx
    ```
    Tip: alternatives for int8: 
    - fp16 (apple silicon)

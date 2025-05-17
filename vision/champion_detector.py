@@ -3,7 +3,7 @@ import numpy as np
 from pathlib import Path
 from typing import List, Tuple, Optional, Dict
 from vision.map_semantics.minimap_coordinate_mapper import MinimapCoordinateMapper
-
+from game_context.game_state import GameStateContext, role_mapping
 def create_circular_mask(icon: np.ndarray) -> np.ndarray:
     """
     Create a circular mask for the icon to match minimap icons.
@@ -260,19 +260,17 @@ def calculate_champion_distances(
     return distances
 
 def format_champion_positions(
+    game_state: GameStateContext,
     positions_str: Dict[str, str],
-    positions_xy: Dict[str, Tuple[float, float]],
-    ally_champions: List[str],
-    enemy_champions: List[str]
+    positions_xy: Dict[str, Tuple[float, float]]
 ) -> str:
     """
     Format champion positions in a readable way for the macro agent.
     
     Args:
+        game_state: GameStateContext object
         positions_str: Dictionary mapping champion names to their location descriptions
         positions_xy: Dictionary mapping champion names to their (x, y) coordinates
-        ally_champions: List of ally champion names
-        enemy_champions: List of enemy champion names
     
     Returns:
         String containing formatted positions for all champions
@@ -281,19 +279,15 @@ def format_champion_positions(
     
     # Add ally positions
     lines.append("Ally Positions:")
-    for champ in ally_champions:
-        if champ in positions_str and positions_str[champ] != "Not visible":
-            lines.append(f"[Ally] {champ}: {positions_str[champ]}")
-        else:
-            lines.append(f"[Ally] {champ}: Not visible")
+    for role, champ in game_state.player_team.champions.items():
+        if champ.name in positions_str:
+            lines.append(f"[{role_mapping[role]}] {champ.name}: {positions_str[champ.name]}")
     
     # Add enemy positions
     lines.append("\nEnemy Positions:")
-    for champ in enemy_champions:
-        if champ in positions_str and positions_str[champ] != "Not visible":
-            lines.append(f"[Enemy] {champ}: {positions_str[champ]}")
-        else:
-            lines.append(f"[Enemy] {champ}: Not visible")
+    for role, champ in game_state.enemy_team.champions.items():
+        if champ.name in positions_str:
+            lines.append(f"[{role_mapping[role]}] {champ.name}: {positions_str[champ.name]}")
     
     return "\n".join(lines)
 
