@@ -444,6 +444,12 @@ class LoLCoachGUI(QMainWindow):
         self.listener = None
         self.start_keyboard_listener()
 
+        # Initialize vision agent update timer
+        self.vision_update_timer = QTimer()
+        self.vision_update_timer.timeout.connect(self._periodic_vision_update)
+        self.start_vision_updates()
+
+
     def start_keyboard_listener(self):
         def on_press(key):
             try:
@@ -490,6 +496,20 @@ class LoLCoachGUI(QMainWindow):
         self.listener = keyboard.Listener(on_press=on_press, on_release=on_release)
         self.listener.start()
 
+    def start_vision_updates(self):
+        """Start or restart the periodic vision agent updates"""
+        interval = self.settings_tab.get_vision_interval() * 1000  # Convert to milliseconds
+        self.vision_update_timer.start(interval)
+
+    def _periodic_vision_update(self):
+        """Periodically update the vision agent without changing tabs"""
+        try:
+            # Only update if we're not in mock mode
+            if not self.use_mock.isChecked():
+                self._trigger_vision_agent_update()
+        except Exception as e:
+            logging.exception("Error in periodic vision update")
+
     def closeEvent(self, event):
         # Stop the keyboard listener and TTS manager when the window is closed
         if self.listener:
@@ -497,6 +517,8 @@ class LoLCoachGUI(QMainWindow):
         self.tts_manager.cleanup()
         # Clean up screenshots
         self.tts_manager.cleanup_screenshots()
+        # Stop the vision update timer
+        self.vision_update_timer.stop()
         super().closeEvent(event)
 
     def customEvent(self, event):
