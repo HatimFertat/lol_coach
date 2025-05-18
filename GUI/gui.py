@@ -99,7 +99,7 @@ class AgentChatTab(QWidget):
         # Set up event handling
         self.entry.returnPressed.connect(self.send_message)
 
-    def display_message(self, sender, message):
+    def display_message(self, sender, message, curated_message=None):
         cursor = self.text_area.textCursor()
         cursor.movePosition(QTextCursor.End)
         
@@ -111,9 +111,11 @@ class AgentChatTab(QWidget):
             cursor.insertText(f"{sender}: ", self.agent_format)
             cursor.insertText(f"{message}\n")
             
+            # Speak only the curated message if available, otherwise use the full message
+            message_to_speak = curated_message
             # Speak the message with priority based on agent type
             priority = 0 if self.agent_name == "VisionAgent" else 1
-            self.tts_manager.speak(message, priority)
+            self.tts_manager.speak(message_to_speak, priority)
         
         # Scroll to the bottom
         cursor.movePosition(QTextCursor.End)
@@ -131,9 +133,9 @@ class AgentChatTab(QWidget):
             
             # Process in background to keep UI responsive
             def process_message():
-                _, response = self.agent.run(None, user_message)
+                prompt, response, curated_response = self.agent.run(None, user_message)
                 # Update UI on the main thread
-                QApplication.instance().postEvent(self, _UpdateTextEvent(self.agent_name, response))
+                QApplication.instance().postEvent(self, _UpdateTextEvent(self.agent_name, response, curated_response))
             
             threading.Thread(target=process_message, daemon=True).start()
         except Exception as e:
@@ -152,9 +154,9 @@ class AgentChatTab(QWidget):
             # Process in background to keep UI responsive
             def process_game_state():
                 game_state = self.get_game_state_func()
-                prompt, response = self.agent.run(game_state, user_message)
+                prompt, response, curated_response = self.agent.run(game_state, user_message)
                 # Update UI on the main thread
-                QApplication.instance().postEvent(self, _UpdateGameStateEvent(prompt, response))
+                QApplication.instance().postEvent(self, _UpdateGameStateEvent(prompt, response, curated_response))
             
             threading.Thread(target=process_game_state, daemon=True).start()
         except Exception as e:
@@ -172,9 +174,9 @@ class AgentChatTab(QWidget):
             # Process in background to keep UI responsive
             def process_with_image():
                 game_state = self.get_game_state_func()
-                prompt, response = self.agent.run(game_state, user_message, image_path=image_path)
+                prompt, response, curated_response = self.agent.run(game_state, user_message, image_path=image_path)
                 # Update UI on the main thread
-                QApplication.instance().postEvent(self, _UpdateGameStateEvent(prompt, response))
+                QApplication.instance().postEvent(self, _UpdateGameStateEvent(prompt, response, curated_response))
             
             threading.Thread(target=process_with_image, daemon=True).start()
         except Exception as e:
@@ -192,11 +194,11 @@ class AgentChatTab(QWidget):
     # Event handlers for thread-safe UI updates
     def customEvent(self, event):
         if event.type() == EventType.UpdateText:
-            self.display_message(event.sender, event.message)
+            self.display_message(event.sender, event.message, event.curated_message)
             self.status_label.setText("")
         elif event.type() == EventType.UpdateGameState:
             self.display_message("You", event.prompt)
-            self.display_message(self.agent_name, event.response)
+            self.display_message(self.agent_name, event.response, event.curated_response)
             self.status_label.setText("")
 
 # Custom event types for thread-safe UI updates
@@ -212,16 +214,18 @@ class EventType:
     TTSStopTrigger = QEvent.Type(QEvent.registerEventType())
 
 class _UpdateTextEvent(QEvent):
-    def __init__(self, sender, message):
+    def __init__(self, sender, message, curated_message=None):
         super().__init__(EventType.UpdateText)
         self.sender = sender
         self.message = message
+        self.curated_message = curated_message
 
 class _UpdateGameStateEvent(QEvent):
-    def __init__(self, prompt, response):
+    def __init__(self, prompt, response, curated_response=None):
         super().__init__(EventType.UpdateGameState)
         self.prompt = prompt
         self.response = response
+        self.curated_response = curated_response
 
 class _ScreenshotReadyEvent(QEvent):
     def __init__(self, image_path, agent_name):
@@ -648,7 +652,7 @@ class LoLCoachGUI(QMainWindow):
         """Send the greeting after a short delay to ensure TTS is ready."""
         try:
             if self.enable_tts.isChecked():
-                self.tts_manager.speak("Hello, I am the League of Legends Coach. How can I help you today?")
+                self.tts_manager.speak("Hello, I am the League of Legends Coach.")
         except Exception as e:
             logging.error(f"Error sending greeting: {e}")
 

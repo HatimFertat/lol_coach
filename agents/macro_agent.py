@@ -11,6 +11,7 @@ from utils.get_item_recipes import (get_legendary_items, get_non_consumable_item
 import base64
 from typing import Tuple, Optional
 from vision.champion_detector import detect_champion_positions, format_champion_positions
+import logging
 
 load_dotenv()
 CURRENT_PATCH = os.getenv("CURRENT_PATCH", "15.7.1")
@@ -171,9 +172,15 @@ class MacroAgent(Agent):
         except Exception as e:
             return f"MacroAgent Error: {str(e)}"
         
-    def run(self, game_state: Optional[GameStateContext] = None, user_message: str = None, image_path: str = None) -> tuple[str, str]:
+    def check_for_summary(self, advice: str) -> str:
+        if "--- Summary Start ---" in advice:
+            return advice.split("--- Summary Start ---")[1]
+        else:
+            return "Read the full response to get the macro strategy recommendation."
+        
+    def run(self, game_state: Optional[GameStateContext] = None, user_message: str = None, image_path: str = None) -> tuple[str, str, str]:
         if user_message is not None and game_state is None:
-            return user_message, self.standalone_message(user_message)
+            return user_message, self.standalone_message(user_message), ""
 
         # Summarize game state
         summary = self.summarize_game_state(game_state, image_path)
@@ -185,6 +192,15 @@ class MacroAgent(Agent):
         suffix = ""
         if image_path:
             suffix += "Consider the champion positions when making your recommendation.\n"
+        suffix += (
+            "After your detailed analysis, provide a concise summary of the key points in 2-3 bullet points. "
+            "This summary must be the last part of your response and be enclosed exactly between the lines:\n"
+            "--- Summary Start ---\n"
+            "- <point 1>\n"
+            "- <point 2>\n"
+            "- <point 3>\n"
+            "--- Summary End ---\n"
+        )
         suffix += "Recommendation:"
 
         if user_message:
@@ -206,7 +222,9 @@ class MacroAgent(Agent):
             )
             advice = response.choices[0].message.content
             self.conversation_history.append({"role": "assistant", "content": advice})
-            return prompt, advice
+            curated_reply = self.check_for_summary(advice)
+            logging.debug(f"MacroAgent curated reply: {curated_reply}")
+            return prompt, advice, curated_reply
         except Exception as e:
             return f"MacroAgent Error: {str(e)}"
     

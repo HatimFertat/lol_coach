@@ -10,7 +10,7 @@ from utils.lolalytics_client import get_build, ItemSet, Section, toggle_mapping
 from utils.get_item_recipes import (get_legendary_items, get_non_consumable_items, download_json_or_load_local,
                                      get_max_entries, build_section_text, ITEM_URL, CHAMPION_TAGS_URL, cache_path, champion_tags)
 from typing import Tuple, Optional
-
+import logging
 load_dotenv()
 CURRENT_PATCH = os.getenv("CURRENT_PATCH", "15.7.1")
 legendary_item_list = get_legendary_items(
@@ -129,14 +129,21 @@ class BuildAgent(Agent):
         except Exception as e:
             return f"BuildAgent Error: {str(e)}"
         
-    def run(self, game_state: Optional[GameStateContext] = None, user_message: str = None) -> Tuple[str, str]:
+    def check_for_summary(self, advice: str) -> str:
+        if "Final recommendation: " in advice:
+            return advice.split("Final recommendation:")[-1]
+        else:
+            return "Read the full response to get the item recommendation."
+        
+    def run(self, game_state: Optional[GameStateContext] = None, user_message: str = None, image_path: str = None) -> Tuple[str, str, str]:
         if game_state is None and user_message is not None:
-            return user_message, self.standalone_message(user_message)
+            return user_message, self.standalone_message(user_message), ""
         
         # Summarize game state
         summary = self.summarize_game_state(game_state)
         prefix = "Based on the following game state summary, what is the best next item to purchase, and briefly explain why. Think step by step."
-        suffix = "Recommendation:"
+        suffix = "Your response must always end with the exact sentence: 'Final recommendation: I recommend you build <item>.' Replace <item> with the item name"
+        suffix += "Recommendation:"
         if user_message:
             suffix = user_message + "\n" + suffix
 
@@ -158,9 +165,12 @@ class BuildAgent(Agent):
             reply = response.choices[0].message.content
             # Add assistant reply to conversation history
             self.conversation_history.append({"role": "assistant", "content": reply})
-            return prompt, reply
+            curated_reply = self.check_for_summary(reply)
+            logging.debug(f"BuildAgent curated reply: {curated_reply}")
+            return prompt, reply, curated_reply
         except Exception as e:
-            return f"BuildAgent Error: {str(e)}"
+            error_msg = f"BuildAgent Error: {str(e)}"
+            return error_msg, error_msg, ""
 
 if __name__ == "__main__":
     import json

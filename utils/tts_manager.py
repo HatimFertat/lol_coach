@@ -150,8 +150,11 @@ class TTSManager:
         # Remove asterisk symbols to avoid them being read aloud
         text = text.replace("*", "")
         try:
-            logging.info(f"Adding to speech queue: {text[:50]}...")
-            self.speech_queue.put(text)
+            if text != "":
+                logging.info(f"Adding to speech queue: {text[:50]}...")
+                self.speech_queue.put(text)
+            else:
+                logging.debug("Skipping empty text")
         except Exception as e:
             logging.error(f"Error adding text to queue: {e}")
 
