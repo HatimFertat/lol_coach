@@ -293,7 +293,7 @@ def format_champion_positions(
 
 if __name__ == "__main__":
     # Example usage
-    minimap_path = "vision/screenshots/20250516_173935_minimap.png"
+    minimap_path = "vision/screenshots/20250519_000056_minimap.png"
     
     # Example champion lists
     ally_champions = ["Kai'sa", "Galio", "Veigar", "Master Yi", "Darius"]  # Blue team

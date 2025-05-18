@@ -1,6 +1,13 @@
 from typing import Dict, List, Optional, Tuple
 from game_context.game_state import GameStateContext
 from vision.champion_detector import detect_champion_positions, calculate_champion_distances
+import logging
+
+# # Configure logging
+# logging.basicConfig(
+#     level=logging.DEBUG,
+#     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+# )
 
 class VisionAgent:
     def __init__(self):
@@ -12,9 +19,9 @@ class VisionAgent:
             "TOP": "TOP",
             "JUNGLE": "JUNGLE"
         }
-        self.threshold = 3000
-        self.threshold_jungler = 4000
-        self.ally_close_threshold = 1500
+        self.threshold = 4000
+        self.threshold_jungler = 3000
+        self.ally_close_threshold = 3000
         self.conversation_history = []
         self.ally_lanes_to_champion = None
         self.enemy_lanes_to_champion = None
@@ -116,7 +123,7 @@ class VisionAgent:
                 if threats:
                     # Use "You" if this is the active player
                     display_name = "Be careful, You are" if ally == game_state.player_champion else ally + " is"
-                    lines.append(f"\n{display_name} threatened by:")
+                    lines.append(f"{display_name} threatened by:")
                     for enemy, distance in sorted(threats.items(), key=lambda x: x[1]):
                         lines.append(f"- {enemy} ({distance:.0f} units away)")
             
@@ -137,7 +144,7 @@ class VisionAgent:
         }
         
         if threats:
-            lines.append(f"\nBe careful!")
+            lines.append(f"Be careful!")
             for enemy, distance in sorted(threats.items(), key=lambda x: x[1]):
                 lines.append(f"- {enemy} is close, ({distance:.0f} units away)")
         
@@ -149,17 +156,23 @@ class VisionAgent:
         game_time = game_state.timestamp
         if game_time > 900:
             return ""
+        if not self.ally_lanes_to_champion:
+            self.ally_lanes_to_champion = {self.lane_mapping.get(lane, lane): c.name for lane, c in game_state.player_team.champions.items()}
+        if not self.enemy_lanes_to_champion:
+            self.enemy_lanes_to_champion = {self.lane_mapping.get(lane, lane): c.name for lane, c in game_state.enemy_team.champions.items()}
         
         lines = []
         ally_jungler = next((c.name for c in game_state.player_team.champions.values() if c.lane == 'JUNGLE'), None)
+        enemy_jungler = next((c.name for c in game_state.enemy_team.champions.values() if c.lane == 'JUNGLE'), None)
         threshold = self.threshold_jungler if self.lane_mapping.get(game_state.role) == "JUNGLE" else self.threshold
         enemy_distances = distances[ally_jungler]
+
         threats = {
             enemy: dist for enemy, dist in enemy_distances.items()
-            if dist is not None and dist <= threshold
+            if dist is not None and dist <= threshold and enemy == enemy_jungler
         }
         if threats:
-            lines.append(f"\nJungler is threatened by:")
+            lines.append(f"{ally_jungler} is threatened by:")
             for enemy, distance in sorted(threats.items(), key=lambda x: x[1]):
                 lines.append(f"- {enemy} ({distance:.0f} units away)")
 
@@ -189,6 +202,7 @@ class VisionAgent:
         minutes = int(game_state.timestamp) // 60
         seconds = int(game_state.timestamp) % 60
         time_str = f"{minutes}:{seconds:02d}"
+        logging.debug(f"Game time: {time_str}")
 
         # Get champion lists
         if not self.ally_lanes_to_champion:
@@ -196,28 +210,45 @@ class VisionAgent:
         if not self.enemy_lanes_to_champion:
             self.enemy_lanes_to_champion = {self.lane_mapping.get(lane, lane): c.name for lane, c in game_state.enemy_team.champions.items()}
         
+        logging.debug(f"Ally champions: {self.ally_lanes_to_champion}")
+        logging.debug(f"Enemy champions: {self.enemy_lanes_to_champion}")
+        
         # Get champion positions from minimap
-        _, positions_xy = detect_champion_positions(
-            image_path, 
-            self.ally_lanes_to_champion.values(), 
-            self.enemy_lanes_to_champion.values(), 
-            debug=False
-        )
+        try:
+            _, positions_xy = detect_champion_positions(
+                image_path, 
+                self.ally_lanes_to_champion.values(), 
+                self.enemy_lanes_to_champion.values(), 
+                debug=False
+            )
+            logging.debug(f"Detected positions: {positions_xy}")
+        except Exception as e:
+            logging.error(f"Error detecting champion positions: {e}")
+            return "Error detecting champion positions", "", ""
         
         # Calculate distances
         distances = self.get_cross_lane_distances(game_state, positions_xy)
-        distances_allies = calculate_champion_distances(positions_xy, game_state.player_champion, self.ally_lanes_to_champion.values())
+        distances_allies = calculate_champion_distances(positions_xy, game_state.player_champion, [c.name for c in game_state.player_team.champions.values()])
+        logging.debug(f"Cross lane distances: {distances}")
+        logging.debug(f"Ally distances: {distances_allies}")
 
         # Format threats
         ally_threats_str = self.format_ally_threats(game_state, distances)
         ally_close_str = self.format_ally_is_close(game_state, distances_allies)
-        my_jungler_threats_str = self.format_my_jungler_threats(game_state, distances)
+        # my_jungler_threats_str = self.format_my_jungler_threats(game_state, distances)
         my_threats_str = self.format_my_threats(game_state, distances)
+
+        logging.debug(f"Ally threats: {ally_threats_str}")
+        logging.debug(f"Ally close: {ally_close_str}")
+        # logging.debug(f"Jungler threats: {my_jungler_threats_str}")
+        logging.debug(f"My threats: {my_threats_str}")
+
         # Create prompt and response
-        prompt = user_message + "\n" + "What are the threats?" + time_str
-        if ally_threats_str or ally_close_str or my_jungler_threats_str or my_threats_str:
-            response = time_str + "\n" + my_threats_str + "\n" + ally_close_str + "\n" + my_jungler_threats_str + "\n"
+        prompt = user_message + "\n" + "What are the threats? " + time_str
+        if my_threats_str or ally_close_str:
+            response = my_threats_str + "\n" + ally_close_str + "\n" + ally_threats_str
         else:
             response = ""
+        logging.debug(f"Final response: {response}")
         
         return prompt, response, response

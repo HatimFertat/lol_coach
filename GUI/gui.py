@@ -173,10 +173,21 @@ class AgentChatTab(QWidget):
             
             # Process in background to keep UI responsive
             def process_with_image():
-                game_state = self.get_game_state_func()
-                prompt, response, curated_response = self.agent.run(game_state, user_message, image_path=image_path)
-                # Update UI on the main thread
-                QApplication.instance().postEvent(self, _UpdateGameStateEvent(prompt, response, curated_response))
+                try:
+                    game_state = self.get_game_state_func()
+                    prompt, response, curated_response = self.agent.run(game_state, user_message, image_path=image_path)
+                    # Update UI on the main thread
+                    QApplication.instance().postEvent(self, _UpdateGameStateEvent(prompt, response, curated_response))
+                    # Delete the screenshot after the agent has finished processing it
+                    if image_path and os.path.exists(image_path):
+                        try:
+                            os.remove(image_path)
+                            logging.debug(f"Deleted screenshot after processing: {image_path}")
+                        except Exception as e:
+                            logging.error(f"Error deleting screenshot {image_path}: {e}")
+                except Exception as e:
+                    logging.exception("Error in process_with_image")
+                    self.status_label.setText("Error during processing")
             
             threading.Thread(target=process_with_image, daemon=True).start()
         except Exception as e:
@@ -200,6 +211,26 @@ class AgentChatTab(QWidget):
             self.display_message("You", event.prompt)
             self.display_message(self.agent_name, event.response, event.curated_response)
             self.status_label.setText("")
+        elif event.type() == EventType.ScreenshotReady:
+            if getattr(event, "agent_name", None) == "MacroAgent":
+                self.macro_tab.update_with_game_state_and_image(event.image_path)
+            elif getattr(event, "agent_name", None) == "VisionAgent":
+                self.vision_tab.update_with_game_state_and_image(event.image_path)
+        elif event.type() == EventType.ScreenshotError:
+            self.macro_tab.status_label.setText(f"Screenshot error: {event.error_msg}")
+            self.vision_tab.status_label.setText(f"Screenshot error: {event.error_msg}")
+        elif event.type() == EventType.BuildAgentTrigger:
+            # Trigger build agent update
+            self.build_tab.update_with_game_state()
+        elif event.type() == EventType.MacroAgentTrigger:
+            # Try to take a new screenshot and process it
+            self._trigger_macro_agent_update()
+        elif event.type() == EventType.VisionAgentTrigger:
+            # Try to take a new screenshot and process it
+            self._trigger_vision_agent_update()
+        elif event.type() == EventType.TTSStopTrigger:
+            # Stop TTS
+            self.tts_manager.stop_speaking()
 
 # Custom event types for thread-safe UI updates
 # Define custom event types
@@ -253,8 +284,8 @@ class SettingsTab(QWidget):
         
         vision_interval_label = QLabel("Vision Agent Update Interval (seconds):")
         self.vision_interval_input = QLineEdit()
-        self.vision_interval_input.setPlaceholderText("10")
-        self.vision_interval_input.setText("10")
+        self.vision_interval_input.setPlaceholderText("5")
+        self.vision_interval_input.setText("5")
         self.vision_interval_input.setValidator(QIntValidator(1, 3600))  # Allow values between 1 and 3600 seconds
         vision_interval_layout.addWidget(vision_interval_label)
         vision_interval_layout.addWidget(self.vision_interval_input)
@@ -645,12 +676,7 @@ class LoLCoachGUI(QMainWindow):
                         logging.info(f"Using minimap: {minimap_path}")
                         # Update UI on main thread
                         QApplication.instance().postEvent(self, _ScreenshotReadyEvent(minimap_path, "VisionAgent"))
-                        # Delete the screenshot after processing
-                        try:
-                            os.remove(minimap_path)
-                            logging.debug(f"Deleted screenshot: {minimap_path}")
-                        except Exception as e:
-                            logging.error(f"Error deleting screenshot {minimap_path}: {e}")
+                        # The screenshot will be deleted after the vision agent processes it
                     else:
                         logging.info("No valid minimap found. Using regular update")
                         # Fall back to regular update if no screenshot is available

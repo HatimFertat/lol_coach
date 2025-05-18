@@ -2,7 +2,7 @@
 import logging
 
 # Set global logging to ERROR to suppress other lower level logs
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 logging.getLogger("phonemizer").setLevel(logging.ERROR)
 logging.getLogger("words_mismatch").setLevel(logging.ERROR)
 logging.getLogger("urllib3.connectionpool").setLevel(logging.ERROR)
