@@ -72,7 +72,7 @@ class VisionAgent:
         for ally_lane, ally_champion in self.ally_lanes_to_champion.items():
             # Check if ally_champion exists in distances and has distances to other champions
             if (ally_champion in distances and 
-                distances[ally_champion] and 
+                isinstance(distances[ally_champion], dict) and  # Ensure it's a dictionary
                 ally_champion != game_state.player_champion and 
                 game_state.player_champion in distances[ally_champion] and 
                 distances[ally_champion][game_state.player_champion] < self.ally_close_threshold):
