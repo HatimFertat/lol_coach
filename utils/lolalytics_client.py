@@ -192,7 +192,7 @@ def scrape_actual_builds(champion="fiora", role='top', vs="singed", allowed_sect
         return builds
 
 
-def get_build(champion: str, role: str, vs: str = "", toggle: Optional[str] = None, cache_dir: str = "cache_builds") -> List[Section]:
+def get_build(champion: str, role: str, vs: str = "", toggle: Optional[str] = None, cache_dir: str = "data/cache_builds") -> List[Section]:
     os.makedirs(cache_dir, exist_ok=True)
     date_str = datetime.date.today().isoformat()
     champion = champion.replace("'", "").lower()

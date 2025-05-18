@@ -16,10 +16,10 @@ class VisionAgent:
         self.threshold_jungler = 4000
         self.ally_close_threshold = 1500
         self.conversation_history = []
-        self.ally_lanes = None
-        self.enemy_lanes = None
+        self.ally_lanes_to_champion = None
+        self.enemy_lanes_to_champion = None
 
-    def get_cross_lane_distances(self, game_state: GameStateContext, ally_champions: List[str], enemy_champions: List[str], positions_xy: Dict[str, Tuple[float, float]]) -> Dict[str, Dict[str, float]]:
+    def get_cross_lane_distances(self, game_state: GameStateContext, positions_xy: Dict[str, Tuple[float, float]]) -> Dict[str, Dict[str, float]]:
         """
         Calculate distances between each ally champion and enemy champions from different lanes.
         
@@ -34,30 +34,30 @@ class VisionAgent:
         """
 
         # Create mapping of champion names to their lanes
-        if not self.ally_lanes:
-            self.ally_lanes = {c.name: self.lane_mapping.get(lane, lane) for lane, c in game_state.player_team.champions.items()}
-        if not self.enemy_lanes:
-            self.enemy_lanes = {c.name: self.lane_mapping.get(lane, lane) for lane, c in game_state.enemy_team.champions.items()}
+        if not self.ally_lanes_to_champion:
+            self.ally_lanes_to_champion = {self.lane_mapping.get(lane, lane): c.name for lane, c in game_state.player_team.champions.items()}
+        if not self.enemy_lanes_to_champion:
+            self.enemy_lanes_to_champion = {self.lane_mapping.get(lane, lane): c.name for lane, c in game_state.enemy_team.champions.items()}
         
         # Calculate distances for each ally champion
         distances = {}
-        for ally in ally_champions:
+        for ally_lane, ally_champion in self.ally_lanes_to_champion.items():
             # Get enemy champions from different lanes, unless it is the jungler where we will check all enemies
             cross_lane_enemies = [
-                enemy for enemy in self.enemy_champions
-                if self.enemy_lanes[enemy] != self.ally_lanes[ally]
+                enemy for lane, enemy in self.enemy_lanes_to_champion.items()
+                if lane != ally_lane
             ]
-            if self.ally_lanes[ally] == "JUNGLE":
-                cross_lane_enemies = self.enemy_champions
+            if ally_lane == "JUNGLE":
+                cross_lane_enemies = self.enemy_lanes_to_champion.values()
             
             # Calculate distances to cross-lane enemies
             if cross_lane_enemies:
                 champ_distances = calculate_champion_distances(
                     positions_xy,
-                    ally,
+                    ally_champion,
                     cross_lane_enemies
                 )
-                distances[ally] = champ_distances
+                distances[ally_champion] = champ_distances
         
         return distances
 
@@ -66,17 +66,16 @@ class VisionAgent:
         game_time = game_state.timestamp
         if game_time < 900:
             return ""
-        
-        if not self.ally_lanes:
-            self.ally_lanes = {c.name: self.lane_mapping.get(lane, lane) for lane, c in game_state.player_team.champions.items()}
+        if not self.ally_lanes_to_champion:
+            self.ally_lanes_to_champion = {self.lane_mapping.get(lane, lane): c.name for lane, c in game_state.player_team.champions.items()}
         lines = []
-        for ally in self.ally_champions:
-            if distances[ally] and ally != game_state.player_champion and distances[ally][game_state.player_champion] < self.ally_close_threshold:
+        for ally_lane, ally_champion in self.ally_lanes_to_champion.items():
+            if distances[ally_champion] and ally_champion != game_state.player_champion and distances[ally_champion][game_state.player_champion] < self.ally_close_threshold:
                 #if it's the jungler say 'Gank incoming'
-                if self.ally_lanes[ally] == "JUNGLE":
-                    lines.append(f"{ally} is on the way to gank the enemy")
+                if ally_lane == "JUNGLE":
+                    lines.append(f"{ally_champion} is on the way to gank the enemy")
                 else:
-                    lines.append(f"{ally} is close to you")
+                    lines.append(f"{ally_champion} is close to you")
         return "\n".join(lines) if lines else ""
         
     def format_threats(self, game_state: GameStateContext, distances: Dict[str, Dict[str, float]], positions_str: Dict[str, str]) -> str:
@@ -115,6 +114,20 @@ class VisionAgent:
                     lines.append(f"- {enemy} ({distance:.0f} units away) at {position}")
         
         return "\n".join(lines) if lines else ""
+    
+    def format_my_threats(self, game_state: GameStateContext, distances: Dict[str, Dict[str, float]], positions_str: Dict[str, str]) -> str:
+        lines = []
+        threats = {
+            enemy: dist for enemy, dist in distances[game_state.player_champion].items()
+            if dist is not None and dist <= self.threshold
+        }
+        if threats:
+            lines.append(f"\nBe careful, you are threatened by:")
+            for enemy, distance in sorted(threats.items(), key=lambda x: x[1]):
+                position = positions_str.get(enemy, "Unknown position")
+                lines.append(f"- {enemy} ({distance:.0f} units away) at {position}")
+        return "\n".join(lines) if lines else ""
+    
 
     def run(self, game_state: Optional[GameStateContext] = None, user_message: str = None, image_path: str = None) -> Tuple[str, str]:
         """
@@ -139,31 +152,34 @@ class VisionAgent:
         
         minutes = int(game_state.timestamp) // 60
         seconds = int(game_state.timestamp) % 60
-        response = f"Game Time: {minutes}:{seconds:02d}"
+        time_str = f"Game Time: {minutes}:{seconds:02d}"
 
         # Get champion lists
-        if not self.ally_champions:
-            self.ally_champions = [c.name for c in game_state.player_team.champions]
-        if not self.enemy_champions:
-            self.enemy_champions = [c.name for c in game_state.enemy_team.champions]
+        if not self.ally_lanes_to_champion:
+            self.ally_lanes_to_champion = {self.lane_mapping.get(lane, lane): c.name for lane, c in game_state.player_team.champions.items()}
+        if not self.enemy_lanes_to_champion:
+            self.enemy_lanes_to_champion = {self.lane_mapping.get(lane, lane): c.name for lane, c in game_state.enemy_team.champions.items()}
         
         # Get champion positions from minimap
         positions_str, positions_xy = detect_champion_positions(
             image_path, 
-            self.ally_champions, 
-            self.enemy_champions, 
+            self.ally_lanes_to_champion.values(), 
+            self.enemy_lanes_to_champion.values(), 
             debug=False
         )
         
         # Calculate distances
-        distances = self.get_cross_lane_distances(game_state, self.ally_champions, self.enemy_champions, positions_xy)
-        distances_allies = calculate_champion_distances(positions_xy, game_state.player_champion, self.ally_champions)
+        distances = self.get_cross_lane_distances(game_state, positions_xy)
+        distances_allies = calculate_champion_distances(positions_xy, game_state.player_champion, self.ally_lanes_to_champion.values())
 
         # Format threats
         threats_str = self.format_threats(game_state, distances, positions_str)
         ally_close_str = self.format_ally_is_close(game_state, distances_allies)
         # Create prompt and response
         prompt = user_message + "\n" + "What are the threats?"
-        response += threats_str + "\n" + ally_close_str
+        if threats_str or ally_close_str:
+            response = time_str + "\n" + threats_str + "\n" + ally_close_str
+        else:
+            response = ""
         
         return prompt, response 

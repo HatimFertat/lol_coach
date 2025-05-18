@@ -74,7 +74,7 @@ def remove_old_patch_dirs_keep_latest(cache_dir: str, CURRENT_PATCH: str):
             shutil.rmtree(item_path)
 
 
-CACHE_DIR = "patch_data"
+CACHE_DIR = "data/patch_data"
 os.makedirs(CACHE_DIR, exist_ok=True)
 cache_path = os.path.join(CACHE_DIR, CURRENT_PATCH)
 

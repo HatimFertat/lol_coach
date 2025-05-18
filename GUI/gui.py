@@ -12,7 +12,7 @@ from PySide6.QtWidgets import (QApplication, QMainWindow, QWidget, QTabWidget,
                              QTextEdit, QLineEdit, QPushButton, QCheckBox,
                              QLabel, QVBoxLayout, QHBoxLayout, QGridLayout,
                              QSplitter)
-from PySide6.QtGui import QFont, QColor, QTextCursor, QTextCharFormat
+from PySide6.QtGui import QFont, QColor, QTextCursor, QTextCharFormat, QIntValidator
 
 from agents.build_agent import BuildAgent
 from agents.macro_agent import MacroAgent
@@ -224,9 +224,10 @@ class _UpdateGameStateEvent(QEvent):
         self.response = response
 
 class _ScreenshotReadyEvent(QEvent):
-    def __init__(self, image_path):
+    def __init__(self, image_path, agent_name):
         super().__init__(EventType.ScreenshotReady)
         self.image_path = image_path
+        self.agent_name = agent_name
 
 class _ScreenshotErrorEvent(QEvent):
     def __init__(self, error_msg):
@@ -240,14 +241,22 @@ class SettingsTab(QWidget):
         
         # Create shortcut settings for each action
         self.shortcut_settings = {}
+
+        # Vision Agent Update Interval
+        vision_interval_group = QWidget()
+        vision_interval_layout = QHBoxLayout(vision_interval_group)
+        vision_interval_layout.setContentsMargins(0, 0, 0, 0)
         
-        # Screenshot shortcut
-        screenshot_group = self._create_shortcut_group("Screenshot Shortcut:")
-        self.shortcut_settings['screenshot'] = {
-            'input': screenshot_group['input'],
-            'shortcut': {keyboard.Key.shift, keyboard.Key.tab}  # Default
-        }
-        layout.addWidget(screenshot_group['widget'])
+        vision_interval_label = QLabel("Vision Agent Update Interval (seconds):")
+        self.vision_interval_input = QLineEdit()
+        self.vision_interval_input.setPlaceholderText("10")
+        self.vision_interval_input.setText("10")
+        self.vision_interval_input.setValidator(QIntValidator(1, 3600))  # Allow values between 1 and 3600 seconds
+        vision_interval_layout.addWidget(vision_interval_label)
+        vision_interval_layout.addWidget(self.vision_interval_input)
+        layout.addWidget(vision_interval_group)
+        # Connect vision interval input to update handler
+        self.vision_interval_input.editingFinished.connect(self._on_vision_interval_changed)
         
         # Build Agent shortcut
         build_group = self._create_shortcut_group("Build Agent Shortcut (Ctrl+Alt+B):")
@@ -289,6 +298,14 @@ class SettingsTab(QWidget):
         
         # Update all shortcut displays
         self.update_all_shortcut_displays()
+
+    def _on_vision_interval_changed(self):
+        logging.debug("[DEBUG] _on_vision_interval_changed called")
+        # Notify the parent GUI to update vision timer
+        parent = self.window()
+        # QTabWidget's parent is the main GUI
+        if parent is not None and hasattr(parent, "start_vision_updates"):
+            parent.start_vision_updates()
     
     def _create_shortcut_group(self, label_text):
         """Helper method to create a shortcut input group"""
@@ -368,6 +385,13 @@ class SettingsTab(QWidget):
         """Get the current shortcut for a specific type"""
         return self.shortcut_settings[shortcut_type]['shortcut']
 
+    def get_vision_interval(self) -> int:
+        """Get the current vision agent update interval in seconds"""
+        try:
+            return int(self.vision_interval_input.text())
+        except ValueError:
+            return 0  # Default to 0 seconds (disable updates) if invalid or empty
+        
 class LoLCoachGUI(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -414,7 +438,7 @@ class LoLCoachGUI(QMainWindow):
         # Define the game state function
         def get_game_state():
             if self.use_mock.isChecked():
-                with open(os.path.join(os.path.dirname(__file__), '../examples/example_game_state.json')) as f:
+                with open(os.path.join(os.path.dirname(__file__), '../data/examples/example_game_state.json')) as f:
                     game_state_json = json.load(f)
                 return parse_game_state(game_state_json)
             else:
@@ -429,6 +453,7 @@ class LoLCoachGUI(QMainWindow):
         self.build_tab = AgentChatTab(self.build_agent, "BuildAgent", get_game_state, self.auto_clear, self.tts_manager)
         self.vision_tab = AgentChatTab(self.vision_agent, "VisionAgent", get_game_state, self.auto_clear, self.tts_manager)
         self.settings_tab = SettingsTab()
+        self.settings_tab.setParent(self.tab_widget)  # Ensure parent is set for signal
         
         self.tab_widget.addTab(self.macro_tab, "Macro Agent")
         self.tab_widget.addTab(self.build_tab, "Build Agent")
@@ -449,6 +474,9 @@ class LoLCoachGUI(QMainWindow):
         self.vision_update_timer.timeout.connect(self._periodic_vision_update)
         self.start_vision_updates()
 
+        # Apply vision interval changes when switching tabs
+        self.tab_widget.currentChanged.connect(self.start_vision_updates)
+
 
     def start_keyboard_listener(self):
         def on_press(key):
@@ -457,14 +485,13 @@ class LoLCoachGUI(QMainWindow):
                 self.current_keys.add(key)
                 
                 # Get all current shortcuts
-                screenshot_shortcut = self.settings_tab.get_shortcut('screenshot')
                 build_shortcut = self.settings_tab.get_shortcut('build')
                 macro_shortcut = self.settings_tab.get_shortcut('macro')
                 vision_shortcut = self.settings_tab.get_shortcut('vision')
                 tts_stop_shortcut = self.settings_tab.get_shortcut('tts_stop')
                 
                 # Check if the current keys match any shortcut
-                if self.current_keys == screenshot_shortcut or self.current_keys == macro_shortcut:
+                if self.current_keys == macro_shortcut:
                     # Switch to macro tab first
                     self.tab_widget.setCurrentWidget(self.macro_tab)
                     # Then trigger the update
@@ -498,11 +525,24 @@ class LoLCoachGUI(QMainWindow):
 
     def start_vision_updates(self):
         """Start or restart the periodic vision agent updates"""
-        interval = self.settings_tab.get_vision_interval() * 1000  # Convert to milliseconds
-        self.vision_update_timer.start(interval)
+        # Ensure QLineEdit commits its value before retrieving
+        self.settings_tab.vision_interval_input.clearFocus()
+        QApplication.processEvents()
+        logging.debug(f"start_vision_updates called: current interval is {self.settings_tab.get_vision_interval()} seconds")
+        interval_seconds = self.settings_tab.get_vision_interval()
+        if interval_seconds <= 0:
+            # Disable periodic vision updates
+            self.vision_update_timer.stop()
+            logging.debug("Vision updates disabled (interval <= 0)")
+            return
+        interval_ms = interval_seconds * 1000
+        self.vision_update_timer.stop()
+        self.vision_update_timer.start(interval_ms)
+        logging.debug(f"Vision update timer started with interval {interval_ms} ms")
 
     def _periodic_vision_update(self):
         """Periodically update the vision agent without changing tabs"""
+        logging.debug(f"_periodic_vision_update triggered at time {datetime.now()} after {self.vision_update_timer.interval()} ms")
         try:
             # Only update if we're not in mock mode
             if not self.use_mock.isChecked():
@@ -523,8 +563,10 @@ class LoLCoachGUI(QMainWindow):
 
     def customEvent(self, event):
         if event.type() == EventType.ScreenshotReady:
-            self.macro_tab.update_with_game_state_and_image(event.image_path)
-            self.vision_tab.update_with_game_state_and_image(event.image_path)
+            if getattr(event, "agent_name", None) == "MacroAgent":
+                self.macro_tab.update_with_game_state_and_image(event.image_path)
+            elif getattr(event, "agent_name", None) == "VisionAgent":
+                self.vision_tab.update_with_game_state_and_image(event.image_path)
         elif event.type() == EventType.ScreenshotError:
             self.macro_tab.status_label.setText(f"Screenshot error: {event.error_msg}")
             self.vision_tab.status_label.setText(f"Screenshot error: {event.error_msg}")
@@ -554,7 +596,7 @@ class LoLCoachGUI(QMainWindow):
                     if minimap_path:
                         logging.info(f"Using minimap: {minimap_path}")
                         # Update UI on main thread
-                        QApplication.instance().postEvent(self, _ScreenshotReadyEvent(minimap_path))
+                        QApplication.instance().postEvent(self, _ScreenshotReadyEvent(minimap_path, "MacroAgent"))
                     else:
                         logging.info("No valid minimap found. Using regular update")
                         # Fall back to regular update if no screenshot is available
@@ -581,7 +623,7 @@ class LoLCoachGUI(QMainWindow):
                     if minimap_path:
                         logging.info(f"Using minimap: {minimap_path}")
                         # Update UI on main thread
-                        QApplication.instance().postEvent(self, _ScreenshotReadyEvent(minimap_path))
+                        QApplication.instance().postEvent(self, _ScreenshotReadyEvent(minimap_path, "VisionAgent"))
                     else:
                         logging.info("No valid minimap found. Using regular update")
                         # Fall back to regular update if no screenshot is available

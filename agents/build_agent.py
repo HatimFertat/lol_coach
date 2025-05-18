@@ -165,8 +165,7 @@ class BuildAgent(Agent):
 if __name__ == "__main__":
     import json
 
-    # with open("examples/items_state.json", "r") as file:
-    with open("examples/example_game_state.json", "r") as file:
+    with open("data/examples/example_game_state.json", "r") as file:
         game_state_json = json.load(file)
     game_state = parse_game_state(game_state_json)
     game_state.role = "BOTTOM"

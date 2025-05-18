@@ -214,7 +214,7 @@ if __name__ == "__main__":
     # get data from the examples folder
     from game_context.game_state import parse_game_state
 
-    with open("examples/example_game_state.json", "r") as file:
+    with open("data/examples/example_game_state.json", "r") as file:
         game_state_json = json.load(file)
     game_state = parse_game_state(game_state_json)
     game_state.role = "BOTTOM"

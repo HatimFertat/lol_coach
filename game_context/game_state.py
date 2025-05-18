@@ -726,7 +726,7 @@ def format_items_string(items_dict: dict[str, list[str]], include_list: Optional
         lines.append(f"{champion}: {items_str}")
     return "\n".join(lines)
 
-role_mapping = {"UTILITY": "SUPPORT", "MIDDLE": "MIDDLE", "BOTTOM": "BOT"}
+role_mapping = {"UTILITY": "SUPPORT", "MIDDLE": "MIDDLE", "BOTTOM": "BOT", "TOP": "TOP", "JUNGLE": "JUNGLE"}
 
 def summarize_players(champions, include_list):
     lines = []

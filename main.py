@@ -2,11 +2,12 @@
 import logging
 
 # Set global logging to ERROR to suppress other lower level logs
-logging.basicConfig(level=logging.ERROR)
+logging.basicConfig(level=logging.DEBUG)
 logging.getLogger("phonemizer").setLevel(logging.ERROR)
 logging.getLogger("words_mismatch").setLevel(logging.ERROR)
 logging.getLogger("urllib3.connectionpool").setLevel(logging.ERROR)
 logging.getLogger("numba").setLevel(logging.ERROR)
+logging.getLogger("utils").setLevel(logging.ERROR)
 
 import os
 from utils.get_item_recipes import CURRENT_PATCH, PREVIOUS_PATCH
