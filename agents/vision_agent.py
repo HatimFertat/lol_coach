@@ -64,7 +64,7 @@ class VisionAgent:
     def format_ally_is_close(self, game_state: GameStateContext, distances: Dict[str, Dict[str, float]]) -> str:
         #check if the active player is close to any ally from another lane in the early game (before first 15 minutes)
         game_time = game_state.timestamp
-        if game_time < 900:
+        if game_time > 900:
             return ""
         if not self.ally_lanes_to_champion:
             self.ally_lanes_to_champion = {self.lane_mapping.get(lane, lane): c.name for lane, c in game_state.player_team.champions.items()}
@@ -95,7 +95,7 @@ class VisionAgent:
             Formatted string describing threats to each ally champion
         """
         game_time = game_state.timestamp
-        if game_time < 900:
+        if game_time > 900:
             return ""
         
         lines = []
@@ -125,7 +125,7 @@ class VisionAgent:
     def format_my_threats(self, game_state: GameStateContext, distances: Dict[str, Dict[str, float]]) -> str:
         lines = []
         game_time = game_state.timestamp
-        if game_time < 1200:
+        if game_time > 1200:
             return ""
 
         threshold = self.threshold_jungler if self.lane_mapping.get(game_state.role) == "JUNGLE" else self.threshold
@@ -147,7 +147,7 @@ class VisionAgent:
         if game_state.role == "JUNGLE":
             return ""
         game_time = game_state.timestamp
-        if game_time < 900:
+        if game_time > 900:
             return ""
         
         lines = []
