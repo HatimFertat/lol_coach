@@ -560,7 +560,18 @@ class LoLCoachGUI(QMainWindow):
             self.listener.stop()
         self.tts_manager.cleanup()
         # Clean up screenshots
-        self.tts_manager.cleanup_screenshots()
+        try:
+            screenshot_dir = os.path.join(os.path.dirname(__file__), '../vision/screenshots')
+            if os.path.exists(screenshot_dir):
+                for file in os.listdir(screenshot_dir):
+                    if file.endswith('.png'):
+                        try:
+                            os.remove(os.path.join(screenshot_dir, file))
+                            logging.debug(f"Deleted screenshot during cleanup: {file}")
+                        except Exception as e:
+                            logging.error(f"Error deleting screenshot {file} during cleanup: {e}")
+        except Exception as e:
+            logging.error(f"Error during screenshot cleanup: {e}")
         # Stop the vision update timer
         self.vision_update_timer.stop()
         super().closeEvent(event)
@@ -601,6 +612,12 @@ class LoLCoachGUI(QMainWindow):
                         logging.info(f"Using minimap: {minimap_path}")
                         # Update UI on main thread
                         QApplication.instance().postEvent(self, _ScreenshotReadyEvent(minimap_path, "MacroAgent"))
+                        # Delete the screenshot after processing
+                        try:
+                            os.remove(minimap_path)
+                            logging.debug(f"Deleted screenshot: {minimap_path}")
+                        except Exception as e:
+                            logging.error(f"Error deleting screenshot {minimap_path}: {e}")
                     else:
                         logging.info("No valid minimap found. Using regular update")
                         # Fall back to regular update if no screenshot is available
@@ -628,6 +645,12 @@ class LoLCoachGUI(QMainWindow):
                         logging.info(f"Using minimap: {minimap_path}")
                         # Update UI on main thread
                         QApplication.instance().postEvent(self, _ScreenshotReadyEvent(minimap_path, "VisionAgent"))
+                        # Delete the screenshot after processing
+                        try:
+                            os.remove(minimap_path)
+                            logging.debug(f"Deleted screenshot: {minimap_path}")
+                        except Exception as e:
+                            logging.error(f"Error deleting screenshot {minimap_path}: {e}")
                     else:
                         logging.info("No valid minimap found. Using regular update")
                         # Fall back to regular update if no screenshot is available
