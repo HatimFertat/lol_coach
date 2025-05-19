@@ -158,7 +158,7 @@ class BuildAgent(Agent):
             # Always start with a system prompt
             messages = [{"role": "system", "content": "You are a League of Legends coach for item builds."}] + self.conversation_history
             response = client.chat.completions.create(
-                model="gemini-2.0-flash-lite",
+                model="gemini-2.0-flash",
                 messages=messages,
                 max_tokens=512
             )
