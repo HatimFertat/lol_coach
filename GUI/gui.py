@@ -643,12 +643,6 @@ class LoLCoachGUI(QMainWindow):
                         logging.info(f"Using minimap: {minimap_path}")
                         # Update UI on main thread
                         QApplication.instance().postEvent(self, _ScreenshotReadyEvent(minimap_path, "MacroAgent"))
-                        # Delete the screenshot after processing
-                        try:
-                            os.remove(minimap_path)
-                            logging.debug(f"Deleted screenshot: {minimap_path}")
-                        except Exception as e:
-                            logging.error(f"Error deleting screenshot {minimap_path}: {e}")
                     else:
                         logging.info("No valid minimap found. Using regular update")
                         # Fall back to regular update if no screenshot is available
@@ -676,7 +670,6 @@ class LoLCoachGUI(QMainWindow):
                         logging.info(f"Using minimap: {minimap_path}")
                         # Update UI on main thread
                         QApplication.instance().postEvent(self, _ScreenshotReadyEvent(minimap_path, "VisionAgent"))
-                        # The screenshot will be deleted after the vision agent processes it
                     else:
                         logging.info("No valid minimap found. Using regular update")
                         # Fall back to regular update if no screenshot is available
