@@ -28,36 +28,12 @@ python 3.12
    ```
 
 2. Create and activate a virtual environment (choose one):
-   - Using **uv**:
-     ```bash
-     uv venv
-     source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-     ```
-
-   - Using **venv**:
-     ```bash
-     python3 -m venv .venv
-     source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-     ```
-
-   - Using **virtualenv**:
-     ```bash
-     pip install virtualenv
-     virtualenv venv --python=python3.12
-     source venv/bin/activate  # On Windows: venv\Scripts\activate
-     ```
-
-   - Using **conda**:
-     ```bash
-     conda create -n lol_coach python=3.12
-     conda activate lol_coach
-     ```
+    ```bash
+    uv venv
+    source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+    ```
 
 3. Install the package:
-   ```bash
-   pip install -r requirements.txt
-   ```
-   Or with uv:
    ```bash
    uv sync
    ```
@@ -78,7 +54,7 @@ python 3.12
    - Create a `.env` file in the root directory.
    - Add the following variable:
      ```
-     GEMINI_API_KEY=<your-api-key>
+     echo "GEMINI_API_KEY=your_api_key_here" >> .env
      ```
 
 6. Run the application:
