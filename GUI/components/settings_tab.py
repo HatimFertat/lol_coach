@@ -4,8 +4,10 @@ import os
 from pathlib import Path
 from PySide6.QtCore import Qt, QEvent, Signal
 from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel,
-                             QLineEdit, QSpinBox, QGroupBox, QCheckBox, QPushButton)
+                             QLineEdit, QSpinBox, QGroupBox, QCheckBox, QPushButton,
+                             QComboBox)
 from PySide6.QtGui import QIntValidator
+from agents.modelnames import get_available_models
 
 class SettingsTab(QWidget):
     # Signal to notify when mock mode changes
@@ -13,6 +15,8 @@ class SettingsTab(QWidget):
     # Signal to notify when timer intervals change
     vision_interval_changed = Signal(int)
     macro_interval_changed = Signal(int)
+    # Signal to notify when model changes
+    model_changed = Signal(str)
     
     # Default settings
     DEFAULT_SHORTCUTS = {
@@ -25,6 +29,7 @@ class SettingsTab(QWidget):
     DEFAULT_MACRO_INTERVAL = 60
     DEFAULT_USE_MOCK = False
     DEFAULT_AUTO_CLEAR = False
+    DEFAULT_MODEL = "gemini"  # Default to Gemini if available
     
     def __init__(self):
         super().__init__()
@@ -33,6 +38,7 @@ class SettingsTab(QWidget):
         self.vision_interval = self.DEFAULT_VISION_INTERVAL
         self.macro_interval = self.DEFAULT_MACRO_INTERVAL
         self.use_mock = self.DEFAULT_USE_MOCK
+        self.selected_model = self.DEFAULT_MODEL
         
         self._load_settings()
         self._setup_ui()
@@ -47,6 +53,7 @@ class SettingsTab(QWidget):
                     self.vision_interval = data.get('vision_interval', 5)
                     self.macro_interval = data.get('macro_interval', 60)
                     self.use_mock = data.get('use_mock', False)
+                    self.selected_model = data.get('selected_model', self.DEFAULT_MODEL)
             except Exception as e:
                 print(f"Error loading settings: {e}")
 
@@ -58,13 +65,27 @@ class SettingsTab(QWidget):
                     'vision_interval': self.vision_interval,
                     'macro_interval': self.macro_interval,
                     'use_mock': self.use_mock,
-                    'auto_clear': self.auto_clear.isChecked()
+                    'auto_clear': self.auto_clear.isChecked(),
+                    'selected_model': self.selected_model
                 }, f, indent=4)
         except Exception as e:
             print(f"Error saving settings: {e}")
 
     def _setup_ui(self):
         layout = QVBoxLayout(self)
+        
+        # Model selection settings
+        model_group = QGroupBox("LLM Settings")
+        model_layout = QHBoxLayout()
+        
+        model_label = QLabel("Select Model:")
+        self.model_selector = QComboBox()
+        self._update_model_selector()
+        self.model_selector.currentTextChanged.connect(self._on_model_changed)
+        
+        model_layout.addWidget(model_label)
+        model_layout.addWidget(self.model_selector)
+        model_group.setLayout(model_layout)
         
         # Mock mode settings
         mock_group = QGroupBox("Game State Settings")
@@ -129,6 +150,7 @@ class SettingsTab(QWidget):
         shortcut_group.setLayout(shortcut_layout)
         
         # Add all groups to main layout
+        layout.addWidget(model_group)
         layout.addWidget(mock_group)
         layout.addWidget(vision_group)
         layout.addWidget(macro_group)
@@ -271,6 +293,7 @@ class SettingsTab(QWidget):
         self.vision_interval = self.DEFAULT_VISION_INTERVAL
         self.macro_interval = self.DEFAULT_MACRO_INTERVAL
         self.use_mock = self.DEFAULT_USE_MOCK
+        self.selected_model = self.DEFAULT_MODEL
         
         # Update UI to reflect defaults
         self.mock_checkbox.setChecked(self.DEFAULT_USE_MOCK)
@@ -296,4 +319,34 @@ class SettingsTab(QWidget):
         if old_macro_interval != self.DEFAULT_MACRO_INTERVAL:
             self.macro_interval_changed.emit(self.DEFAULT_MACRO_INTERVAL)
             
-        logging.info("All settings reset to defaults") 
+        logging.info("All settings reset to defaults")
+
+    def _update_model_selector(self):
+        """Update the model selector with available models."""
+        self.model_selector.clear()
+        available_models = get_available_models()
+        if not available_models:
+            self.model_selector.addItem("No models available")
+            self.model_selector.setEnabled(False)
+            return
+            
+        self.model_selector.setEnabled(True)
+        for name, config in available_models.items():
+            self.model_selector.addItem(config.name, name)
+            
+        # Set the current selection
+        index = self.model_selector.findData(self.selected_model)
+        if index >= 0:
+            self.model_selector.setCurrentIndex(index)
+
+    def _on_model_changed(self, model_name: str):
+        """Handle model selection change."""
+        index = self.model_selector.currentIndex()
+        if index >= 0:
+            self.selected_model = self.model_selector.currentData()
+            self._save_settings()
+            self.model_changed.emit(self.selected_model)
+
+    def get_selected_model(self) -> str:
+        """Returns the currently selected model name."""
+        return self.selected_model 

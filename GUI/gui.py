@@ -61,6 +61,7 @@ class MainWindow(QMainWindow):
         self.settings_tab.mock_mode_changed.connect(self._on_mock_mode_changed)
         self.settings_tab.vision_interval_changed.connect(self._on_vision_interval_changed)
         self.settings_tab.macro_interval_changed.connect(self._on_macro_interval_changed)
+        self.settings_tab.model_changed.connect(self._on_model_changed)
         
         # Setup UI
         self._setup_ui()
@@ -69,6 +70,9 @@ class MainWindow(QMainWindow):
         
         # Initialize mock mode
         self._on_mock_mode_changed(self.settings_tab.is_mock_mode())
+        
+        # Initialize model
+        self._on_model_changed(self.settings_tab.get_selected_model())
         
         # Show greeting after a short delay
         QTimer.singleShot(1000, self._delayed_greeting)
@@ -244,6 +248,17 @@ class MainWindow(QMainWindow):
             if not self.macro_timer.isActive() or self.macro_timer.interval() != interval * 1000:
                 logging.info(f"Setting macro timer to {interval}s")
                 self.macro_timer.start(interval * 1000)
+
+    @Slot(str)
+    def _on_model_changed(self, model_name: str):
+        """Handle model selection change from settings."""
+        logging.info(f"Model changed to: {model_name}")
+        try:
+            self.macro_agent.set_model(model_name)
+            self.build_agent.set_model(model_name)
+        except Exception as e:
+            logging.error(f"Error setting model: {e}")
+            QMessageBox.warning(self, "Model Error", f"Failed to set model: {str(e)}")
 
     def get_game_state(self):
         try:

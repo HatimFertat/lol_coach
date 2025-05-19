@@ -20,7 +20,7 @@ def take_screenshot_and_crop():
         timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
         screenshot_path = os.path.join(SCREENSHOT_DIR, f'{timestamp}_full.png')
         img.save(screenshot_path)
-        print(f'Screenshot saved to {screenshot_path}')
+        logging.info(f'Screenshot saved to {screenshot_path}')
         # Call minimap cropper
         try:
             minimap_path = process_minimap_crop(screenshot_path)

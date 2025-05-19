@@ -12,6 +12,7 @@ import base64
 from typing import Tuple, Optional
 from vision.champion_detector import detect_champion_positions, format_champion_positions
 import logging
+from agents.modelnames import get_model_config
 
 load_dotenv()
 CURRENT_PATCH = os.getenv("CURRENT_PATCH", "15.7.1")
@@ -30,6 +31,29 @@ class MacroAgent(Agent):
     def __init__(self):
         self.conversation_history = []
         download_champion_icons()
+        self.model_name = "gemini"  # Default model
+
+    def set_model(self, model_name: str):
+        """Set the model to use for this agent."""
+        self.model_name = model_name
+
+    def _get_client(self):
+        """Get the OpenAI client configured for the selected model."""
+        config = get_model_config(self.model_name)
+        if not config:
+            raise ValueError(f"Model {self.model_name} is not available")
+            
+        return OpenAI(
+            api_key=os.getenv(config.api_key_env),
+            base_url=config.base_url
+        )
+
+    def _get_model_name(self):
+        """Get the model name to use for the selected model."""
+        config = get_model_config(self.model_name)
+        if not config:
+            raise ValueError(f"Model {self.model_name} is not available")
+        return config.model_name
 
     def summarize_game_state(self, game_state: GameStateContext, minimap_path: Optional[str] = None) -> str:
         time_str = format_time(game_state.timestamp)
@@ -156,13 +180,10 @@ class MacroAgent(Agent):
     def standalone_message(self, user_message: str) -> str:
         self.conversation_history.append({"role": "user", "content": user_message})
         try:
-            client = OpenAI(
-                api_key=os.getenv("GEMINI_API_KEY"),
-                base_url="https://generativelanguage.googleapis.com/v1beta/openai/"
-            )
+            client = self._get_client()
             messages = [{"role": "system", "content": "You are a macro-level coach for a League of Legends game."}] + self.conversation_history
             response = client.chat.completions.create(
-                model="gemini-2.0-flash",
+                model=self._get_model_name(),
                 messages=messages,
                 max_tokens=256
             )
@@ -187,7 +208,7 @@ class MacroAgent(Agent):
         prefix = "Based on the following game state summary"
         if image_path:
             prefix += " and the champion positions"
-        prefix += ", provide a quick macro strategy recommendation for the next 2 minutes."
+        prefix += ", provide a quick macro strategy recommendation for the next minute."
         
         suffix = ""
         if image_path:
@@ -210,13 +231,10 @@ class MacroAgent(Agent):
         prompt = f"{prefix}\n{summary}\n{suffix}"
         self.conversation_history.append({"role": "user", "content": prompt})
         try:
-            client = OpenAI(
-                api_key=os.getenv("GEMINI_API_KEY"),
-                base_url="https://generativelanguage.googleapis.com/v1beta/openai/"
-            )
+            client = self._get_client()
             messages = [{"role": "system", "content": "You are a macro-level coach for a League of Legends game."}] + self.conversation_history
             response = client.chat.completions.create(
-                model="gemini-2.0-flash-lite",
+                model=self._get_model_name(),
                 messages=messages,
                 max_tokens=2048
             )

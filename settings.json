@@ -7,6 +7,7 @@
     },
     "vision_interval": 7,
     "macro_interval": 60,
-    "use_mock": false,
-    "auto_clear": false
+    "use_mock": true,
+    "auto_clear": false,
+    "selected_model": "gemini"
 }
