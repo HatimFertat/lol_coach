@@ -8,6 +8,8 @@ logging.getLogger("words_mismatch").setLevel(logging.ERROR)
 logging.getLogger("urllib3.connectionpool").setLevel(logging.ERROR)
 logging.getLogger("numba").setLevel(logging.ERROR)
 logging.getLogger("utils").setLevel(logging.ERROR)
+logging.getLogger("openai").setLevel(logging.ERROR)
+logging.getLogger("httpcore").setLevel(logging.ERROR)
 
 import os
 from utils.get_item_recipes import CURRENT_PATCH, PREVIOUS_PATCH
@@ -21,13 +23,13 @@ warnings.filterwarnings("ignore", category=UserWarning, module="PySide6.QtWidget
 warnings.filterwarnings("ignore", category=UserWarning, module="phonemizer")
 load_dotenv()
 
-from GUI.gui import LoLCoachGUI
+from GUI.gui import MainWindow
 
 if __name__ == "__main__":
     # Create QApplication instance before any widgets
     app = QApplication([])
     # Create the GUI window
-    window = LoLCoachGUI()
+    window = MainWindow()
     window.show()
     # Start the Qt event loop
     app.exec()

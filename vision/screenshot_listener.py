@@ -6,7 +6,7 @@ import mss
 from PIL import Image
 import time
 from vision.minimap_cropper import process_minimap_crop  # Adjust if your cropper function has a different name
-
+import logging
 # Directory to save screenshots
 SCREENSHOT_DIR = os.path.join(os.path.dirname(__file__), 'screenshots')
 os.makedirs(SCREENSHOT_DIR, exist_ok=True)
@@ -24,12 +24,10 @@ def take_screenshot_and_crop():
         # Call minimap cropper
         try:
             minimap_path = process_minimap_crop(screenshot_path)
-            if minimap_path:
-                print('Minimap cropper called successfully.')
-                return minimap_path
-            else:
-                print('Minimap cropper did not find a valid minimap.')
-                return None
+            logging.info(f'Minimap cropper called successfully, saved at {minimap_path}')
+            #cleanup full screenshot
+            # os.remove(screenshot_path)
+            return minimap_path
         except Exception as e:
-            print(f'Error calling minimap cropper: {e}')
+            logging.error(f'Error calling minimap cropper: {e}')
             return None

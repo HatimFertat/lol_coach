@@ -3,6 +3,7 @@ import cv2
 import os
 from pathlib import Path
 import numpy as np
+import logging
 
 # Path to generic minimap template for validation
 TEMPLATE_PATH = Path(__file__).parent / "map_semantics" / "SR_minimap_generic.png"
@@ -119,7 +120,7 @@ def process_minimap_crop(full_img_path: str, minimap_right: bool = True):
     full_img = cv2.imread(full_img_path)
     anchor = find_minimap_anchor_shape(full_img, minimap_right)
     if anchor is None:
-        print("Could not detect minimap anchor by shape.")
+        logging.error("Could not detect minimap anchor by shape.")
         return None
 
     cropped = crop_minimap_from_anchor(full_img, anchor, minimap_right)
@@ -128,30 +129,30 @@ def process_minimap_crop(full_img_path: str, minimap_right: bool = True):
     # ORB feature detection on crop
     kp2, des2 = ORB_DETECTOR.detectAndCompute(cropped_gray, None)
     if des2 is None or len(kp2) < 10:
-        print("Not enough ORB keypoints, discarding.")
+        logging.error("Not enough ORB keypoints, discarding.")
         return None
     # Match template descriptors to crop descriptors
     matches = BF_MATCHER.match(template_des, des2)
     matches = sorted(matches, key=lambda m: m.distance)
     good_matches = [m for m in matches if m.distance < 60]
     if len(good_matches) < 15:
-        print(f"ORB matches below threshold ({len(good_matches)}), discarding.")
+        logging.error(f"ORB matches below threshold ({len(good_matches)}), discarding.")
         return None
     output_path = save_minimap_crop(cropped, Path(full_img_path))
-    print(f"Saved cropped minimap to: {output_path}")
+    logging.info(f"Saved cropped minimap to: {output_path}")
     return str(output_path)
 
 def process_latest_minimap_crop():
     latest = get_latest_full_screenshot(SCREENSHOT_DIR)
     if latest is None:
-        print("No uncropped screenshots found.")
+        logging.error("No uncropped screenshots found.")
         return None
 
     full_img = cv2.imread(str(latest))
     anchor = find_minimap_anchor_shape(full_img, minimap_right=True)
     # Save the region of interest used for anchor detection
     if anchor is None:
-        print("Could not detect minimap anchor by shape.")
+        logging.error("Could not detect minimap anchor by shape.")
         return None
 
     cropped = crop_minimap_from_anchor(full_img, anchor, minimap_right=True)
@@ -160,7 +161,7 @@ def process_latest_minimap_crop():
     # ORB feature detection on crop
     kp2, des2 = ORB_DETECTOR.detectAndCompute(cropped_gray, None)
     if des2 is None or len(kp2) < 10:
-        print("Not enough ORB keypoints, discarding.")
+        logging.error("Not enough ORB keypoints, discarding.")
         return None
     # Match template descriptors to crop descriptors
     matches = BF_MATCHER.match(template_des, des2)
@@ -169,10 +170,10 @@ def process_latest_minimap_crop():
     # Count good matches under a distance threshold
     good_matches = [m for m in matches if m.distance < 60]
     if len(good_matches) < 15:
-        print(f"ORB matches below threshold ({len(good_matches)}), discarding.")
+        logging.error(f"ORB matches below threshold ({len(good_matches)}), discarding.")
         return None
     output_path = save_minimap_crop(cropped, latest)
-    print(f"Saved cropped minimap to: {output_path}")
+    logging.info(f"Saved cropped minimap to: {output_path}")
     return str(output_path)
 
 if __name__ == "__main__":

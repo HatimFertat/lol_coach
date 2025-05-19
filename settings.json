@@ -1,0 +1,12 @@
+{
+    "shortcuts": {
+        "build_agent": "Ctrl+Alt+B",
+        "macro_agent": "Ctrl+Alt+M",
+        "vision_agent": "Ctrl+Alt+V",
+        "tts_stop": "Ctrl+Alt+L"
+    },
+    "vision_interval": 7,
+    "macro_interval": 60,
+    "use_mock": false,
+    "auto_clear": false
+}

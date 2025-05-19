@@ -225,17 +225,3 @@ class TTSManager:
             logging.info("TTS Manager cleanup completed")
         except Exception as e:
             logging.error(f"Error during TTS cleanup: {e}")
-
-    @staticmethod
-    def cleanup_screenshots():
-        """Clean up all screenshots in the vision/screenshots folder."""
-        try:
-            screenshot_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'vision', 'screenshots')
-            if os.path.exists(screenshot_dir):
-                for file in glob.glob(os.path.join(screenshot_dir, '*')):
-                    try:
-                        os.remove(file)
-                    except Exception as e:
-                        logging.error(f"Error deleting screenshot {file}: {e}")
-        except Exception as e:
-            logging.error(f"Error cleaning up screenshots: {e}")

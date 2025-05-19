@@ -1,0 +1,77 @@
+{
+    "game_states": [
+        {
+            "champion": "Ahri",
+            "level": 6,
+            "gold": 1500,
+            "items": ["Doran's Ring", "Boots of Speed", "Lost Chapter"],
+            "position": {"x": 45, "y": 55},
+            "team_score": 5,
+            "enemy_score": 3,
+            "game_time": 600
+        },
+        {
+            "champion": "Ahri",
+            "level": 11,
+            "gold": 4500,
+            "items": ["Doran's Ring", "Sorcerer's Shoes", "Everfrost", "Cosmic Drive"],
+            "position": {"x": 60, "y": 40},
+            "team_score": 12,
+            "enemy_score": 8,
+            "game_time": 1800
+        },
+        {
+            "champion": "Ahri",
+            "level": 16,
+            "gold": 8000,
+            "items": ["Doran's Ring", "Sorcerer's Shoes", "Everfrost", "Cosmic Drive", "Rabadon's Deathcap", "Void Staff"],
+            "position": {"x": 75, "y": 25},
+            "team_score": 20,
+            "enemy_score": 15,
+            "game_time": 3000
+        }
+    ],
+    "vision_data": [
+        {
+            "wards_placed": 3,
+            "vision_score": 15,
+            "enemy_wards_destroyed": 1,
+            "vision_control_areas": ["Baron", "Dragon"]
+        },
+        {
+            "wards_placed": 7,
+            "vision_score": 35,
+            "enemy_wards_destroyed": 3,
+            "vision_control_areas": ["Baron", "Dragon", "Blue Buff", "Red Buff"]
+        },
+        {
+            "wards_placed": 12,
+            "vision_score": 50,
+            "enemy_wards_destroyed": 5,
+            "vision_control_areas": ["Baron", "Dragon", "Blue Buff", "Red Buff", "Enemy Jungle"]
+        }
+    ],
+    "macro_data": [
+        {
+            "objectives": ["Dragon"],
+            "team_positions": ["Top", "Mid", "Bot"],
+            "enemy_positions": ["Jungle", "Mid"],
+            "pushing_lanes": ["Bot"],
+            "defending_lanes": ["Top"]
+        },
+        {
+            "objectives": ["Baron", "Dragon"],
+            "team_positions": ["Top", "Mid", "Bot", "Jungle"],
+            "enemy_positions": ["Top", "Mid", "Bot"],
+            "pushing_lanes": ["Mid", "Bot"],
+            "defending_lanes": []
+        },
+        {
+            "objectives": ["Elder Dragon"],
+            "team_positions": ["Top", "Mid", "Bot", "Jungle", "Support"],
+            "enemy_positions": ["Top", "Mid", "Bot", "Jungle"],
+            "pushing_lanes": ["All"],
+            "defending_lanes": []
+        }
+    ]
+} 
