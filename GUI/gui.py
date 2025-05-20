@@ -62,6 +62,7 @@ class MainWindow(QMainWindow):
         self.settings_tab.vision_interval_changed.connect(self._on_vision_interval_changed)
         self.settings_tab.macro_interval_changed.connect(self._on_macro_interval_changed)
         self.settings_tab.model_changed.connect(self._on_model_changed)
+        self.settings_tab.tts_settings_changed.connect(self._on_tts_settings_changed)
         
         # Setup UI
         self._setup_ui()
@@ -73,6 +74,9 @@ class MainWindow(QMainWindow):
         
         # Initialize model
         self._on_model_changed(self.settings_tab.get_selected_model())
+        
+        # Initialize TTS settings
+        self._on_tts_settings_changed(self.settings_tab.get_tts_settings())
         
         # Show greeting after a short delay
         QTimer.singleShot(1000, self._delayed_greeting)
@@ -259,6 +263,24 @@ class MainWindow(QMainWindow):
         except Exception as e:
             logging.error(f"Error setting model: {e}")
             QMessageBox.warning(self, "Model Error", f"Failed to set model: {str(e)}")
+
+    @Slot(dict)
+    def _on_tts_settings_changed(self, settings: dict):
+        """Handle TTS settings changes"""
+        logging.info(f"TTS settings changed: {settings}")
+        try:
+            # Update TTS engine
+            self.tts_manager.set_engine(settings["engine"])
+            
+            # Update voice and speed
+            self.tts_manager.voice = settings["voice"]
+            self.tts_manager.speed = settings["speed"]
+            
+            # Test the new settings with a simple message
+            self.tts_manager.speak("TTS settings updated successfully.")
+        except Exception as e:
+            logging.error(f"Error updating TTS settings: {e}")
+            QMessageBox.warning(self, "TTS Error", f"Failed to update TTS settings: {str(e)}")
 
     def get_game_state(self):
         try:

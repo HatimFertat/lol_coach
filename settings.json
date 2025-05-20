@@ -5,9 +5,15 @@
         "vision_agent": "Ctrl+Alt+V",
         "tts_stop": "Ctrl+Alt+L"
     },
-    "vision_interval": 5,
-    "macro_interval": 60,
-    "use_mock": false,
+    "vision_interval": 0,
+    "macro_interval": 0,
+    "use_mock": true,
     "auto_clear": false,
-    "selected_model": "gemini"
+    "selected_model": "gemini",
+    "tts": {
+        "engine": "openai",
+        "voice": "alloy",
+        "speed": 1.0,
+        "language": "en-us"
+    }
 }

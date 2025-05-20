@@ -8,6 +8,7 @@ from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel,
                              QComboBox)
 from PySide6.QtGui import QIntValidator
 from agents.modelnames import get_available_models
+from utils.tts_manager import TTSManager
 
 class SettingsTab(QWidget):
     # Signal to notify when mock mode changes
@@ -17,6 +18,8 @@ class SettingsTab(QWidget):
     macro_interval_changed = Signal(int)
     # Signal to notify when model changes
     model_changed = Signal(str)
+    # Signal to notify when TTS settings change
+    tts_settings_changed = Signal(dict)
     
     # Default settings
     DEFAULT_SHORTCUTS = {
@@ -30,6 +33,12 @@ class SettingsTab(QWidget):
     DEFAULT_USE_MOCK = False
     DEFAULT_AUTO_CLEAR = False
     DEFAULT_MODEL = "gemini"  # Default to Gemini if available
+    DEFAULT_TTS = {
+        "engine": "kokoro",
+        "voice": "af_sarah",
+        "speed": 1.0,
+        "language": "en-us"
+    }
     
     def __init__(self):
         super().__init__()
@@ -39,6 +48,7 @@ class SettingsTab(QWidget):
         self.macro_interval = self.DEFAULT_MACRO_INTERVAL
         self.use_mock = self.DEFAULT_USE_MOCK
         self.selected_model = self.DEFAULT_MODEL
+        self.tts_settings = self.DEFAULT_TTS.copy()
         
         self._load_settings()
         self._setup_ui()
@@ -54,6 +64,7 @@ class SettingsTab(QWidget):
                     self.macro_interval = data.get('macro_interval', 60)
                     self.use_mock = data.get('use_mock', False)
                     self.selected_model = data.get('selected_model', self.DEFAULT_MODEL)
+                    self.tts_settings = data.get('tts', self.DEFAULT_TTS)
             except Exception as e:
                 print(f"Error loading settings: {e}")
 
@@ -66,7 +77,8 @@ class SettingsTab(QWidget):
                     'macro_interval': self.macro_interval,
                     'use_mock': self.use_mock,
                     'auto_clear': self.auto_clear.isChecked(),
-                    'selected_model': self.selected_model
+                    'selected_model': self.selected_model,
+                    'tts': self.tts_settings
                 }, f, indent=4)
         except Exception as e:
             print(f"Error saving settings: {e}")
@@ -86,6 +98,48 @@ class SettingsTab(QWidget):
         model_layout.addWidget(model_label)
         model_layout.addWidget(self.model_selector)
         model_group.setLayout(model_layout)
+        
+        # TTS settings
+        tts_group = QGroupBox("TTS Settings")
+        tts_layout = QVBoxLayout()
+        
+        # Engine selection
+        engine_layout = QHBoxLayout()
+        engine_label = QLabel("TTS Engine:")
+        self.engine_selector = QComboBox()
+        self.engine_selector.addItems(["kokoro", "openai"])
+        self.engine_selector.setCurrentText(self.tts_settings["engine"])
+        self.engine_selector.currentTextChanged.connect(self._on_tts_engine_changed)
+        
+        engine_layout.addWidget(engine_label)
+        engine_layout.addWidget(self.engine_selector)
+        tts_layout.addLayout(engine_layout)
+        
+        # Voice selection
+        voice_layout = QHBoxLayout()
+        voice_label = QLabel("Voice:")
+        self.voice_selector = QComboBox()
+        self._update_voice_selector()
+        self.voice_selector.currentTextChanged.connect(self._on_tts_voice_changed)
+        
+        voice_layout.addWidget(voice_label)
+        voice_layout.addWidget(self.voice_selector)
+        tts_layout.addLayout(voice_layout)
+        
+        # Speed setting
+        speed_layout = QHBoxLayout()
+        speed_label = QLabel("Speed:")
+        self.speed_input = QSpinBox()
+        self.speed_input.setRange(50, 200)  # 0.5x to 2.0x speed
+        self.speed_input.setValue(int(self.tts_settings["speed"] * 100))
+        self.speed_input.setSuffix("%")
+        self.speed_input.valueChanged.connect(self._on_tts_speed_changed)
+        
+        speed_layout.addWidget(speed_label)
+        speed_layout.addWidget(self.speed_input)
+        tts_layout.addLayout(speed_layout)
+        
+        tts_group.setLayout(tts_layout)
         
         # Mock mode settings
         mock_group = QGroupBox("Game State Settings")
@@ -151,6 +205,7 @@ class SettingsTab(QWidget):
         
         # Add all groups to main layout
         layout.addWidget(model_group)
+        layout.addWidget(tts_group)
         layout.addWidget(mock_group)
         layout.addWidget(vision_group)
         layout.addWidget(macro_group)
@@ -294,6 +349,7 @@ class SettingsTab(QWidget):
         self.macro_interval = self.DEFAULT_MACRO_INTERVAL
         self.use_mock = self.DEFAULT_USE_MOCK
         self.selected_model = self.DEFAULT_MODEL
+        self.tts_settings = self.DEFAULT_TTS.copy()
         
         # Update UI to reflect defaults
         self.mock_checkbox.setChecked(self.DEFAULT_USE_MOCK)
@@ -350,3 +406,46 @@ class SettingsTab(QWidget):
     def get_selected_model(self) -> str:
         """Returns the currently selected model name."""
         return self.selected_model 
+
+    def _update_voice_selector(self):
+        """Update the voice selector based on the current TTS engine"""
+        self.voice_selector.clear()
+        if self.tts_settings["engine"] == "kokoro":
+            voices = TTSManager.KOKORO_VOICES
+        else:
+            voices = TTSManager.OPENAI_VOICES
+            
+        self.voice_selector.addItems(voices)
+        
+        # Set current voice if it exists in the new list
+        current_voice = self.tts_settings["voice"]
+        index = self.voice_selector.findText(current_voice)
+        if index >= 0:
+            self.voice_selector.setCurrentIndex(index)
+        else:
+            # If current voice not available, use first available voice
+            self.tts_settings["voice"] = voices[0]
+            self.voice_selector.setCurrentIndex(0)
+
+    def _on_tts_engine_changed(self, engine: str):
+        """Handle TTS engine change"""
+        self.tts_settings["engine"] = engine
+        self._update_voice_selector()
+        self._save_settings()
+        self.tts_settings_changed.emit(self.tts_settings)
+
+    def _on_tts_voice_changed(self, voice: str):
+        """Handle TTS voice change"""
+        self.tts_settings["voice"] = voice
+        self._save_settings()
+        self.tts_settings_changed.emit(self.tts_settings)
+
+    def _on_tts_speed_changed(self, speed: int):
+        """Handle TTS speed change"""
+        self.tts_settings["speed"] = speed / 100.0  # Convert percentage to decimal
+        self._save_settings()
+        self.tts_settings_changed.emit(self.tts_settings)
+
+    def get_tts_settings(self) -> dict:
+        """Get current TTS settings"""
+        return self.tts_settings.copy() 
