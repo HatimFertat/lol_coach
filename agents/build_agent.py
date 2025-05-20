@@ -161,18 +161,9 @@ class BuildAgent(Agent):
 
         # Summarize game state
         summary = self.summarize_game_state(game_state)
-        prefix = "Based on the following game state summary"
-        prefix += ", provide a quick build recommendation for the next 2 minutes."
-        
-        suffix = (
-            "After your detailed analysis, provide a concise summary of the key points in 2-3 bullet points. "
-            "This summary must be the last part of your response and be enclosed exactly between the lines:\n"
-            "--- Summary Start ---\n"
-            "- <point 1>\n"
-            "- <point 2>\n"
-            "- <point 3>\n"
-            "--- Summary End ---\n"
-        )
+        prefix = "Based on the following game state summary, what is the best next item to purchase, and briefly explain why. Think step by step."
+        suffix = "Your response must always end with the exact sentence: 'Final recommendation: I recommend you build <item>.' Replace <item> with the item name"
+
         suffix += "Recommendation:"
 
         if user_message:
