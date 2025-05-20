@@ -414,7 +414,7 @@ class SettingsTab(QWidget):
             voices = TTSManager.KOKORO_VOICES
         else:
             voices = TTSManager.OPENAI_VOICES
-            
+
         self.voice_selector.addItems(voices)
         
         # Set current voice if it exists in the new list

@@ -276,8 +276,6 @@ class MainWindow(QMainWindow):
             self.tts_manager.voice = settings["voice"]
             self.tts_manager.speed = settings["speed"]
             
-            # Test the new settings with a simple message
-            self.tts_manager.speak("TTS settings updated successfully.")
         except Exception as e:
             logging.error(f"Error updating TTS settings: {e}")
             QMessageBox.warning(self, "TTS Error", f"Failed to update TTS settings: {str(e)}")

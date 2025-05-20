@@ -11,9 +11,9 @@
     "auto_clear": false,
     "selected_model": "gemini",
     "tts": {
-        "engine": "openai",
-        "voice": "alloy",
-        "speed": 1.0,
+        "engine": "kokoro",
+        "voice": "af_alloy",
+        "speed": 1.3,
         "language": "en-us"
     }
 }
