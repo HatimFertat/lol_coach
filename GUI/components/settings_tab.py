@@ -26,7 +26,8 @@ class SettingsTab(QWidget):
         "build_agent": "Ctrl+Alt+B",
         "macro_agent": "Ctrl+Alt+M",
         "vision_agent": "Ctrl+Alt+V",
-        "tts_stop": "Ctrl+Alt+L"
+        "tts_stop": "Ctrl+Alt+L",
+        "push_to_talk": "Ctrl+Alt+T"  # Changed to T for Toggle
     }
     DEFAULT_VISION_INTERVAL = 5
     DEFAULT_MACRO_INTERVAL = 60
@@ -197,7 +198,7 @@ class SettingsTab(QWidget):
         
         # Create shortcut input fields
         self.shortcut_inputs = {}
-        for shortcut_type in ["build_agent", "macro_agent", "vision_agent", "tts_stop"]:
+        for shortcut_type in ["build_agent", "macro_agent", "vision_agent", "tts_stop", "push_to_talk"]:
             group = self._create_shortcut_group(shortcut_type)
             shortcut_layout.addWidget(group)
         
@@ -247,10 +248,19 @@ class SettingsTab(QWidget):
         group = QWidget()
         layout = QHBoxLayout()
         
-        label = QLabel(f"{label_text.replace('_', ' ').title()}:")
+        # Customize label text for better readability
+        display_text = label_text.replace('_', ' ').title()
+        if label_text == "push_to_talk":
+            display_text = "Speech-to-Text Toggle"
+        
+        label = QLabel(f"{display_text}:")
         input_field = QLineEdit()
         input_field.setReadOnly(True)
-        input_field.setPlaceholderText("Press keys to set shortcut")
+        input_field.setPlaceholderText("Click and press keys to set shortcut")
+        
+        # Add clear button
+        clear_button = QPushButton("Clear")
+        clear_button.clicked.connect(lambda: self._clear_shortcut(label_text, input_field))
         
         # Store the input field reference
         self.shortcut_inputs[label_text] = input_field
@@ -261,60 +271,142 @@ class SettingsTab(QWidget):
         
         layout.addWidget(label)
         layout.addWidget(input_field)
+        layout.addWidget(clear_button)
         group.setLayout(layout)
         
         return group
 
+    def _clear_shortcut(self, shortcut_type, input_field):
+        """Clear the shortcut for the given type"""
+        input_field.clear()
+        if shortcut_type in self.shortcuts:
+            del self.shortcuts[shortcut_type]
+        self._save_settings()
+
     def eventFilter(self, obj, event):
         if event.type() == QEvent.KeyPress and obj in self.shortcut_inputs.values():
-            # Get the shortcut type from the input field
-            shortcut_type = next(k for k, v in self.shortcut_inputs.items() if v == obj)
-            
-            # Get the key combination
-            key = event.key()
-            modifiers = event.modifiers()
-            
-            # Convert to string representation
-            shortcut = self._key_to_string(key, modifiers)
-            if shortcut:
-                # Update the input field and store the shortcut
-                obj.setText(shortcut)
-                self.shortcuts[shortcut_type] = shortcut
-                self._save_settings()
-            
-            return True
+            try:
+                # Get the shortcut type from the input field
+                shortcut_type = next(k for k, v in self.shortcut_inputs.items() if v == obj)
+                
+                # Get the key combination
+                key = event.key()
+                modifiers = event.modifiers()
+                
+                # List of keys to ignore when pressed alone
+                ignore_standalone_keys = (
+                    Qt.Key_Control, Qt.Key_Alt, Qt.Key_Shift, Qt.Key_Meta,
+                    Qt.Key_CapsLock, Qt.Key_NumLock, Qt.Key_ScrollLock,
+                    Qt.Key_Super_L, Qt.Key_Super_R, Qt.Key_Menu,
+                    Qt.Key_AltGr, Qt.Key_Meta
+                )
+                
+                # Ignore standalone modifier keys and lock keys
+                if key in ignore_standalone_keys:
+                    return True
+                
+                # Special handling for Tab key to prevent window focus issues
+                if key == Qt.Key_Tab:
+                    event.accept()
+                
+                # Convert to string representation
+                shortcut = self._key_to_string(key, modifiers)
+                if shortcut:
+                    # Update the input field and store the shortcut
+                    obj.setText(shortcut)
+                    self.shortcuts[shortcut_type] = shortcut
+                    self._save_settings()
+                    # Clear focus to prevent further key events
+                    obj.clearFocus()
+                
+                # Always consume the key press event
+                return True
+            except Exception as e:
+                logging.error(f"Error in keyboard shortcut handling: {e}")
+                return True
         
         return super().eventFilter(obj, event)
 
     def _key_to_string(self, key, modifiers):
-        # Convert Qt key and modifiers to string representation
-        key_str = ""
-        
-        # Add modifier keys
-        if modifiers & Qt.ControlModifier:
-            key_str += "Ctrl+"
-        if modifiers & Qt.AltModifier:
-            key_str += "Alt+"
-        if modifiers & Qt.ShiftModifier:
-            key_str += "Shift+"
-        
-        # Add the main key
-        if key >= Qt.Key_A and key <= Qt.Key_Z:
-            key_str += chr(key)
-        elif key >= Qt.Key_0 and key <= Qt.Key_9:
-            key_str += str(key - Qt.Key_0)
-        elif key == Qt.Key_Space:
-            key_str += "Space"
-        elif key == Qt.Key_Escape:
-            key_str += "Escape"
-        elif key == Qt.Key_Return:
-            key_str += "Return"
-        elif key == Qt.Key_Tab:
-            key_str += "Tab"
-        else:
+        try:
+            # Convert Qt key and modifiers to string representation
+            key_str = []
+            
+            # Add modifier keys in a consistent order
+            if modifiers & Qt.ControlModifier:
+                key_str.append("Ctrl")
+            if modifiers & Qt.AltModifier:
+                key_str.append("Alt")
+            if modifiers & Qt.ShiftModifier:
+                key_str.append("Shift")
+            if modifiers & Qt.MetaModifier:
+                key_str.append("Meta")
+            
+            # Add the main key
+            main_key = None
+            
+            # Handle special keys first
+            special_keys = {
+                Qt.Key_Tab: "Tab",
+                Qt.Key_Space: "Space",
+                Qt.Key_Return: "Enter",
+                Qt.Key_Enter: "Enter",
+                Qt.Key_Escape: "Esc",
+                Qt.Key_Backspace: "Backspace",
+                Qt.Key_Delete: "Delete",
+                Qt.Key_Home: "Home",
+                Qt.Key_End: "End",
+                Qt.Key_PageUp: "PgUp",
+                Qt.Key_PageDown: "PgDn",
+                Qt.Key_Insert: "Insert",
+                Qt.Key_Up: "Up",
+                Qt.Key_Down: "Down",
+                Qt.Key_Left: "Left",
+                Qt.Key_Right: "Right",
+                Qt.Key_CapsLock: "CapsLock",
+                Qt.Key_NumLock: "NumLock",
+                Qt.Key_ScrollLock: "ScrollLock",
+                Qt.Key_Pause: "Pause",
+                Qt.Key_Print: "PrintScreen",
+                Qt.Key_Help: "Help",
+                Qt.Key_Menu: "Menu",
+                Qt.Key_VolumeDown: "VolumeDown",
+                Qt.Key_VolumeMute: "VolumeMute",
+                Qt.Key_VolumeUp: "VolumeUp",
+                Qt.Key_MediaPlay: "MediaPlay",
+                Qt.Key_MediaStop: "MediaStop",
+                Qt.Key_MediaPrevious: "MediaPrevious",
+                Qt.Key_MediaNext: "MediaNext",
+            }
+            
+            if key in special_keys:
+                main_key = special_keys[key]
+            # Handle F1-F12 keys
+            elif Qt.Key_F1 <= key <= Qt.Key_F12:
+                main_key = f"F{key - Qt.Key_F1 + 1}"
+            # Handle letter keys
+            elif Qt.Key_A <= key <= Qt.Key_Z:
+                main_key = chr(key)
+            # Handle number keys
+            elif Qt.Key_0 <= key <= Qt.Key_9:
+                main_key = str(key - Qt.Key_0)
+            # Handle numpad keys
+            elif Qt.Key_0 <= key <= Qt.Key_9:
+                main_key = f"Num{key - Qt.Key_0}"
+            
+            # Only return a shortcut if we have a valid main key and at least one modifier
+            # (except for function keys and special keys which can be used alone)
+            if main_key:
+                if (len(key_str) > 0 or 
+                    main_key.startswith('F') or 
+                    main_key in ['Esc', 'PrintScreen', 'Pause', 'Insert', 'Delete']):
+                    key_str.append(main_key)
+                    return "+".join(key_str)
+            
             return None
-        
-        return key_str
+        except Exception as e:
+            logging.error(f"Error converting key to string: {e}")
+            return None
 
     def update_shortcut_display(self, input_field, shortcut):
         input_field.setText(shortcut)

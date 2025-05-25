@@ -88,15 +88,15 @@ class MainWindow(QMainWindow):
         layout = QVBoxLayout(central_widget)
         
         # Create tab widget
-        tab_widget = QTabWidget()
+        self.tab_widget = QTabWidget()
         
         # Add tabs
-        tab_widget.addTab(self.macro_tab, "Macro Agent")
-        tab_widget.addTab(self.build_tab, "Build Agent")
-        tab_widget.addTab(self.vision_tab, "Vision Agent")
-        tab_widget.addTab(self.settings_tab, "Settings")
+        self.tab_widget.addTab(self.macro_tab, "Macro Agent")
+        self.tab_widget.addTab(self.build_tab, "Build Agent")
+        self.tab_widget.addTab(self.vision_tab, "Vision Agent")
+        self.tab_widget.addTab(self.settings_tab, "Settings")
         
-        layout.addWidget(tab_widget)
+        layout.addWidget(self.tab_widget)
 
     def _parse_shortcut_string(self, shortcut_str):
         """
@@ -141,6 +141,7 @@ class MainWindow(QMainWindow):
     def start_keyboard_listener(self):
         self.current_keys = set()
         self.listener = None
+        self.last_shortcut_time = {}  # Track when shortcuts were last triggered
 
         def on_press(key):
             try:
@@ -154,6 +155,7 @@ class MainWindow(QMainWindow):
                     "macro_agent": EventType.MacroAgentTrigger,
                     "vision_agent": EventType.VisionAgentTrigger,
                     "tts_stop": EventType.TTSStopTrigger,
+                    "push_to_talk": EventType.PushToTalkTrigger,
                 }
                 
                 # Check each shortcut against current keys
@@ -170,9 +172,21 @@ class MainWindow(QMainWindow):
                     
                     # Check if all required keys are pressed (current_keys contains all target_keys)
                     if target_keys and target_keys.issubset(self.current_keys) and len(target_keys) == len(self.current_keys):
-                        logging.info(f"Shortcut ACTIVATED: {shortcut_name} ({shortcut_str})")
-                        # Post event to main thread
-                        QCoreApplication.postEvent(self, QEvent(event_type))
+                        # For push-to-talk, implement toggle behavior
+                        if shortcut_name == "push_to_talk":
+                            current_time = time.time()
+                            last_time = self.last_shortcut_time.get(shortcut_name, 0)
+                            # Only trigger if enough time has passed since last trigger (debounce)
+                            if current_time - last_time > 0.3:  # 300ms debounce
+                                self.last_shortcut_time[shortcut_name] = current_time
+                                logging.info(f"Shortcut TOGGLED: {shortcut_name} ({shortcut_str})")
+                                # Post the event to the current active tab
+                                current_tab = self.tab_widget.currentWidget()
+                                if isinstance(current_tab, AgentChatTab):
+                                    QCoreApplication.postEvent(current_tab, QEvent(event_type))
+                        else:
+                            logging.info(f"Shortcut ACTIVATED: {shortcut_name} ({shortcut_str})")
+                            QCoreApplication.postEvent(self, QEvent(event_type))
                         break
             except Exception as e:
                 logging.exception(f"Error in keyboard listener on_press: {e}")
@@ -389,7 +403,8 @@ class MainWindow(QMainWindow):
 
     def _delayed_greeting(self):
         # Show initial greeting
-        self.macro_tab.display_message("MacroAgent", "Hello! I'm the League of Legends Coach.")
+        # self.macro_tab.display_message("MacroAgent", "Hello! I'm the League of Legends Coach.")
+        self.macro_tab.display_message("MacroAgent", "Hello!!")
 
 def main():
     QCoreApplication.setAttribute(Qt.AA_EnableHighDpiScaling) # Optional: for better HiDPI support

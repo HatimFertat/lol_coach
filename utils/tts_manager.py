@@ -228,6 +228,7 @@ class TTSManager:
             
         # Remove asterisk symbols to avoid them being read aloud
         text = text.replace("*", "")
+        text = text.replace("=", "")
         try:
             if text != "":
                 logging.info(f"Adding to speech queue: {text[:50]}...")
@@ -244,15 +245,27 @@ class TTSManager:
             self.should_stop = True
             
             # Stop any ongoing audio playback
-            if self.audio_thread and self.audio_thread.is_alive():
-                sd.stop()
-                self.audio_thread.join(timeout=1.0)
+            sd.stop()  # Stop sounddevice playback immediately
             
             # Clear the queue
             while not self.speech_queue.empty():
-                self.speech_queue.get()
+                try:
+                    self.speech_queue.get_nowait()
+                    self.speech_queue.task_done()
+                except:
+                    pass
             
+            # Reset flags
             self.is_speaking = False
+            self.should_stop = True
+            
+            # Force stop any ongoing audio thread
+            if self.audio_thread and self.audio_thread.is_alive():
+                try:
+                    self.audio_thread.join(timeout=0.5)
+                except:
+                    pass
+            
             logging.info("Speech stopped successfully")
         except Exception as e:
             logging.error(f"Error stopping speech: {e}")
@@ -285,15 +298,39 @@ class TTSManager:
 
     def _process_kokoro_speech(self, text):
         """Process speech using Kokoro TTS"""
-        for chunk in self.chunk_text(text, initial_chunk_size=500):
-            if self.should_stop:
-                break
-            try:
-                samples, samplerate = self.kokoro.create(chunk, voice=self.voice, speed=self.speed, lang=self.lang)
+        try:
+            for chunk in self.chunk_text(text, initial_chunk_size=500):
+                if self.should_stop:
+                    return  # Exit immediately if stop is requested
+                
+                try:
+                    samples, samplerate = self.kokoro.create(chunk, voice=self.voice, speed=self.speed, lang=self.lang)
+                    if self.should_stop:
+                        return  # Check again before playing
+                    
+                    # Create a new thread for audio playback
+                    self.audio_thread = threading.Thread(target=self._play_audio, args=(samples, samplerate))
+                    self.audio_thread.start()
+                    self.audio_thread.join()  # Wait for playback to complete
+                    
+                    if self.should_stop:
+                        return  # Exit if stop was requested during playback
+                        
+                except Exception as e:
+                    logging.error(f"Error synthesizing or playing chunk: {e}")
+                    if self.should_stop:
+                        return
+        except Exception as e:
+            logging.error(f"Error in Kokoro speech processing: {e}")
+
+    def _play_audio(self, samples, samplerate):
+        """Helper method to play audio in a separate thread."""
+        try:
+            if not self.should_stop:
                 sd.play(samples, samplerate)
                 sd.wait()
-            except Exception as e:
-                logging.error(f"Error synthesizing or playing chunk: {e}")
+        except Exception as e:
+            logging.error(f"Error playing audio: {e}")
 
     def _process_openai_speech(self, text):
         """Process speech using OpenAI TTS"""

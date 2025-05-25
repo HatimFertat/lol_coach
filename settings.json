@@ -3,17 +3,18 @@
         "build_agent": "Ctrl+Alt+B",
         "macro_agent": "Ctrl+Alt+M",
         "vision_agent": "Ctrl+Alt+V",
-        "tts_stop": "Ctrl+Alt+L"
+        "tts_stop": "Ctrl+Alt+L",
+        "push_to_talk": "Ctrl+Alt+T"
     },
-    "vision_interval": 0,
-    "macro_interval": 0,
-    "use_mock": true,
+    "vision_interval": 5,
+    "macro_interval": 60,
+    "use_mock": false,
     "auto_clear": false,
     "selected_model": "gemini",
     "tts": {
         "engine": "kokoro",
-        "voice": "af_alloy",
-        "speed": 1.3,
+        "voice": "af_sarah",
+        "speed": 1.0,
         "language": "en-us"
     }
 }

@@ -1,7 +1,9 @@
 from PySide6.QtCore import QEvent
+from enum import IntEnum
 
 # Define custom event types
 class EventType:
+    # Register event types with Qt
     UpdateText = QEvent.Type(QEvent.registerEventType())
     UpdateGameState = QEvent.Type(QEvent.registerEventType())
     ScreenshotReady = QEvent.Type(QEvent.registerEventType())
@@ -10,6 +12,7 @@ class EventType:
     MacroAgentTrigger = QEvent.Type(QEvent.registerEventType())
     VisionAgentTrigger = QEvent.Type(QEvent.registerEventType())
     TTSStopTrigger = QEvent.Type(QEvent.registerEventType())
+    PushToTalkTrigger = QEvent.Type(QEvent.registerEventType())
 
 class _UpdateTextEvent(QEvent):
     def __init__(self, sender, message, curated_message=None):
